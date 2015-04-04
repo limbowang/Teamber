@@ -12,8 +12,18 @@
     "ejs": "~2.3.1",
     "express": "~4.12.2",
     "morgan": "~1.5.1",
+    "mysql": "^2.6.1",
     "node-compass": "0.2.3",
-    "orm": "^2.1.24",
+    "sequelize": "^2.0.5",
+    "sequelize-cli": "^1.6.0",
     "serve-favicon": "~2.2.0"
+  },
+  "devDependencies": {
+    "gulp": "^3.8.11",
+    "gulp-compass": "^2.0.4",
+    "jasmine-core": "^2.2.0",
+    "karma": "^0.12.31",
+    "karma-chrome-launcher": "^0.1.7",
+    "karma-jasmine": "^0.3.5"
   }
 }
