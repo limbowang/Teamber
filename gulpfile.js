@@ -1,9 +1,18 @@
 var gulp = require('gulp');
+var bower = require('gulp-bower');
 var Sequelize = require("sequelize");
 
 
 gulp.task('default', function() {
   // place code for your default task here
+});
+
+gulp.task('bower', function() {
+	return 
+		bower({
+			cwd: './public'
+		})
+		.pipe(gulp.dest('/public'));
 });
 
 gulp.task('migrate', function() {

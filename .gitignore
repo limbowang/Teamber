@@ -30,5 +30,6 @@ node_modules
 npm-debug.log
 
 public/.sass-cache/
+public/bower_components/
 
 config/
