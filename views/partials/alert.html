@@ -1,5 +1,10 @@
-{{#if message}}
+{{#if messages.info}}
 <div class="alert">
-	<div class="alert-info">{{ message }}</div>
+	<div class="alert-info">{{ messages.info }}</div>
+</div>
+{{/if}}
+{{#if messages.error}}
+<div class="alert">
+	<div class="alert-info">{{ messages.error }}</div>
 </div>
 {{/if}}

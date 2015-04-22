@@ -16,12 +16,11 @@ router.param('id', function (req, res, next, id) {
   }
 });
 
-router.get('/', function(req, res, next) {
-  res.render('index', { title: 'Express' });
+router.get('/', isNotAuth, function(req, res, next) {
+  res.render('index', { title: '首页'});
 });
 
 router.get('/dashboard', isAuth, function(req, res, next) {
-  console.log(req.session);
   res.render('dashboard', { title: '我的面板' });
 });
 
@@ -30,11 +29,11 @@ router.get('/signin', isNotAuth, csrf(), function(req, res, next) {
 });
 
 router.get('/signup', isNotAuth, function(req, res, next) {
-  res.render('index', { title: 'Express' });
+  res.render('signup', { title: '注册' });
 });
 
 router.get('/profile', isAuth, function(req, res, next) {
-  res.render('index', { title: 'Express' });
+  res.render('index', { title: '个人资料' });
 });
 
 

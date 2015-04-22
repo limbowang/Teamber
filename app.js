@@ -6,11 +6,16 @@ var logger = require('morgan');
 var cookieParser = require('cookie-parser');
 var bodyParser = require('body-parser');
 var session = require('express-session');
+var flash = require('express-flash');
 
 // import routers
 var routes = require('./routes/index');
 var users = require('./routes/users');
 var sessions = require('./routes/sessions');
+
+// imports utils
+var utils = require('./routes/utils');
+var loadUser = utils.loadUser;
 
 var app = express();
 
@@ -33,10 +38,12 @@ app.use(session({
   resave: false,
   saveUninitialized: true
 }));
+app.use(flash());
 
 // app.use(require('node-compass')({mode: 'expanded'}));
 app.use(express.static(path.join(__dirname, 'public')));
 
+app.all('*', loadUser);
 app.use('/', routes);
 app.use('/users', users);
 app.use('/sessions', sessions);

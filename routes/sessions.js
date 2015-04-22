@@ -9,7 +9,6 @@ router.post('/create', function(req, res, next) {
 
 	// user authentication
 
-
 	req.session.login = "true";
 	res.redirect('/dashboard');
 });
