@@ -5,10 +5,12 @@ var favicon = require('serve-favicon');
 var logger = require('morgan');
 var cookieParser = require('cookie-parser');
 var bodyParser = require('body-parser');
+var session = require('express-session');
 
 // import routers
 var routes = require('./routes/index');
 var users = require('./routes/users');
+var sessions = require('./routes/sessions');
 
 var app = express();
 
@@ -22,12 +24,22 @@ app.set('view engine', 'html');
 app.use(logger('dev'));
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: false }));
-app.use(cookieParser());
+
+// set session
+// app.use(cookieParser());
+app.set('trust proxy', 1)
+app.use(session({
+  secret: 'keyboard cat',
+  resave: false,
+  saveUninitialized: true
+}));
+
 // app.use(require('node-compass')({mode: 'expanded'}));
 app.use(express.static(path.join(__dirname, 'public')));
 
 app.use('/', routes);
 app.use('/users', users);
+app.use('/sessions', sessions);
 
 // catch 404 and forward to error handler
 app.use(function(req, res, next) {
