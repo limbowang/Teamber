@@ -1,7 +1,8 @@
 var express = require('express');
-var router = express.Router();
+var filters = require('./filters');
+var User = require('../models/user');
 
-var filters = require('./filters')
+var router = express.Router();
 var isAuth = filters.isAuth;
 
 router.param('id', function (req, res, next, id) {
@@ -15,7 +16,9 @@ router.param('id', function (req, res, next, id) {
 });
 
 router.post('/create', function(req, res, next) {
-	
+	var user = User.build({
+		
+	});
 });
 
 router.post('/:id/update', function(req, res, next) {

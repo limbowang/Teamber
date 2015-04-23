@@ -1,16 +1,17 @@
-var require = requirejs;
-
-requirejs.config({
-	baseUrl: '../dist/js'
+var require = {
+	baseUrl: '/dist/js',
 	paths: {
 		'jquery': 'jquery-1.10.1.min',
-		'bootstrap': 'bootstrap.min'
+		'bootstrap': 'bootstrap.min',
 		'backbone': 'backbone',
 		'underscore': 'underscore-min'
 	},
 	shim: {
 		'underscore': {
 			exports: '_'
+		},
+		'bootstrap': {
+			deps: ['jquery']
 		},
 		'backbone': {
 			deps: ['underscore', 'jquery'],
@@ -25,6 +26,5 @@ requirejs.config({
 			exports: 'jquery.fn.stepper'
 		}
 	}
-
-});
+};
 

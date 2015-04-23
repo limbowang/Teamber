@@ -9,12 +9,25 @@ module.exports = {
         type: DataTypes.INTEGER
       },
       username: {
-        type: DataTypes.STRING
+        allowNull: false,
+        type: DataTypes.STRING(20)
       },
       password: {
-        type: DataTypes.STRING
+        allowNull: false,
+        type: DataTypes.STRING(64)
       },
       email: {
+        allowNull: false,
+        type: DataTypes.STRING
+      },
+      nickname: {
+        allowNull: false,
+        type: DataTypes.STRING(10)
+      },
+      description: {
+        type: DataTypes.STRING
+      },
+      avatar: {
         type: DataTypes.STRING
       },
       createdAt: {
