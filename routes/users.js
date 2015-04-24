@@ -1,11 +1,12 @@
 var express = require('express');
 var filters = require('./filters');
-var User = require('../models/user');
+var models  = require('../models');
 
 var router = express.Router();
 var isAuth = filters.isAuth;
+var User   = models.User; 
 
-router.param('id', function (req, res, next, id) {
+router.param('id', function(req, res, next, id) {
   if (isNaN(id)) {
     var err = new Error('Not Found');
     err.status = 404;
@@ -16,9 +17,24 @@ router.param('id', function (req, res, next, id) {
 });
 
 router.post('/create', function(req, res, next) {
-	var user = User.build({
-		
-	});
+	var params = req.body;
+	User
+		.create({
+			username: params.username,
+			password: params.password,
+			email:    params.email,
+			nickname: params.nickname
+		})
+		.then(function(user) {
+			req.session.login    = "true";
+			req.session.nickname = user.nickname;
+			req.session.avatar   = user.avatar;
+			res.redirect('/dashboard');
+		})
+		.catch(function(e) {
+			console.log(e);
+			res.redirect('back');
+		});
 });
 
 router.post('/:id/update', function(req, res, next) {

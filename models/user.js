@@ -1,6 +1,6 @@
 "use strict";
 
-var util = require('crypto');
+var utils = require('../routes/utils');
 
 module.exports = function(sequelize, DataTypes) {
   var User = sequelize.define("User", {
@@ -8,17 +8,14 @@ module.exports = function(sequelize, DataTypes) {
       type: DataTypes.STRING,
       allowNull: false,
       unique: true,
-      validates: {
+      validate: {
         len: [6, 20]
       }
     },
     password: {
       type: DataTypes.STRING,
       allowNull: false,
-      set: function(val) {
-        this.setDataValue('password', this.encrypt(val));
-      }
-      validates: {
+      validate: {
         len: [6, 20]
       }
     },
@@ -26,7 +23,7 @@ module.exports = function(sequelize, DataTypes) {
       type: DataTypes.STRING,
       allowNull: false,
       unique: true,
-      validates: {
+      validate: {
         isEmail: true
       }
     },
@@ -34,13 +31,13 @@ module.exports = function(sequelize, DataTypes) {
       type: DataTypes.STRING,
       allowNull: false,
       unique: true,
-      validates: {
+      validate: {
         len: [6, 10]
       }
     },
     description: {
       type: DataTypes.STRING,
-      validates: {
+      validate: {
         len: [0, 255]
       }
     },
@@ -57,13 +54,13 @@ module.exports = function(sequelize, DataTypes) {
           this
             .find({where: { username: username }})
             .then(function(user) {
-              return user && user.password == this.encrypt(password);
+              return user && user.password == utils.hash(password)? user : false;
             });
-      },
-      encrypt: function(value) {
-        var sha2 = crypto.createHash('sha256');
-        sha2.update(value);
-        return sha2.digest('hex');
+      }
+    },
+    hooks: {
+      beforeCreate: function(user, options, fn) {
+        user.password = utils.hash(user.password);
       }
     }
   });
