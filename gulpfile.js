@@ -1,10 +1,21 @@
 var gulp = require('gulp');
 var bower = require('gulp-bower');
 var Sequelize = require("sequelize");
+var compass = require('gulp-compass');
 
 
 gulp.task('default', function() {
   // place code for your default task here
+});
+
+gulp.task('css', function() {
+	gulp.src('./public/sass/*.scss', {base: './public'})
+		.pipe(compass({
+			config_file: './public/config.rb',
+			css: 'stylesheets',
+      		sass: 'scss'
+		}))
+		.pipe(gulp.dest('stylesheets'));
 });
 
 gulp.task('bower', function() {

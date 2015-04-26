@@ -7,11 +7,22 @@ utils.loadUser = function(req, res, next) {
 	if (!req.user && isLogined && isLogined == "true") {
 		// load user
 		res.locals.user = req.user = {
+			id:       req.session.id,
 			nickname: req.session.nickname,
 			avatar:   req.session.avatar
 		};
 	}
 	next();
+}
+
+utils.loadFlash = function(req, res, next) {
+  if (req.session.flash) {
+    res.locals = req.session.flash;
+    // console.log(req.session.flash.errors.get('username'));
+  }
+  req.session.flash = {};
+  
+  next();
 }
 
 utils.hash = function(value) {

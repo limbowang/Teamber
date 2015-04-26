@@ -29,7 +29,12 @@ router.get('/signin', isNotAuth, csrf(), function(req, res, next) {
 });
 
 router.get('/signup', isNotAuth, function(req, res, next) {
-  res.render('signup', { title: '注册' });
+  res.render('signup', {
+    title: '注册',
+    helpers: {
+      error: function() { return ""; }
+    }
+  });
 });
 
 router.get('/profile', isAuth, function(req, res, next) {

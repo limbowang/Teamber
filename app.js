@@ -16,6 +16,7 @@ var sessions = require('./routes/sessions');
 // imports utils
 var utils = require('./routes/utils');
 var loadUser = utils.loadUser;
+var loadFlash = utils.loadFlash;
 
 var app = express();
 
@@ -43,6 +44,7 @@ app.use(flash());
 // app.use(require('node-compass')({mode: 'expanded'}));
 app.use(express.static(path.join(__dirname, 'public')));
 
+app.all('*', loadFlash);
 app.all('*', loadUser);
 app.use('/', routes);
 app.use('/users', users);

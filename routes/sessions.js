@@ -8,15 +8,18 @@ var User = models.User;
 router.post('/create', function(req, res, next) {
 
 	// user authentication
-	result = User.check(req.username, req.password);
-	if (result) {
-		req.session.login    = "true";
-		req.session.nickname = result.nickname;
-		req.session.avatar   = result.avatar;
-		res.redirect('/dashboard');
-	} else {
-		res.redirect('back');
-	}
+	var params = req.body;
+	User.check(params.username, params.password, function(result) {
+		if (result) {
+			req.session.login    = "true";
+			req.session.id        = result.id;
+			req.session.nickname = result.nickname;
+			req.session.avatar   = result.avatar;
+			res.redirect('/dashboard');
+		} else {
+			res.redirect('back');
+		}
+	});
 });
 
 // logout

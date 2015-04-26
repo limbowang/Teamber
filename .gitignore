@@ -29,7 +29,8 @@ node_modules
 # Debug log from npm
 npm-debug.log
 
-public/.sass-cache/
+.sass-cache/
+public/.build/
 public/bower_components/
 
 config/

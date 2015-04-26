@@ -1,22 +1,23 @@
 "use strict";
 
-var utils = require('../routes/utils');
+var utils   = require('../routes/utils');
+var manager = require('../lib/validator-manager');
 
 module.exports = function(sequelize, DataTypes) {
   var User = sequelize.define("User", {
     username: {
       type: DataTypes.STRING,
       allowNull: false,
-      unique: true,
+      unique: {args: true, msg: "用户名已使用"},
       validate: {
-        len: [6, 20]
+        len: manager.genLen("用户名", 6, 20)
       }
     },
     password: {
       type: DataTypes.STRING,
       allowNull: false,
       validate: {
-        len: [6, 20]
+        len: manager.genLen("密码", 6, 20)
       }
     },
     email: {
@@ -24,7 +25,7 @@ module.exports = function(sequelize, DataTypes) {
       allowNull: false,
       unique: true,
       validate: {
-        isEmail: true
+        isEmail: manager.genBool("邮箱", true)
       }
     },
     nickname: {
@@ -32,13 +33,13 @@ module.exports = function(sequelize, DataTypes) {
       allowNull: false,
       unique: true,
       validate: {
-        len: [6, 10]
+        len: manager.genLen("昵称", 6, 10)
       }
     },
     description: {
       type: DataTypes.STRING,
       validate: {
-        len: [0, 255]
+        len: manager.genLen("个人描述", 0, 255)
       }
     },
     avatar: {
@@ -49,18 +50,25 @@ module.exports = function(sequelize, DataTypes) {
       associate: function(models) {
         // associations can be defined here
       },
-      check: function(username, password) {
-        return 
-          this
-            .find({where: { username: username }})
-            .then(function(user) {
-              return user && user.password == utils.hash(password)? user : false;
-            });
+      check: function(username, password, callback) {
+        var res = false;
+        this
+          .find({where: { username: username }})
+          .then(function(user) {
+            res = user && user.password == utils.hash(password)? user : false;
+          })
+          .catch(function(e) {
+            console.log(e);
+          })
+          .finally(function() {
+            callback(res);
+          });
       }
     },
     hooks: {
       beforeCreate: function(user, options, fn) {
         user.password = utils.hash(user.password);
+        fn();
       }
     }
   });

@@ -4,7 +4,7 @@ var models  = require('../models');
 
 var router = express.Router();
 var isAuth = filters.isAuth;
-var User   = models.User; 
+var User   = models.User;
 
 router.param('id', function(req, res, next, id) {
   if (isNaN(id)) {
@@ -12,29 +12,33 @@ router.param('id', function(req, res, next, id) {
     err.status = 404;
     next(err);
   } else {
-  	next();
+    next();
   }
 });
 
 router.post('/create', function(req, res, next) {
-	var params = req.body;
-	User
-		.create({
-			username: params.username,
-			password: params.password,
-			email:    params.email,
-			nickname: params.nickname
-		})
-		.then(function(user) {
-			req.session.login    = "true";
-			req.session.nickname = user.nickname;
-			req.session.avatar   = user.avatar;
-			res.redirect('/dashboard');
-		})
-		.catch(function(e) {
-			console.log(e);
-			res.redirect('back');
-		});
+  var params = req.body;
+  User
+    .create({
+      username: params.username,
+      password: params.password,
+      password_confirm: params.password_confirm,
+      email:    params.email,
+      nickname: params.nickname
+    })
+    .then(function(user) {
+      req.session.login    = "true";
+      req.session.id       = user.id;
+      req.session.nickname = user.nickname;
+      req.session.avatar   = user.avatar;
+      res.redirect('/dashboard');
+    })
+    .catch(function(e, user) {
+      console.log(e);
+      req.session.flash.errors = e;
+      req.session.flash.old = params;
+      res.redirect('/signup');
+    });
 });
 
 router.post('/:id/update', function(req, res, next) {

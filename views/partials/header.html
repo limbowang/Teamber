@@ -20,7 +20,10 @@
             <li><a href="/dashboard">工作台</a></li>
             <li><a href="/profile">个人资料</a></li>
             <li class="divider"></li>
-            <li class="active"><a href="#">登出</a></li>
+            <li id="btn-signout">
+              <a href="#">登出</a>
+              <form id="form-signout" action="sessions/destroy" method="POST"></form>
+            </li>
           </ul>
         </li>
         {{^}}

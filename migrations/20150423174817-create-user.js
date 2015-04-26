@@ -10,6 +10,7 @@ module.exports = {
       },
       username: {
         allowNull: false,
+        unique: true,
         type: DataTypes.STRING(20)
       },
       password: {
@@ -18,10 +19,12 @@ module.exports = {
       },
       email: {
         allowNull: false,
+        unique: true,
         type: DataTypes.STRING
       },
       nickname: {
         allowNull: false,
+        unique: true,
         type: DataTypes.STRING(10)
       },
       description: {
