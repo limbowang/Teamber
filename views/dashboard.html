@@ -1,16 +1,24 @@
 {{> header}}
 
+<div class="main">
 <div class="sidebar">
-	<div class="user-panel">
-		<div class="header">
-			<img src="" alt="头像">
-			<span>我的名称</span>
-		</div>
-		<form action="sessions/destroy" method="POST">
-			<input type="submit"/>登出
-		</form>
+	<div class="tabbable tabs-left clearfix">
+		<ul id="myTab1" class="nav nav-tabs">
+      <li class="dropdown dropdown-block">
+      	<a href="#" id="myTabDrop1-1" class="dropdown-toggle" data-toggle="dropdown">
+      		私人空间<b class="caret"></b>
+      	</a>
+      	<ul class="dropdown-menu" role="menu" aria-labelledby="myTabDrop1">
+          <li><a href="#dropdown1-1" tabindex="-1" data-toggle="tab">新建团队</a></li>
+          <li class="divider"></li>
+          <li><a href="#dropdown1-2" tabindex="-1" data-toggle="tab">私人空间</a></li>
+        </ul>
+      </li>
+      <li><a href="#profile3" data-toggle="tab">Profile</a></li>
+      <li><a href="#myTabDrop3" data-toggle="tab">Dropdown</a></li>
+    </ul>
 	</div>
-	<div class="team">团队选择器</div>
+
 	<div class="proj-panel">
 		<ul class="proj-list">
 			<li class="proj">
@@ -22,17 +30,7 @@
 	</div>
 </div>
 
-<div class="main-panel">
-	<!-- 类型A 子项目板 -->
-	<div class="proj-board">
-		
-	</div>
-	<!-- 类型B 任务板 -->
-	<div class="task-board">
-		<div class="title"></div>
-
-		<ul class="task-list">
-			<li class="task"></li>
-		</ul>
-	</div>
+<div class="board">
+	施工中
+</div>
 </div>

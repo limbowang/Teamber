@@ -14,10 +14,10 @@ module.exports = function(sequelize, DataTypes) {
       type: DataTypes.INTEGER,
     },
     due_time: {
-      type: DataTypes.DATETIME,
+      type: DataTypes.DATE,
     },
     complete_at: {
-      type: DataTypes.DATETIME
+      type: DataTypes.DATE
     }
   }, {
     classMethods: {

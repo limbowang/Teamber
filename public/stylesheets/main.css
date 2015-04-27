@@ -2,6 +2,62 @@
  * In this file you should write your main styles. (or centralize your imports)
  * Import this file using the following HTML or equivalent:
  * <link href="/stylesheets/screen.css" media="screen, projection" rel="stylesheet" type="text/css" /> */
+html, body, div, span, applet, object, iframe,
+h1, h2, h3, h4, h5, h6, p, blockquote, pre,
+a, abbr, acronym, address, big, cite, code,
+del, dfn, em, img, ins, kbd, q, s, samp,
+small, strike, strong, sub, sup, tt, var,
+b, u, i, center,
+dl, dt, dd, ol, ul, li,
+fieldset, form, label, legend,
+table, caption, tbody, tfoot, thead, tr, th, td,
+article, aside, canvas, details, embed,
+figure, figcaption, footer, header, hgroup,
+menu, nav, output, ruby, section, summary,
+time, mark, audio, video {
+  margin: 0;
+  padding: 0;
+  border: 0;
+  font: inherit;
+  font-size: 100%;
+  vertical-align: baseline;
+}
+
+html {
+  line-height: 1;
+}
+
+ol, ul {
+  list-style: none;
+}
+
+table {
+  border-collapse: collapse;
+  border-spacing: 0;
+}
+
+caption, th, td {
+  text-align: left;
+  font-weight: normal;
+  vertical-align: middle;
+}
+
+q, blockquote {
+  quotes: none;
+}
+q:before, q:after, blockquote:before, blockquote:after {
+  content: "";
+  content: none;
+}
+
+a img {
+  border: none;
+}
+
+article, aside, details, figcaption, figure, footer, header, hgroup, main, menu, nav, section, summary {
+  display: block;
+}
+
 html, body {
   height: 100%;
 }
@@ -29,6 +85,16 @@ label {
 
 #form-signout {
   display: none;
+}
+
+.dropdown-block .dropdown-toggle {
+  text-align: center;
+}
+.dropdown-block .dropdown-toggle b {
+  text-align: right;
+}
+.dropdown-block .dropdown-menu {
+  width: 100%;
 }
 
 .form-wrap {
@@ -73,4 +139,30 @@ label {
 }
 .landing .board h1 {
   margin-top: 0;
+}
+
+.main {
+  padding-top: 50px;
+  zoom: 1;
+  overflow: auto;
+  height: 100%;
+}
+.main .sidebar, .main .board {
+  position: relative;
+  float: left;
+  height: 100%;
+}
+.main .sidebar {
+  width: 20%;
+}
+.main .sidebar .nav {
+  width: 100%;
+}
+.main .board {
+  width: 80%;
+  padding: 20px;
+  background: #fff;
+  font-size: 40px;
+  text-align: center;
+  vertical-align: middle;
 }

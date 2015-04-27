@@ -3,7 +3,7 @@
  * Import this file using the following HTML or equivalent:
  * <link href="/stylesheets/screen.css" media="screen, projection" rel="stylesheet" type="text/css" /> */
 
-// @import "compass/reset";
+@import "compass/reset";
 
 @import "color";
 
@@ -23,6 +23,9 @@ label {
 }
 
 @import "header";
-@import "form";
+@import "dropdown";
+@import "form-wrap";
 @import "tooltip";
-@import "pages/homepage"
+
+@import "pages/homepage";
+@import "pages/dashboard";

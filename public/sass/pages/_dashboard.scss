@@ -1,0 +1,31 @@
+.main {
+	padding-top: 50px;
+	zoom: 1;
+	overflow: auto;
+	height: 100%;
+
+	.sidebar, .board {
+		position: relative;
+		float: left;
+		height: 100%;
+	}
+
+	.sidebar {
+		width: 20%;
+
+		.nav {
+			width: 100%;
+		}
+	}
+
+	.board {
+		width: 80%;
+		padding: 20px;
+		background: $white;
+
+		font-size: 40px;
+		text-align: center;
+		vertical-align: middle;
+	}
+}
+
