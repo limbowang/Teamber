@@ -38,7 +38,7 @@ router.get('/signup', isNotAuth, function(req, res, next) {
 });
 
 router.get('/profile', isAuth, function(req, res, next) {
-  res.render('index', { title: '个人资料' });
+  res.render('profile', { title: '个人资料' });
 });
 
 

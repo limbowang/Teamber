@@ -1,9 +1,17 @@
 .form-wrap {
-  margin: 0 35% 0 35%;
+  margin: 0 35%;
   padding-top: 100px;
   
   form {
     padding: 30px;
     background-color: $white;
+  }
+
+  .form-group {
+    position: relative; 
+
+    .tooltip {
+      right: 0;
+    }
   }
 }

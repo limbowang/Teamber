@@ -1,10 +1,12 @@
 var express = require('express');
 var filters = require('./filters');
 var models  = require('../models');
+var utils   = require('./utils');
 
 var router = express.Router();
 var isAuth = filters.isAuth;
 var User   = models.User;
+var getValidateError = utils.getValidateError;
 
 router.param('id', function(req, res, next, id) {
   if (isNaN(id)) {
@@ -34,8 +36,7 @@ router.post('/create', function(req, res, next) {
       res.redirect('/dashboard');
     })
     .catch(function(e, user) {
-      console.log(e);
-      req.session.flash.errors = e;
+      req.session.flash.errors = getValidateError(e);
       req.session.flash.old = params;
       res.redirect('/signup');
     });

@@ -9,14 +9,16 @@ router.post('/create', function(req, res, next) {
 
 	// user authentication
 	var params = req.body;
-	User.check(params.username, params.password, function(result) {
-		if (result) {
+	User.check(params.username, params.password, function(user, e) {
+		if (user) {
 			req.session.login    = "true";
-			req.session.id        = result.id;
-			req.session.nickname = result.nickname;
-			req.session.avatar   = result.avatar;
+			req.session.id       = user.id;
+			req.session.nickname = user.nickname;
+			req.session.avatar   = user.avatar;
 			res.redirect('/dashboard');
 		} else {
+			req.session.flash.errors = e;
+			req.session.flash.old    = params;
 			res.redirect('back');
 		}
 	});

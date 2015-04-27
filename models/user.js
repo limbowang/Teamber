@@ -1,5 +1,3 @@
-"use strict";
-
 var utils   = require('../routes/utils');
 var manager = require('../lib/validator-manager');
 
@@ -8,8 +6,9 @@ module.exports = function(sequelize, DataTypes) {
     username: {
       type: DataTypes.STRING,
       allowNull: false,
-      unique: {args: true, msg: "用户名已使用"},
+      unique: true,
       validate: {
+        notEmpty: manager.genNotEmpty("用户名"),
         len: manager.genLen("用户名", 6, 20)
       }
     },
@@ -17,6 +16,7 @@ module.exports = function(sequelize, DataTypes) {
       type: DataTypes.STRING,
       allowNull: false,
       validate: {
+        notEmpty: manager.genNotEmpty("密码"),
         len: manager.genLen("密码", 6, 20)
       }
     },
@@ -25,6 +25,7 @@ module.exports = function(sequelize, DataTypes) {
       allowNull: false,
       unique: true,
       validate: {
+        notEmpty: manager.genNotEmpty("邮箱"),
         isEmail: manager.genBool("邮箱", true)
       }
     },
@@ -33,6 +34,7 @@ module.exports = function(sequelize, DataTypes) {
       allowNull: false,
       unique: true,
       validate: {
+        notEmpty: manager.genNotEmpty("昵称"),
         len: manager.genLen("昵称", 6, 10)
       }
     },
@@ -52,16 +54,46 @@ module.exports = function(sequelize, DataTypes) {
       },
       check: function(username, password, callback) {
         var res = false;
+        var error = null;
+
+        if (!username) {
+          error = {
+            username: "用户名不能为空"
+          }
+          callback(res, error);
+          return ;
+        }
+
+        if (!password) {
+          error = {
+            password: "密码不能为空"
+          }
+          callback(res, error);
+          return ;
+        }
+
         this
           .find({where: { username: username }})
           .then(function(user) {
-            res = user && user.password == utils.hash(password)? user : false;
+            if (user) {
+              if (user.password == utils.hash(password)) {
+                res = user;
+              } else {
+                error = {
+                  password: "密码不正确"
+                }
+              }
+            } else {
+              error = {
+                username: "用户不存在"
+              }
+            }
           })
           .catch(function(e) {
             console.log(e);
           })
           .finally(function() {
-            callback(res);
+            callback(res, error);
           });
       }
     },

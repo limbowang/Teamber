@@ -32,12 +32,28 @@ label {
 }
 
 .form-wrap {
-  margin: 0 35% 0 35%;
+  margin: 0 35%;
   padding-top: 100px;
 }
 .form-wrap form {
   padding: 30px;
   background-color: #fff;
+}
+.form-wrap .form-group {
+  position: relative;
+}
+.form-wrap .form-group .tooltip {
+  right: 0;
+}
+
+.tooltip {
+  opacity: 1;
+}
+.tooltip.bottom .tooltip-arrow {
+  border-bottom-color: #656D78;
+}
+.tooltip .tooltip-inner {
+  background-color: #656D78;
 }
 
 .landing {
