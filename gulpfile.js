@@ -2,6 +2,7 @@ var gulp = require('gulp');
 var bower = require('gulp-bower');
 var Sequelize = require("sequelize");
 var compass = require('gulp-compass');
+var mocha = require('gulp-mocha');
 
 
 gulp.task('default', function() {
@@ -40,4 +41,9 @@ gulp.task('migrate', function() {
 			console.log("Migrate successfully.");
 			process.exit(0);
 		})
+});
+
+gulp.task('test', function() {
+	return gulp.src('tests/**/*.js')
+		.pipe(mocha({reporter: 'mocha-bamboo-reporter'}));
 });

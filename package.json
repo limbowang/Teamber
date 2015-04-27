@@ -22,12 +22,15 @@
     "serve-favicon": "~2.2.0"
   },
   "devDependencies": {
-    "chai": "^2.2.0",
+    "chai": "^2.3.0",
     "gulp": "^3.8.11",
     "gulp-bower": "0.0.10",
     "gulp-compass": "^2.0.4",
+    "gulp-mocha": "^2.0.1",
     "gulp-rev": "^3.0.1",
     "gulp-rev-collector": "^0.1.4",
+    "mocha": "^2.2.4",
+    "mocha-bamboo-reporter": "^1.1.0",
     "sinon": "^1.14.1"
   }
 }
