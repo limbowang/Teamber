@@ -21,7 +21,7 @@ module.exports = {
       project_id: {
         allowNull: false,
         type: DataTypes.INTEGER,
-        references: "Projects",
+        references: "Subprojects",
         referenceKey: "id"
       },
       createdAt: {
