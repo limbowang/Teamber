@@ -7,13 +7,18 @@ module.exports = function(sequelize, DataTypes) {
     creator_id: {
       type: DataTypes.INTEGER,
     },
-    project_id: {
+    subproject_id: {
       type: DataTypes.INTEGER
     }
   }, {
     classMethods: {
       associate: function(models) {
-        // associations can be defined here
+        // User
+        Taskboard.belongsTo(models.User, { foreignKey: 'creator_id' });
+        // suboroject
+        Taskboard.belongsTo(models.Subproject, { foreignKey: 'subproject_id' });
+        // Task
+        Taskboard.hasMany(models.Task, { foreignKey: 'task_id' });
       }
     }
   });

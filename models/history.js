@@ -10,7 +10,8 @@ module.exports = function(sequelize, DataTypes) {
   }, {
     classMethods: {
       associate: function(models) {
-        // associations can be defined here
+        // Task
+        History.belongsTo(models.Task, { foreignKey: 'task_id' });
       }
     }
   });

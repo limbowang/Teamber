@@ -1,0 +1,22 @@
+{
+  "stats": {
+    "suites": 2,
+    "tests": 0,
+    "passes": 0,
+    "pending": 0,
+    "failures": 1,
+    "start": "2015-04-29T06:02:22.695Z",
+    "end": "2015-04-29T06:02:22.742Z",
+    "duration": 47
+  },
+  "failures": [
+    {
+      "title": "\"before each\" hook",
+      "fullTitle": " \"before each\" hook",
+      "duration": 32,
+      "error": "Error: done() invoked with non-Error: [object Object],[object Object]\n    at bound (domain.js:254:14)\n    at Promise.runBound (domain.js:267:12)"
+    }
+  ],
+  "passes": [],
+  "skipped": []
+}

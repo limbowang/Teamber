@@ -11,6 +11,7 @@ module.exports = function(sequelize, DataTypes) {
       }
     },
     creator_id:{
+      allowNull: false,
       type: DataTypes.INTEGER
     },
     description: {
@@ -19,7 +20,11 @@ module.exports = function(sequelize, DataTypes) {
   }, {
     classMethods: {
       associate: function(models) {
-        // associations can be defined here
+        // user
+        Team.belongsTo(models.User, { foreignKey: 'creator_id' });
+        Team.belongsToMany(models.User, { through: 'members', foreignKey: 'team_id' });
+        // project
+        Team.hasMany(models.Project, { foreignKey: 'project_id' });
       }
     }
   });

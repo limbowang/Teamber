@@ -19,7 +19,11 @@ module.exports = function(sequelize, DataTypes) {
   }, {
     classMethods: {
       associate: function(models) {
-        // associations can be defined here
+        // User
+        Checkitem.belongsTo(models.User, { foreignKey: 'creator_id' });
+        Checkitem.belongsTo(models.User, { foreignKey: 'checker_id' });
+        // Task
+        Checkitem.belongsTo(models.Task, { foreignKey: 'task_id' });
       }
     }
   });

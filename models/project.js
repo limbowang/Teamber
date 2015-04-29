@@ -16,7 +16,12 @@ module.exports = function(sequelize, DataTypes) {
   }, {
     classMethods: {
       associate: function(models) {
-        // associations can be defined here
+        // user
+        Project.belongsTo(models.User, { foreignKey: 'creator_id' });
+        // Project
+        Project.belongsTo(models.Team, { foreignKey: 'team_id' });
+        // Subproject
+        Project.hasMany(models.Subproject, { foreignKey: 'project_id' });
       }
     }
   });

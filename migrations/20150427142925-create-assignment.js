@@ -2,21 +2,17 @@
 module.exports = {
   up: function(migration, DataTypes, done) {
     migration.createTable("Assignments", {
-      id: {
-        allowNull: false,
-        autoIncrement: true,
-        primaryKey: true,
-        type: DataTypes.INTEGER
-      },
       task_id: {
         allowNull: false,
         type: DataTypes.INTEGER,
+        primaryKey: true,
         references: "Tasks",
         referenceKey: "id"
       },
       user_id: {
         allowNull: false,
         type: DataTypes.INTEGER,
+        primaryKey: true,
         references: "Users",
         referenceKey: "id"
       },

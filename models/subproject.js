@@ -13,7 +13,12 @@ module.exports = function(sequelize, DataTypes) {
   }, {
     classMethods: {
       associate: function(models) {
-        // associations can be defined here
+        // user
+        Subproject.belongsTo(models.User, { foreignKey: 'creator_id' });
+        // project
+        Subproject.belongsTo(models.Project, { foreignKey: 'project_id' });
+        // taskboard
+        Subproject.hasMany(models.Taskboard, { foreignKey: 'taskboard_id' });
       }
     }
   });

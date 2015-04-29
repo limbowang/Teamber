@@ -50,7 +50,22 @@ module.exports = function(sequelize, DataTypes) {
   }, {
     classMethods: {
       associate: function(models) {
-        // associations can be defined here
+        // Team
+        User.hasMany(models.Team, { foreignKey: 'creator_id' });
+        User.belongsToMany(models.Team, { through: 'members', foreignKey: 'user_id' });
+        // Project
+        User.hasMany(models.Project, { foreignKey: 'creator_id' });
+        // Subproject
+        User.hasMany(models.Subproject, { foreignKey: 'creator_id' });
+        // Taskboard
+        User.hasMany(models.Taskboard, { foreignKey: 'creator_id' });
+        // Task
+        User.hasMany(models.Task, { foreignKey: 'creator_id' });
+        User.belongsToMany(models.Task, { through: 'assignments', foreignKey: 'user_id' });
+        // Comment
+        User.hasMany(models.Comment, { foreignKey: 'creator_id' });
+        // Checkitem
+        User.hasMany(models.Checkitem, { foreignKey: 'creator_id' });
       },
       check: function(username, password, callback) {
         var res = false;

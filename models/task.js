@@ -22,7 +22,19 @@ module.exports = function(sequelize, DataTypes) {
   }, {
     classMethods: {
       associate: function(models) {
-        // associations can be defined here
+        // User
+        Task.belongsTo(models.User, { foreignKey: 'creator_id' });
+        Task.belongsToMany(models.User, { through: 'assignments', foreignKey: 'task_id' });
+        // Taskboard
+        Task.belongsTo(models.Taskboard, { foreignKey: 'taskboard_id' });
+        // Task itself
+        Task.belongsTo(models.Task, { foreignKey: 'ptask_id' });
+        // Comment
+        Task.hasMany(models.Comment, { foreignKey: 'task_id' });
+        // Checkitem
+        Task.hasMany(models.Checkitem, { foreignKey: 'task_id' });
+        // History
+        Task.hasMany(models.History, { foreignKey: 'task_id' });
       }
     }
   });
