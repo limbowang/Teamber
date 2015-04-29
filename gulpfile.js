@@ -45,5 +45,5 @@ gulp.task('migrate', function() {
 
 gulp.task('test', function() {
 	return gulp.src('tests/**/*.js')
-		.pipe(mocha({reporter: 'mocha-bamboo-reporter'}));
+		.pipe(mocha());
 });

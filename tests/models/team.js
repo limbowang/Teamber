@@ -1,4 +1,5 @@
 var models = require('../../models');
+var utils  = require('../utils');
 var chai   = require('chai');
 var sinon  = require('sinon');
 var q      = require('Q');
@@ -7,39 +8,30 @@ var s      = models.sequelize;
 var User   = models.User;
 var Team   = models.Team;
 var expect = chai.expect;
+var given  = utils.given;
+var clear  = utils.clear;
 
-var userId = 70;
+beforeEach(function(){
 
-beforeEach(function(done){
-  User
-    .findOrCreate({
-      where: { username: 'creator' },
-      defaults: {
-        password: 'creator',
-        email:    'creator@7.com',
-        nickname: 'creator'
-      }
-    })
-    .then(done)
-    .catch(done);
+  given('User', {
+    where: { username: 'creator' },
+    defaults: {
+      password: 'creator',
+      email:    'creator@7.com',
+      nickname: 'creator'
+    }
+  });
 
-  User
-    .findOrCreate({
-      where: { username: 'member' },
-      defaults: {
-        password: 'member',
-        email:    'member@7.com',
-        nickname: 'member'
-      }
-    })
-    .then(done)
-    .catch(done);
+  given('User', {
+    where: { username: 'member' },
+    defaults: {
+      password: 'member',
+      email:    'member@7.com',
+      nickname: 'member'
+    }
+  });
 
-  s.query('delete from Teams;')
-    .then(done)
-    .catch(function(e){
-      done(e);
-    });
+  clear('Team');
 })
 
 
@@ -62,11 +54,42 @@ describe("team", function() {
               console.log(e);
               done(e);
             });
-        })
+        });
     });
 
     it("cannot create twice with same name", function(done) {
-      done();
+      User
+        .find({where: { username: 'creator'}})
+        .then(function(user) {
+          return Team
+            .create({
+              name: 'testteam2',
+              creator_id: user.id
+            })
+            .then(function(team) {
+              expect(team.name).to.equal('testteam2');
+              return team;
+            })
+            .catch(function(e) {
+              doen(e);
+            });
+
+        })
+        .then(function(team) {
+          Team
+            .create({
+              name: team.name,
+              creator_id: team.creator_id
+            })
+            .catch(function(e) {
+              try {
+                expect(e.message).to.equal('团队名称已经使用');
+              } catch(e) {
+                done(e);
+              }
+              done();
+            });
+        });
     });
   });
 
@@ -76,9 +99,14 @@ describe("team", function() {
         .find({where: { username: 'creator'}})
         .then(function(user) {
           Team
-            .find({where: { name: 'testteam' }})
+            .findOrCreate({
+              where: { name: 'team-addmember' },
+              defaults: {
+                creator_id: user.id
+              }
+            })
             .then(function(team) {
-              team.addUser(user)
+              console.log(team.getMember);
               done();
             })
             .catch(function(e) {
