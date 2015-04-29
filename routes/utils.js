@@ -26,6 +26,36 @@ utils.loadFlash = function(req, res, next) {
   next();
 }
 
+utils.auth = function(req, res, next) {
+  var noAuthPathList = [
+    '/',
+    '/signin',
+    '/signup',
+    '/sessions/create',
+    '/users/create'
+  ];
+  var isLogined = req.session.login;
+  if (noAuthPathList.indexOf(req.path) >= 0) {
+    if (!isLogined || isLogined == "false") {
+      next();
+    } else {
+      res.redirect('/dashboard');
+    }
+  } else {
+    if (isLogined && isLogined == "true") {
+      next();
+    } else {
+      if (req.accepts('application/json')) {
+        res.json({
+          error: '您还未登录'
+        });
+      } else {
+        res.redirect('/signin');
+      }
+    }
+  }
+}
+
 utils.hash = function(value) {
   var sha2 = crypto.createHash('sha256');
   sha2.update(value || "");

@@ -17,6 +17,7 @@ var sessions = require('./routes/sessions');
 var utils = require('./routes/utils');
 var loadUser = utils.loadUser;
 var loadFlash = utils.loadFlash;
+var auth = utils.auth;
 
 var app = express();
 
@@ -46,6 +47,7 @@ app.use(express.static(path.join(__dirname, 'public')));
 
 app.all('*', loadFlash);
 app.all('*', loadUser);
+app.all('*', auth);
 app.use('/', routes);
 app.use('/users', users);
 app.use('/sessions', sessions);

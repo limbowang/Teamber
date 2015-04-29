@@ -2,8 +2,6 @@ var express = require('express');
 var csrf = require('csurf');
 var filters = require('./filters');
 
-var isAuth = filters.isAuth;
-var isNotAuth = filters.isNotAuth;
 var router = express.Router();
 
 router.param('id', function (req, res, next, id) {
@@ -16,19 +14,19 @@ router.param('id', function (req, res, next, id) {
   }
 });
 
-router.get('/', isNotAuth, function(req, res, next) {
+router.get('/', function(req, res, next) {
   res.render('index', { title: '首页'});
 });
 
-router.get('/dashboard', isAuth, function(req, res, next) {
+router.get('/dashboard', function(req, res, next) {
   res.render('dashboard', { title: '我的面板' });
 });
 
-router.get('/signin', isNotAuth, csrf(), function(req, res, next) {
+router.get('/signin', csrf(), function(req, res, next) {
   res.render('signin', { title: '登录' });
 });
 
-router.get('/signup', isNotAuth, function(req, res, next) {
+router.get('/signup', function(req, res, next) {
   res.render('signup', {
     title: '注册',
     helpers: {
@@ -37,7 +35,7 @@ router.get('/signup', isNotAuth, function(req, res, next) {
   });
 });
 
-router.get('/profile', isAuth, function(req, res, next) {
+router.get('/profile', function(req, res, next) {
   res.render('profile', { title: '个人资料' });
 });
 

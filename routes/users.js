@@ -4,7 +4,6 @@ var models  = require('../models');
 var utils   = require('./utils');
 
 var router = express.Router();
-var isAuth = filters.isAuth;
 var User   = models.User;
 var getValidateError = utils.getValidateError;
 
@@ -48,7 +47,7 @@ router.post('/:id/update', function(req, res, next) {
 router.post('/:id/destroy', function(req, res, next) {
 });
 
-router.get('/:id', isAuth, function(req, res, next) {
+router.get('/:id', function(req, res, next) {
   res.render('index', { title: 'User test' });
 });
 
