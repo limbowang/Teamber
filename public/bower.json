@@ -18,5 +18,8 @@
     "bootstrap": "~3.3.4",
     "bootflat": "*",
     "requirejs": "~2.1.17"
+  },
+  "devDependencies": {
+    "text": "~2.0.14"
   }
 }
