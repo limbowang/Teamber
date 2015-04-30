@@ -8,12 +8,14 @@ define([
 ], function($, _, Backbone, tplTeamAdd){
   var TeamAddView = Backbone.View.extend({
     el: $('#main'),
-    render: function(){
-      // Using Underscore we can compile our template with data
+    initialize: function() {
+    },
+    showAddModal: function() {
       var data = {};
-      var html = _.template( tplTeamAdd, data );
+      var html = _.template(tplTeamAdd);
       // Append our compiled template to this Views "el"
       this.$el.append( html );
+      this.$el.find('.modal').show(); 
     }
   });
   // Our module now returns our view

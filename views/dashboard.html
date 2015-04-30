@@ -1,21 +1,22 @@
 {{> header}}
 
-<div class="main" id="main">
-<div class="sidebar">
+<div id="main" class="main">
+<div id="sidebar" class="sidebar">
 	<div class="tabbable tabs-left clearfix">
-		<ul id="myTab1" class="nav nav-tabs">
+		<ul class="nav nav-tabs">
       <li class="dropdown dropdown-block">
-      	<a href="#" id="myTabDrop1-1" class="dropdown-toggle" data-toggle="dropdown">
-      		私人空间<b class="caret"></b>
-      	</a>
-      	<ul class="dropdown-menu" role="menu" aria-labelledby="myTabDrop1">
-          <li><a href="#dropdown1-1" tabindex="-1" data-toggle="tab">新建团队</a></li>
+        <a href="#" id="team-selected" class="dropdown-toggle" data-toggle="dropdown">
+         	<span>私人空间</span>
+         	<b class="caret"></b>
+        </a>
+        <ul class="dropdown-menu" role="menu">
+          <li><a href="#team-new">新建团队</a></li>
           <li class="divider"></li>
-          <li><a href="#dropdown1-2" tabindex="-1" data-toggle="tab">私人空间</a></li>
+          <li><a href="#" tabindex="-1">私人项目</a></li>
         </ul>
       </li>
-      <li><a href="#profile3" data-toggle="tab">Profile</a></li>
-      <li><a href="#myTabDrop3" data-toggle="tab">Dropdown</a></li>
+      <li><a href="#profile3">Profile</a></li>
+      <li><a href="#myTabDrop3">Dropdown</a></li>
     </ul>
 	</div>
 
@@ -30,7 +31,6 @@
 	</div>
 </div>
 
-<div class="board">
-	施工中
+<div id="board" class="board">
 </div>
 </div>

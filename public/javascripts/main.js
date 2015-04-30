@@ -1,7 +1,7 @@
 require.config({
   paths: {
     'jquery': '/dist/js/jquery-1.10.1.min',
-    'bootstrap': '/dist/js/bootstrap.min',
+    'bootstrap': '/dist/js/bootstrap',
     'backbone': '/dist/js/backbone',
     'underscore': '/dist/js/underscore-min',
     'text': '/dist/js/text'

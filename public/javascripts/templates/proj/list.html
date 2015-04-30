@@ -1,0 +1,14 @@
+<div>
+	<ul>
+		<% _.each(projs, function(proj) { %>
+			<li>
+				<a href="#"><%= proj.name %></a>
+				<ul>
+					<% _.each(proj.subprojs, function(subproj){ %>
+						<a href="#"><%= subproj %></a>
+					<% }); %>
+				</ul>
+			</li>
+		<% }); %>
+	</ul>
+</div>

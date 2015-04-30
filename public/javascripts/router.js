@@ -2,27 +2,35 @@ define([
   'jquery',
   'underscore',
   'backbone',
-  'views/team/add'
-], function($, _, Backbone, TeamAddView){
+  'views/header',
+  'views/team/add',
+  'views/proj/list'
+], function($, _, Backbone, HeaderView, TeamAddView, ProjListView){
   var AppRouter = Backbone.Router.extend({
     routes: {
-      '/team/new': 'addTeam',
+      //team
+      'team-new': 'addTeam',
 
       // Default
-      '*actions': 'defaultAction'
+      '*actions': 'defaultAction',
     }
   });
 
   var init = function(){
-    var app_router = new AppRouter;
-    app_router.on('addTeam', function(){
-      var teamAddView = new TeamAddView();
-      teamAddView.render();
-    });
-    app_router.on('defaultAction', function(actions){
+    // init views
+    new HeaderView();
+    new TeamAddView();
+    new ProjListView();
+
+    // listen to routers
+    var router = new AppRouter;
+
+    router.on('defaultAction', function(actions){
       console.log('No route:', actions);
     });
-    Backbone.history.start();
+
+    // start history
+    Backbone.history.start({pushState: true});
   };
   return {
     init: init

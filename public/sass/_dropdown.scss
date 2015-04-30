@@ -1,10 +1,11 @@
 .dropdown-block {
 
   .dropdown-toggle {
-    text-align: center;
-
+  
     b {
-      text-align: right;
+      position: absolute;
+      top: 20px;
+      right: 15px;
     }
   }
 
