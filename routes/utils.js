@@ -8,7 +8,7 @@ utils.loadUser = function(req, res, next) {
   if (!req.user && isLogined && isLogined == "true") {
     // load user
     res.locals.user = req.user = {
-      id:       req.session.id,
+      id:       req.session.userid,
       nickname: req.session.nickname,
       avatar:   req.session.avatar
     };

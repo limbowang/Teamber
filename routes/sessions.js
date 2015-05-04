@@ -12,7 +12,7 @@ router.post('/create', function(req, res, next) {
 	User.check(params.username, params.password, function(user, e) {
 		if (user) {
 			req.session.login    = "true";
-			req.session.id       = user.id;
+			req.session.userid   = user.id;
 			req.session.nickname = user.nickname;
 			req.session.avatar   = user.avatar;
 			res.redirect('/dashboard');

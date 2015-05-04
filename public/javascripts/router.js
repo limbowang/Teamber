@@ -3,14 +3,11 @@ define([
   'underscore',
   'backbone',
   'views/header',
-  'views/team/add',
+  'views/team/list',
   'views/proj/list'
-], function($, _, Backbone, HeaderView, TeamAddView, ProjListView){
+], function($, _, Backbone, HeaderView, TeamListView, ProjListView){
   var AppRouter = Backbone.Router.extend({
     routes: {
-      //team
-      'team-new': 'addTeam',
-
       // Default
       '*actions': 'defaultAction',
     }
@@ -19,7 +16,7 @@ define([
   var init = function(){
     // init views
     new HeaderView();
-    new TeamAddView();
+    new TeamListView();
     new ProjListView();
 
     // listen to routers

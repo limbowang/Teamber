@@ -51,8 +51,8 @@ module.exports = function(sequelize, DataTypes) {
     classMethods: {
       associate: function(models) {
         // Team
-        User.hasMany(models.Team, { foreignKey: 'creator_id' });
-        User.belongsToMany(models.Team, { through: 'members', foreignKey: 'user_id' });
+        User.hasMany(models.Team, { foreignKey: 'creator_id', as: 'OwnTeam'});
+        User.belongsToMany(models.Team, { through: 'members', foreignKey: 'user_id', as: 'Teams'});
         // Project
         User.hasMany(models.Project, { foreignKey: 'creator_id' });
         // Subproject

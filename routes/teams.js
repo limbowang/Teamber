@@ -5,6 +5,7 @@ var utils   = require('./utils');
 
 var router = express.Router();
 var User   = models.User;
+var Team   = models.Team;
 var getValidateError = utils.getValidateError;
 
 router.param('id', function(req, res, next, id) {
@@ -18,26 +19,21 @@ router.param('id', function(req, res, next, id) {
 });
 
 router.post('/create', function(req, res, next) {
-  var params = req.body;
-  User
+  var
+    params = req.body,
+    userId = req.user.id;
+  Team
     .create({
-      username: params.username,
-      password: params.password,
-      password_confirm: params.password_confirm,
-      email:    params.email,
-      nickname: params.nickname
+      name: params.name,
+      description: params.description,
+      creator_id: userId
     })
-    .then(function(user) {
-      req.session.login    = "true";
-      req.session.userid       = user.id;
-      req.session.nickname = user.nickname;
-      req.session.avatar   = user.avatar;
-      res.redirect('/dashboard');
+    .then(function(team) {
+      team.addMember(userId);
+      res.json(team);
     })
-    .catch(function(e, user) {
-      req.session.flash.errors = getValidateError(e);
-      req.session.flash.old = params;
-      res.redirect('/signup');
+    .catch(function(e) {
+      res.json(getValidateError(e));
     });
 });
 
@@ -45,6 +41,24 @@ router.post('/:id/update', function(req, res, next) {
 });
 
 router.post('/:id/destroy', function(req, res, next) {
+});
+
+router.get('/', function(req, res, next) {
+  var userId = req.session.userid;
+  User
+    .find(userId)
+    .then(function(user) {
+      return user.getTeams();
+    })
+    .then(function(teams) {
+      res.json(teams);
+    })
+    .catch(function(e) {
+      res.json({
+        error: 'error',
+        msg: getValidateError(e)
+      })
+    })
 });
 
 router.get('/:id', function(req, res, next) {

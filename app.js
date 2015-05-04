@@ -12,6 +12,7 @@ var flash = require('express-flash');
 var routes = require('./routes/index');
 var users = require('./routes/users');
 var sessions = require('./routes/sessions');
+var teams = require('./routes/teams');
 
 // imports utils
 var utils = require('./routes/utils');
@@ -51,6 +52,7 @@ app.all('*', auth);
 app.use('/', routes);
 app.use('/users', users);
 app.use('/sessions', sessions);
+app.use('/teams', teams);
 
 // catch 404 and forward to error handler
 app.use(function(req, res, next) {

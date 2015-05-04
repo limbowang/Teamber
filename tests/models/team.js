@@ -106,7 +106,7 @@ describe("team", function() {
               }
             })
             .then(function(team) {
-              console.log(team.getMember);
+              console.log(team.getMembers());
               done();
             })
             .catch(function(e) {

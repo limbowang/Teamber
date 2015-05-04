@@ -6,8 +6,8 @@ module.exports = function(sequelize, DataTypes) {
     name: {
       type: DataTypes.STRING,
       validates: {
-        notEmpty: manager.genNotEmpty("名字"),
-        len: manager.genLen("名字", 6, 20)
+        notEmpty: manager.genNotEmpty("名称"),
+        len: manager.genLen("名称", 6, 20)
       }
     },
     creator_id:{
@@ -22,7 +22,7 @@ module.exports = function(sequelize, DataTypes) {
       associate: function(models) {
         // user
         Team.belongsTo(models.User, { foreignKey: 'creator_id' });
-        Team.belongsToMany(models.User, { through: 'members', foreignKey: 'team_id', as: 'member'});
+        Team.belongsToMany(models.User, { through: 'members', foreignKey: 'team_id', as: 'members'});
         // project
         Team.hasMany(models.Project, { foreignKey: 'project_id' });
       }
