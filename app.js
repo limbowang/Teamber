@@ -19,8 +19,7 @@ var
   taskboards = require('./routes/taskboards'),
   tasks = require('./routes/tasks'),
   checkitems = require('./routes/checkitems'),
-  comments = require('./routes/comments'),
-  histories = require('./routes/histories');
+  comments = require('./routes/comments');
 
 // imports utils
 var utils = require('./routes/utils');
@@ -67,7 +66,6 @@ app.use('/taskboards', taskboards);
 app.use('/tasks', tasks);
 app.use('/comments', comments);
 app.use('/checkitems', checkitems);
-app.use('/histories', histories);
 
 // catch 404 and forward to error handler
 app.use(function(req, res, next) {

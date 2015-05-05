@@ -21,23 +21,112 @@ router.param('id', function(req, res, next, id) {
 });
 
 router.post('/create', function(req, res, next) {
-
+	var
+    params = req.body,
+    userId = req.user.id;
+  Taskboard
+    .create({
+      name: params.name,
+      subproject_id: params.subprojid,
+      creator_id: userId
+    })
+    .then(function(taskboard) {
+      res.json({
+        result: "success",
+        data: taskboard
+      });
+    })
+    .catch(function(e) {
+      res.json({
+        result: "error",
+        msg: e
+      });
+    });
 });
 
 router.post('/:id/update', function(req, res, next) {
-
+	var
+    params = req.body,
+    id = req.params.id;
+  Taskboard
+    .find(id)
+    .then(function(taskboard) {
+      return taskboard.updateAttributes(params, 
+        {fields: ['name']});
+    })
+    .then(function(taskboard) {
+      res.json({
+        result: "success",
+        data: taskboard
+      });
+    })
+    .catch(function(e) {
+      res.json({
+        result: "error",
+        msg: e
+      });
+    });
 });
 
 router.post('/:id/destroy', function(req, res, next) {
-
-});
-
-router.get('/', function(req, res, next) {
-
+	var
+    id = req.params.id;
+  Taskboard
+    .find(id)
+    .then(function(taskboard) {
+      return taskboard.destroy();
+    })
+    .then(function(result) {
+      res.json({
+        result: "success",
+        data: result
+      });
+    })
+    .catch(function(e) {
+      res.json({
+        result: "error",
+        msg: e
+      });
+    });
 });
 
 router.get('/:id', function(req, res, next) {
+	var id = req.params.id;
+  Taskboard
+    .find(id)
+    .then(function(taskboard) {
+      res.json({
+        result: "success",
+        data: taskboard
+      });
+    })
+    .catch(function(e) {
+      res.json({
+        result: "error",
+        msg: e
+      });
+    })
+});
 
+router.get('/:id/tasks', function(req, res, next) {
+  var id = req.params.id;
+  Taskboard
+    .find(id)
+    .then(function(taskboard) {
+    	return taskboard.getTasks();
+    })
+    .then(function(tasks) {
+      res.json({
+        result: "success",
+        data: tasks
+      });
+    })
+    .catch(function(e) {
+      res.json({
+        result: "error",
+        msg: e
+      });
+    })
 });
 
 module.exports = router;

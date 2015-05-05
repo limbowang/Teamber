@@ -6,6 +6,7 @@ var utils   = require('./utils');
 var router = express.Router();
 var User   = models.User;
 var Team   = models.Team;
+var Project = models.Project;
 var teamOwner = filters.teamOwner;
 var teamMember = filters.teamMember;
 var getValidateError = utils.getValidateError;
@@ -188,6 +189,46 @@ router.get('/:id', teamMember, function(req, res, next) {
         msg: e
       });
     })
+});
+
+router.get('/:id/projects', teamMember, function(req, res, next) {
+  var id = req.params.id;
+
+  if (id == 0) {
+    Project
+      .find({where: {creator_id: userId, is_private: true}})
+      .then(function(projs) {
+        res.json({
+          result: "success",
+          data: projs
+        })
+      })
+      .catch(function(e) {
+        res.json({
+          result: "error",
+          msg: e
+        });
+      });
+  } else {
+    Team
+      .find(id)
+      .then(function(team) {
+        return team.getProjects();
+      })
+      .then(function(projs) {
+        res.json({
+          result: "success",
+          data: projs
+        })
+      })
+      .catch(function(e) {
+        res.json({
+          result: "error",
+          msg: e
+        });
+      });
+  }
+  
 });
 
 module.exports = router;

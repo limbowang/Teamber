@@ -24,7 +24,9 @@ filters.isAdmin = function(req, res, next) {
 filters.teamOwner = function(req, res, next) {
   var
     userId = req.user.id,
-    id = req.params.id;
+    id = req.path.indexOf('/teams') > 0 ? 
+          req.params.id:
+          req.params.teamid;
   
   Team
     .find(id)
@@ -49,7 +51,9 @@ filters.teamOwner = function(req, res, next) {
 filters.teamMember = function(req, res, next) {
   var
     userId = req.user.id,
-    id = req.params.id;
+    id = req.path.indexOf('/teams') > 0 ? 
+          req.params.id:
+          req.params.teamid;
   
   Team
     .find(id)

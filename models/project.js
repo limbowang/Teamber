@@ -28,7 +28,7 @@ module.exports = function(sequelize, DataTypes) {
       associate: function(models) {
         // user
         Project.belongsTo(models.User, { foreignKey: 'creator_id' });
-        // Project
+        // Team
         Project.belongsTo(models.Team, { foreignKey: 'team_id' });
         // Subproject
         Project.hasMany(models.Subproject, { foreignKey: 'project_id' });

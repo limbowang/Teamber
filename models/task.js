@@ -48,7 +48,7 @@ module.exports = function(sequelize, DataTypes) {
     },
     instanceMethods: {
       complete: function() {
-        this.updateAttributes({complete_at: sequelize.fn('NOW')});
+        return this.updateAttributes({complete_at: sequelize.fn('NOW')});
       }
     }
   });
