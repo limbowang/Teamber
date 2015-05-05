@@ -6,6 +6,8 @@ var utils   = require('./utils');
 var router = express.Router();
 var User   = models.User;
 var Team   = models.Team;
+var teamOwner = filters.teamOwner;
+var teamMember = filters.teamMember;
 var getValidateError = utils.getValidateError;
 
 router.param('id', function(req, res, next, id) {
@@ -30,17 +32,123 @@ router.post('/create', function(req, res, next) {
     })
     .then(function(team) {
       team.addMember(userId);
-      res.json(team);
+      res.json({
+        result: "success",
+        data: team
+      });
     })
     .catch(function(e) {
-      res.json(getValidateError(e));
+      res.json({
+        result: "error",
+        msg: e
+      });
     });
 });
 
-router.post('/:id/update', function(req, res, next) {
+router.post('/:id/update', teamOwner, function(req, res, next) {
+  var
+    params = req.body,
+    userId = req.user.id,
+    id = req.params.id;
+  Team
+    .find(id)
+    .then(function(team) {
+      return team.updateAttributes(params, 
+        {fields: ['name', 'description']});
+    })
+    .then(function(team) {
+      res.json({
+        result: "success",
+        data: team
+      });
+    })
+    .catch(function(e) {
+      res.json({
+        result: "error",
+        msg: e
+      });
+    });
 });
 
-router.post('/:id/destroy', function(req, res, next) {
+router.post('/:id/destroy', teamOwner, function(req, res, next) {
+  var
+    params = req.body,
+    userId = req.user.id,
+    id = req.params.id;
+  Team
+    .find(id)
+    .then(function(team) {
+      return team.destroy();
+    })
+    .then(function(result) {
+      res.json({
+        result: "success",
+        data: result
+      });
+    })
+    .catch(function(e) {
+      res.json({
+        result: "error",
+        msg: e
+      });
+    });
+});
+
+router.post('/:id/members/add', teamOwner, function(req, res, next) {
+  var
+    params = req.body,
+    userId = req.user.id,
+    id = req.params.id;
+  Team
+    .find(id)
+    .then(function(team) {
+      return team.addMember(params.userid);
+    })
+    .then(function(result) {
+      res.json({
+        result: "success",
+        data: result
+      });
+    })
+    .catch(function(e) {
+      res.json({
+        result: "error",
+        msg: e
+      });
+    });
+});
+
+router.post('/:id/members/remove', teamOwner, function(req, res, next) {
+  var
+    params = req.body,
+    id = req.params.id;
+  Team
+    .find(id)
+    .then(function(team) {
+      User
+        .find(params.userid)
+        .then(function(user) {
+          return team.removeMember(user)
+        })
+        .catch(function(e) {
+          res.json({
+            result: "error",
+            msg: e
+          });
+        });
+    })
+    .then(function(result) {
+      res.json({
+        result: "success",
+        data: result
+      });
+    })
+    .catch(function(e) {
+      res.json({
+        result: "error",
+        msg: e
+      });
+    });
 });
 
 router.get('/', function(req, res, next) {
@@ -51,18 +159,35 @@ router.get('/', function(req, res, next) {
       return user.getTeams();
     })
     .then(function(teams) {
-      res.json(teams);
+      res.json({
+        result: "success",
+        data: teams
+      });
     })
     .catch(function(e) {
       res.json({
-        error: 'error',
-        msg: getValidateError(e)
-      })
-    })
+        result: "error",
+        msg: e
+      });
+    });
 });
 
-router.get('/:id', function(req, res, next) {
-  res.render('index', { title: 'User test' });
+router.get('/:id', teamMember, function(req, res, next) {
+  var id = req.params.id;
+  Team
+    .find(id)
+    .then(function(team) {
+      res.json({
+        result: "success",
+        data: team
+      });
+    })
+    .catch(function(e) {
+      res.json({
+        result: "error",
+        msg: e
+      });
+    })
 });
 
 module.exports = router;

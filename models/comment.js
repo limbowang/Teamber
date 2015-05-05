@@ -1,4 +1,6 @@
 "use strict";
+var manager = require('../lib/validator-manager');
+
 module.exports = function(sequelize, DataTypes) {
   var Comment = sequelize.define("Comment", {
     content: {

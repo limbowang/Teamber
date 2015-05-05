@@ -9,10 +9,18 @@ var session = require('express-session');
 var flash = require('express-flash');
 
 // import routers
-var routes = require('./routes/index');
-var users = require('./routes/users');
-var sessions = require('./routes/sessions');
-var teams = require('./routes/teams');
+var
+  routes = require('./routes/index'),
+  users = require('./routes/users'),
+  sessions = require('./routes/sessions'),
+  teams = require('./routes/teams'),
+  projs = require('./routes/projects'),
+  subprojs = require('./routes/subprojects'),
+  taskboards = require('./routes/taskboards'),
+  tasks = require('./routes/tasks'),
+  checkitems = require('./routes/checkitems'),
+  comments = require('./routes/comments'),
+  histories = require('./routes/histories');
 
 // imports utils
 var utils = require('./routes/utils');
@@ -53,6 +61,13 @@ app.use('/', routes);
 app.use('/users', users);
 app.use('/sessions', sessions);
 app.use('/teams', teams);
+app.use('/projects', projs);
+app.use('/subprojects', subprojs);
+app.use('/taskboards', taskboards);
+app.use('/tasks', tasks);
+app.use('/comments', comments);
+app.use('/checkitems', checkitems);
+app.use('/histories', histories);
 
 // catch 404 and forward to error handler
 app.use(function(req, res, next) {
