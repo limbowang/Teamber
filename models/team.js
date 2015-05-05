@@ -15,7 +15,10 @@ module.exports = function(sequelize, DataTypes) {
       type: DataTypes.INTEGER
     },
     description: {
-      type: DataTypes.STRING
+      type: DataTypes.STRING,
+      validates: {
+        len: manager.genLen("详细描述", 0, 255)
+      }
     }
   }, {
     classMethods: {

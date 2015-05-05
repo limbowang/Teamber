@@ -2,9 +2,11 @@
 module.exports = function(sequelize, DataTypes) {
   var History = sequelize.define("History", {
     content: {
-      type: DataTypes.STRING,
+      allowNull: false,
+      type: DataTypes.STRING
     },
     task_id: {
+      allowNull: false,
       type: DataTypes.INTEGER
     }
   }, {

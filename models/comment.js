@@ -2,12 +2,19 @@
 module.exports = function(sequelize, DataTypes) {
   var Comment = sequelize.define("Comment", {
     content: {
+      allowNull: false,
       type: DataTypes.STRING,
+      validates: {
+        notEmpty: manager.genNotEmpty("内容"),
+        len: manager.genLen("内容", 1, 255)
+      }
     },
     creator_id: {
-      type: DataTypes.INTEGER,
+      allowNull: false,
+      type: DataTypes.INTEGER
     },
     task_id: {
+      allowNull: false,
       type: DataTypes.INTEGER
     }
   }, {

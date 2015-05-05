@@ -2,12 +2,19 @@
 module.exports = function(sequelize, DataTypes) {
   var Taskboard = sequelize.define("Taskboard", {
     name: {
+      allowNull: false,
       type: DataTypes.STRING,
+      validates: {
+        notEmpty: manager.genNotEmpty("名称"),
+        len: manager.genLen("名称", 6, 20)
+      }
     },
     creator_id: {
-      type: DataTypes.INTEGER,
+      allowNull: false,
+      type: DataTypes.INTEGER
     },
     subproject_id: {
+      allowNull: false,
       type: DataTypes.INTEGER
     }
   }, {

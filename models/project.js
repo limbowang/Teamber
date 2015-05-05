@@ -1,17 +1,27 @@
 "use strict";
+var manager = require('../lib/validator-manager');
+
 module.exports = function(sequelize, DataTypes) {
   var Project = sequelize.define("Project", {
     name: {
       type: DataTypes.STRING,
+      validates: {
+        notEmpty: manager.genNotEmpty("名称"),
+        len: manager.genLen("名称", 6, 20)
+      }
     },
     creator_id: {
-      type: DataTypes.INTEGER,
+      allowNull: false,
+      type: DataTypes.INTEGER
     },
     team_id: {
-      type: DataTypes.INTEGER,
+      allowNull: false,
+      type: DataTypes.INTEGER
     },
     is_private: {
-      type: DataTypes.BOOLEAN
+      allowNull: false,
+      type: DataTypes.BOOLEAN,
+      defaultValue: false
     }
   }, {
     classMethods: {

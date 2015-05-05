@@ -25,11 +25,17 @@ define([
           name: name,
           description: description
         }, {
+          wait: true,
           success: function() {
-            
+            self.modal.hide();
+            Backbone.navigate()
+          },
+          error: function() {
+
           }
         })
       });
+      // collection
       this.teams = new Teams;
       this.teams.fetch({
         success: function(teams, resp) {
