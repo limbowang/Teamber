@@ -2,7 +2,7 @@ define([
   'jquery',
   'underscore',
   'backbone'
-], function($, _, Backbone, tplTeamAdd){
+], function($, _, Backbone){
   var HeaderView = Backbone.View.extend({
     el: $('#header'),
     events: {
@@ -10,7 +10,6 @@ define([
     },
     initialize: function() {
       this.formSignout = $('#form-signout');
-      this.dropdownMenu = this.$el.find('.dropdown-menu');
     },
     signout: function() {
       this.formSignout.submit();

@@ -28,7 +28,6 @@ define([
           wait: true,
           success: function() {
             self.modal.hide();
-            Backbone.navigate()
           },
           error: function() {
 

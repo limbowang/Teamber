@@ -4,6 +4,7 @@ require.config({
     'bootstrap': '/dist/js/bootstrap',
     'backbone': '/dist/js/backbone',
     'underscore': '/dist/js/underscore-min',
+    'hbs': '/dist/js/handlebars'
     'text': '/dist/js/text'
   },
   shim: {
