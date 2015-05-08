@@ -30,7 +30,8 @@ node_modules
 npm-debug.log
 
 .sass-cache/
-public/.build/
-public/bower_components/
+public/javascripts
+public/stylesheets
+bower_components/
 
 config/
