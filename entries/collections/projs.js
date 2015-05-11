@@ -1,5 +1,7 @@
-define(['backbone', 'models/proj'], function(Backbone, Proj) {
-  return Backbone.Collection.extend({
-    model: Proj
-  });
+var Proj = require('../models/proj');
+
+var Projs = Backbone.Collection.extend({
+  model: Proj
 });
+
+module.exports = Projs;

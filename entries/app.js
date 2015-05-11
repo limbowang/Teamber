@@ -1,6 +1,11 @@
-// var router = require('./router');
+global.BaseView = require('./views/base');
 
-module.exports = function() {
-  // Router.init();
-  $(document).html('');
+var router = require('./router');
+
+var init = function() {
+  router.init();
 }
+
+module.exports = {
+  init: init
+};

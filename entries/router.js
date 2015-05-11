@@ -1,33 +1,29 @@
-define([
-  'jquery',
-  'underscore',
-  'backbone',
-  'views/header',
-  'views/sidebar'
-], function($, _, Backbone, HeaderView, SidebarView){
-  var AppRouter = Backbone.Router.extend({
-    routes: {
-      // Default
-      '*actions': 'defaultAction',
-    }
+var HeaderView = require('./views/header');
+var TeamView = require('./views/team');
+
+var AppRouter = Backbone.Router.extend({
+  routes: {
+    // Default
+    '*actions': 'defaultAction',
+  }
+});
+
+var init = function(){
+  // init views
+  new HeaderView();
+  var teamView = new TeamView();
+
+  // listen to routers
+  var router = new AppRouter;
+
+  router.on('defaultAction', function(actions){
+    console.log('No route:', actions);
   });
 
-  var init = function(){
-    // init views
-    new HeaderView();
-    new 
+  // start history
+  Backbone.history.start({pushState: true});
+};
 
-    // listen to routers
-    var router = new AppRouter;
-
-    router.on('defaultAction', function(actions){
-      console.log('No route:', actions);
-    });
-
-    // start history
-    Backbone.history.start({pushState: true});
-  };
-  return {
-    init: init
-  };
-});
+module.exports = {
+  init: init
+};

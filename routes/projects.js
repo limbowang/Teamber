@@ -38,6 +38,7 @@ router.post('/create', teamMember, function(req, res, next) {
       });
     })
     .catch(function(e) {
+      console.log(e);
       res.json({
         result: "error",
         msg: e

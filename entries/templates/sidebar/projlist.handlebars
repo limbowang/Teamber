@@ -1,0 +1,14 @@
+<div>
+	<ul>
+		{{#each projs}}
+			<li>
+				<a href="#">{{ name }}</a>
+				<ul>
+					{{#each subprojs}}
+						<a href="#">{{ name }}</a>
+					{{/each }}
+				</ul>
+			</li>
+		{{/each }}
+	</ul>
+</div>

@@ -160,10 +160,7 @@ router.get('/', function(req, res, next) {
       return user.getTeams();
     })
     .then(function(teams) {
-      res.json({
-        result: "success",
-        data: teams
-      });
+      res.json(teams);
     })
     .catch(function(e) {
       res.json({
@@ -216,10 +213,7 @@ router.get('/:id/projects', teamMember, function(req, res, next) {
         return team.getProjects();
       })
       .then(function(projs) {
-        res.json({
-          result: "success",
-          data: projs
-        })
+        res.json(data);
       })
       .catch(function(e) {
         res.json({

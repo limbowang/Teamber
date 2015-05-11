@@ -1,13 +1,33 @@
 var gulp = require('gulp');
+var watch = require('gulp-watch')
 var bower = require('gulp-bower');
 var Sequelize = require("sequelize");
 var compass = require('gulp-compass');
 var mocha = require('gulp-mocha');
 var browserify = require('gulp-browserify');
+var browserifyHandlebars = require('browserify-handlebars');
 var uglify = require('gulp-uglify');
 
 gulp.task('default', function() {
   // place code for your default task here
+});
+
+gulp.task('watch', function() {
+  gulp.start('js');
+  gulp.start('css');
+  watch('./entries/**/*', function() {
+    gulp.run('js');
+  })
+  .on('error', skip);
+
+  watch('./sass/**/*', function() {
+    gulp.run('css');
+  })
+  .on('error', skip);
+
+  function skip(e) {
+    e.end();
+  }
 });
 
 gulp.task('css', function() {
@@ -23,9 +43,10 @@ gulp.task('css', function() {
 gulp.task('js', function() {
   gulp.src('./entries/main.js')
     .pipe(browserify({
+      transform: [browserifyHandlebars],
       insertGlobals : true
     }))
-    .pipe(uglify())
+    // .pipe(uglify())
     .pipe(gulp.dest('./public/javascripts'));
 })
 
