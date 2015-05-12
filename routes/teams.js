@@ -33,10 +33,7 @@ router.post('/create', function(req, res, next) {
     })
     .then(function(team) {
       team.addMember(userId);
-      res.json({
-        result: "success",
-        data: team
-      });
+      res.json(team);
     })
     .catch(function(e) {
       res.json({
@@ -58,10 +55,7 @@ router.post('/:id/update', teamOwner, function(req, res, next) {
         {fields: ['name', 'description']});
     })
     .then(function(team) {
-      res.json({
-        result: "success",
-        data: team
-      });
+      res.json(team);
     })
     .catch(function(e) {
       res.json({
@@ -82,10 +76,7 @@ router.post('/:id/destroy', teamOwner, function(req, res, next) {
       return team.destroy();
     })
     .then(function(result) {
-      res.json({
-        result: "success",
-        data: result
-      });
+      res.json(result);
     })
     .catch(function(e) {
       res.json({
@@ -106,10 +97,7 @@ router.post('/:id/members/add', teamOwner, function(req, res, next) {
       return team.addMember(params.userid);
     })
     .then(function(result) {
-      res.json({
-        result: "success",
-        data: result
-      });
+      res.json(result);
     })
     .catch(function(e) {
       res.json({
@@ -139,10 +127,7 @@ router.post('/:id/members/remove', teamOwner, function(req, res, next) {
         });
     })
     .then(function(result) {
-      res.json({
-        result: "success",
-        data: result
-      });
+      res.json(result);
     })
     .catch(function(e) {
       res.json({
@@ -175,10 +160,7 @@ router.get('/:id', teamMember, function(req, res, next) {
   Team
     .find(id)
     .then(function(team) {
-      res.json({
-        result: "success",
-        data: team
-      });
+      res.json(team);
     })
     .catch(function(e) {
       res.json({
@@ -190,15 +172,12 @@ router.get('/:id', teamMember, function(req, res, next) {
 
 router.get('/:id/projects', teamMember, function(req, res, next) {
   var id = req.params.id;
-
+  var userId = req.session.userid;
   if (id == 0) {
     Project
-      .find({where: {creator_id: userId, is_private: true}})
+      .findAll({where: {creator_id: userId, is_private: true}})
       .then(function(projs) {
-        res.json({
-          result: "success",
-          data: projs
-        })
+        res.json(projs)
       })
       .catch(function(e) {
         res.json({
@@ -213,7 +192,7 @@ router.get('/:id/projects', teamMember, function(req, res, next) {
         return team.getProjects();
       })
       .then(function(projs) {
-        res.json(data);
+        res.json(projs);
       })
       .catch(function(e) {
         res.json({

@@ -31,10 +31,7 @@ router.post('/create', function(req, res, next) {
       creator_id: userId
     })
     .then(function(checkitem) {
-      res.json({
-        result: "success",
-        data: checkitem
-      });
+      res.json(checkitem);
     })
     .catch(function(e) {
       res.json({
@@ -55,10 +52,7 @@ router.post('/:id/update', function(req, res, next) {
         {fields: ['name', 'checked', 'checker_id']});
     })
     .then(function(checkitem) {
-      res.json({
-        result: "success",
-        data: checkitem
-      });
+      res.json(checkitem);
     })
     .catch(function(e) {
       res.json({
@@ -77,10 +71,7 @@ router.post('/:id/destroy', function(req, res, next) {
       return checkitem.destroy();
     })
     .then(function(result) {
-      res.json({
-        result: "success",
-        data: result
-      });
+      res.json(result);
     })
     .catch(function(e) {
       res.json({
@@ -95,10 +86,7 @@ router.get('/:id', function(req, res, next) {
   Checkitem
     .find(id)
     .then(function(checkitem) {
-      res.json({
-        result: "success",
-        data: checkitem
-      });
+      res.json(checkitem);
     })
     .catch(function(e) {
       res.json({

@@ -5,15 +5,24 @@
 <div id="sidebar" class="sidebar">
 	<div class="tabbable tabs-left clearfix">
 		<ul class="nav nav-tabs">
-      <li class="team-list">
+      <li>
+	      <a href="javascript:void(0);" id="team-chosen" class="dropdown-toggle" data-toggle="dropdown">
+				  <span></span>
+				  <b class="caret"></b>
+				</a>
+				<ul id="team-list" class="dropdown-menu" role="menu">
+				  <li id="team-new"><a href="javascript:void(0);">新建团队</a></li>
+				  <li class="divider"></li>
+				  <li id="team-0" data-id="0" data-name="私人项目"><a href="#team-0">私人项目</a></li>
+				</ul>
       </li>
       <li><a href="#profile3">Profile</a></li>
       <li><a href="#myTabDrop3">Dropdown</a></li>
     </ul>
 	</div>
 
-	<div class="proj-panel">
-		<ul class="proj-list">
+	<div class="tabs-expand">
+		<ul id="proj-list">
 			<li class="proj">
 				<ul class="sub-proj-list">
 					<li class="sub-proj"></li>
@@ -21,10 +30,11 @@
 			</li>
 		</ul>
 	</div>
+	<div id="proj-new"><a href="javascript:void(0);">添加项目</a></div>
 </div>
 
 <div id="board" class="board">
 </div>
 
-<div id="modal" class="modal form-wrap"></div>
+<div id="modal" class="modal"></div>
 </div>

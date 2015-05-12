@@ -31,10 +31,7 @@ router.post('/create', function(req, res, next) {
       creator_id: userId
     })
     .then(function(taskboard) {
-      res.json({
-        result: "success",
-        data: taskboard
-      });
+      res.json(taskboard);
     })
     .catch(function(e) {
       res.json({
@@ -55,10 +52,7 @@ router.post('/:id/update', function(req, res, next) {
         {fields: ['name']});
     })
     .then(function(taskboard) {
-      res.json({
-        result: "success",
-        data: taskboard
-      });
+      res.json(taskboard);
     })
     .catch(function(e) {
       res.json({
@@ -77,10 +71,7 @@ router.post('/:id/destroy', function(req, res, next) {
       return taskboard.destroy();
     })
     .then(function(result) {
-      res.json({
-        result: "success",
-        data: result
-      });
+      res.json(result);
     })
     .catch(function(e) {
       res.json({
@@ -95,10 +86,7 @@ router.get('/:id', function(req, res, next) {
   Taskboard
     .find(id)
     .then(function(taskboard) {
-      res.json({
-        result: "success",
-        data: taskboard
-      });
+      res.json(taskboard);
     })
     .catch(function(e) {
       res.json({
@@ -116,10 +104,7 @@ router.get('/:id/tasks', function(req, res, next) {
     	return taskboard.getTasks();
     })
     .then(function(tasks) {
-      res.json({
-        result: "success",
-        data: tasks
-      });
+      res.json(tasks);
     })
     .catch(function(e) {
       res.json({

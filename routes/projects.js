@@ -27,18 +27,14 @@ router.post('/create', teamMember, function(req, res, next) {
   Project
     .create({
       name: params.name,
-      team_id: params.teamid,
+      team_id: params.teamid != 0? params.teamid : null,
       creator_id: userId,
       is_private: params.teamid == 0
     })
     .then(function(proj) {
-      res.json({
-        result: "success",
-        data: proj
-      });
+      res.json(proj);
     })
     .catch(function(e) {
-      console.log(e);
       res.json({
         result: "error",
         msg: e
@@ -46,7 +42,7 @@ router.post('/create', teamMember, function(req, res, next) {
     });
 });
 
-router.post('/:id/update', teamMember, function(req, res, next) {
+router.post('/:id/update', function(req, res, next) {
   var
     params = req.body,
     id = req.params.id;
@@ -57,10 +53,7 @@ router.post('/:id/update', teamMember, function(req, res, next) {
         {fields: ['name']});
     })
     .then(function(proj) {
-      res.json({
-        result: "success",
-        data: proj
-      });
+      res.json(proj);
     })
     .catch(function(e) {
       res.json({
@@ -70,7 +63,7 @@ router.post('/:id/update', teamMember, function(req, res, next) {
     });
 });
 
-router.post('/:id/destroy', teamMember, function(req, res, next) {
+router.post('/:id/destroy', function(req, res, next) {
   var
     id = req.params.id;
   Project
@@ -79,10 +72,7 @@ router.post('/:id/destroy', teamMember, function(req, res, next) {
       return proj.destroy();
     })
     .then(function(result) {
-      res.json({
-        result: "success",
-        data: result
-      });
+      res.json(result);
     })
     .catch(function(e) {
       res.json({
@@ -92,15 +82,12 @@ router.post('/:id/destroy', teamMember, function(req, res, next) {
     });
 });
 
-router.get('/:id', teamMember, function(req, res, next) {
+router.get('/:id', function(req, res, next) {
   var id = req.params.id;
   Project
     .find(id)
     .then(function(proj) {
-      res.json({
-        result: "success",
-        data: proj
-      });
+      res.json(proj);
     })
     .catch(function(e) {
       res.json({
@@ -110,7 +97,7 @@ router.get('/:id', teamMember, function(req, res, next) {
     })
 });
 
-router.get('/:id/subprojects', teamMember, function(req, res, next) {
+router.get('/:id/subprojects', function(req, res, next) {
   var id = req.params.id;
   Project
     .find(id)
@@ -118,10 +105,7 @@ router.get('/:id/subprojects', teamMember, function(req, res, next) {
       return proj.getSubprojects();
     })
     .then(function(subprojs) {
-      res.json({
-        result: "success",
-        data: subprojs
-      });
+      res.json(subprojs);
     })
     .catch(function(e) {
       res.json({

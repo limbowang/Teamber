@@ -19,7 +19,6 @@ module.exports = {
         referenceKey: "id"
       },
       team_id: {
-        allowNull: false,
         type: DataTypes.INTEGER,
         references: "Teams",
         referenceKey: "id"
