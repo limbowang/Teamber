@@ -1,4 +1,5 @@
 var gulp = require('gulp');
+var util = require('gulp-util');
 var watch = require('gulp-watch')
 var bower = require('gulp-bower');
 var Sequelize = require("sequelize");
@@ -17,17 +18,11 @@ gulp.task('watch', function() {
   gulp.start('css');
   watch('./entries/**/*', function() {
     gulp.run('js');
-  })
-  .on('error', skip);
+  });
 
   watch('./sass/**/*', function() {
     gulp.run('css');
-  })
-  .on('error', skip);
-
-  function skip(e) {
-    e.end();
-  }
+  });
 });
 
 gulp.task('css', function() {
@@ -46,6 +41,7 @@ gulp.task('js', function() {
       transform: [browserifyHandlebars],
       insertGlobals : true
     }))
+    .on('error', util.log)
     // .pipe(uglify())
     .pipe(gulp.dest('./public/javascripts'));
 })
