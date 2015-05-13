@@ -36,7 +36,7 @@ router.post('/create', function(req, res, next) {
       res.json(team);
     })
     .catch(function(e) {
-      res.json({
+      res.status(500).json({
         result: "error",
         msg: e
       });
@@ -58,7 +58,7 @@ router.post('/:id/update', teamOwner, function(req, res, next) {
       res.json(team);
     })
     .catch(function(e) {
-      res.json({
+      res.status(500).json({
         result: "error",
         msg: e
       });
@@ -79,7 +79,7 @@ router.post('/:id/destroy', teamOwner, function(req, res, next) {
       res.json(result);
     })
     .catch(function(e) {
-      res.json({
+      res.status(500).json({
         result: "error",
         msg: e
       });
@@ -100,7 +100,7 @@ router.post('/:id/members/add', teamOwner, function(req, res, next) {
       res.json(result);
     })
     .catch(function(e) {
-      res.json({
+      res.status(500).json({
         result: "error",
         msg: e
       });
@@ -130,7 +130,7 @@ router.post('/:id/members/remove', teamOwner, function(req, res, next) {
       res.json(result);
     })
     .catch(function(e) {
-      res.json({
+      res.status(500).json({
         result: "error",
         msg: e
       });
@@ -148,7 +148,7 @@ router.get('/', function(req, res, next) {
       res.json(teams);
     })
     .catch(function(e) {
-      res.json({
+      res.status(500).json({
         result: "error",
         msg: e
       });
@@ -163,7 +163,7 @@ router.get('/:id', teamMember, function(req, res, next) {
       res.json(team);
     })
     .catch(function(e) {
-      res.json({
+      res.status(500).json({
         result: "error",
         msg: e
       });
@@ -180,7 +180,7 @@ router.get('/:id/projects', teamMember, function(req, res, next) {
         res.json(projs)
       })
       .catch(function(e) {
-        res.json({
+        res.status(500).json({
           result: "error",
           msg: e
         });
@@ -195,7 +195,7 @@ router.get('/:id/projects', teamMember, function(req, res, next) {
         res.json(projs);
       })
       .catch(function(e) {
-        res.json({
+        res.status(500).json({
           result: "error",
           msg: e
         });

@@ -34,7 +34,7 @@ filters.teamOwner = function(req, res, next) {
     .find(id)
     .then(function(team) {
       if (!team) {
-        res.json({
+        res.status(500).json({
           result: "error",
           msg: "团队不存在"
         });
@@ -48,7 +48,7 @@ filters.teamOwner = function(req, res, next) {
       }
     })
     .catch(function(e) {
-      res.json({
+      res.status(500).json({
         result: "error",
         msg: e
       });
@@ -58,7 +58,8 @@ filters.teamOwner = function(req, res, next) {
 filters.teamMember = function(req, res, next) {
   var
     userId = req.user.id,
-    id = req.body.teamid || req.body.id || req.params.id;
+    id = req.body.teamid === 0 || req.body.id || req.params.id;
+
   if (id == 0) {
     next();
     return ;
@@ -67,7 +68,7 @@ filters.teamMember = function(req, res, next) {
     .find(id)
     .then(function(team) {
       if (!team) {
-        res.json({
+        res.status(500).json({
           result: "error",
           msg: "团队不存在"
         });
@@ -82,7 +83,7 @@ filters.teamMember = function(req, res, next) {
     })
     .catch(function(e) {
       console.log(e);
-      res.json({
+      res.status(500).json({
         result: "error",
         msg: e
       });

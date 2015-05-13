@@ -35,7 +35,7 @@ router.post('/create', teamMember, function(req, res, next) {
       res.json(proj);
     })
     .catch(function(e) {
-      res.json({
+      res.status(500).json({
         result: "error",
         msg: e
       });
@@ -56,7 +56,7 @@ router.post('/:id/update', function(req, res, next) {
       res.json(proj);
     })
     .catch(function(e) {
-      res.json({
+      res.status(500).json({
         result: "error",
         msg: e
       });
@@ -75,7 +75,7 @@ router.post('/:id/destroy', function(req, res, next) {
       res.json(result);
     })
     .catch(function(e) {
-      res.json({
+      res.status(500).json({
         result: "error",
         msg: e
       });
@@ -90,7 +90,7 @@ router.get('/:id', function(req, res, next) {
       res.json(proj);
     })
     .catch(function(e) {
-      res.json({
+      res.status(500).json({
         result: "error",
         msg: e
       });
@@ -108,7 +108,7 @@ router.get('/:id/subprojects', function(req, res, next) {
       res.json(subprojs);
     })
     .catch(function(e) {
-      res.json({
+      res.status(500).json({
         result: "error",
         msg: e
       });

@@ -33,7 +33,7 @@ router.post('/create', function(req, res, next) {
       res.json(task);
     })
     .catch(function(e) {
-      res.json({
+      res.status(500).json({
         result: "error",
         msg: e
       });
@@ -54,7 +54,7 @@ router.post('/:id/update', function(req, res, next) {
       res.json(taskboard);
     })
     .catch(function(e) {
-      res.json({
+      res.status(500).json({
         result: "error",
         msg: e
       });
@@ -73,7 +73,7 @@ router.post('/:id/destroy', function(req, res, next) {
       res.json(result);
     })
     .catch(function(e) {
-      res.json({
+      res.status(500).json({
         result: "error",
         msg: e
       });
@@ -93,7 +93,7 @@ router.post('/:id/complete', function(req, res, next) {
       res.json(result);
     })
     .catch(function(e) {
-      res.json({
+      res.status(500).json({
         result: "error",
         msg: e
       });
@@ -108,7 +108,7 @@ router.get('/:id', function(req, res, next) {
       res.json(task);
     })
     .catch(function(e) {
-      res.json({
+      res.status(500).json({
         result: "error",
         msg: e
       });
@@ -123,7 +123,7 @@ router.get('/:id/subtasks', function(req, res, next) {
       res.json(subtasks);
     })
     .catch(function(e) {
-      res.json({
+      res.status(500).json({
         result: "error",
         msg: e
       });
@@ -141,7 +141,7 @@ router.get('/:id/comments', function(req, res, next) {
       res.json(comments);
     })
     .catch(function(e) {
-      res.json({
+      res.status(500).json({
         result: "error",
         msg: e
       });
@@ -159,7 +159,7 @@ router.get('/:id/checkitems', function(req, res, next) {
       res.json(checkitems);
     })
     .catch(function(e) {
-      res.json({
+      res.status(500).json({
         result: "error",
         msg: e
       });
@@ -177,7 +177,7 @@ router.get('/:id/histories', function(req, res, next) {
       res.json(histories);
     })
     .catch(function(e) {
-      res.json({
+      res.status(500).json({
         result: "error",
         msg: e
       });
