@@ -5,7 +5,7 @@ var BaseView = Backbone.View.extend({
 
 		this.$sidebar = $('#sidebar');
 		this.$modal = $('#modal');
-		this.$content = $('content');
+		this.$board = $('#board');
 
 		this.$modal.on('click', '[data-dismiss="modal"]', function(){ 
 			self.$modal.hide();

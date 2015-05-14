@@ -24,22 +24,23 @@ var init = function(){
     var router = new AppRouter;
 
     router.on('route:showTeam', function(id) {
-      teamView.teamid = id;
-      teamView.render();
-      projView.projs.teamid = id;
-      projView.projs.fetch({reset: true});
+      if (teamView.teamid != id) {
+        teamView.teamid = id;
+        teamView.render();
+        projView.projs.teamid = id;
+        projView.projs.fetch({reset: true});
+      }
     });
 
     router.on('route:showProj', function(id) {
-      teamView.teamid = id;
-      teamView.render();
     });
 
     router.on('route:defaultAction', function(actions){
-      var teamid = 0;
+      var teamid = '0';
+        console.log(teamView.teamid);
       if (teamView.teamid != teamid) {
         teamView.teamid = teamid;
-        teamView.displayTeamChosen();
+        teamView.renderTeamChosen();
         projView.projs.teamid = teamid;
         projView.projs.fetch({reset: true});
       }

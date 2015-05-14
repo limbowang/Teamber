@@ -32,6 +32,7 @@ gulp.task('css', function() {
       css: './public/stylesheets',
       sass: 'sass'
     }))
+    .on('error', util.log)
     .pipe(gulp.dest('./public/stylesheets'));
 });
 

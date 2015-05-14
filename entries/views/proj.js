@@ -26,26 +26,26 @@ var ProjView = BaseView.extend({
   initialize: function() {
     this.$projlist = $('#proj-list');
     this.projs = new Projs();
-    this.projs.on('reset', this.displayProjList, this);
-    this.projs.on('add', this.displayProjItem, this);
+    this.projs.on('reset', this.renderProjList, this);
+    this.projs.on('add', this.renderProjItem, this);
   },
   events: {
-    'click #proj-new': 'displayCreateProjModal',
+    'click #proj-new': 'renderCreateProjModal',
     'click #proj-add': 'createProj'
   },
   render: function() {
   },
-  displayProjList: function() {
+  renderProjList: function() {
     this.$projlist.html('');
     if (this.projs.length != 0) {
-      this.projs.each(this.displayProjItem);
+      this.projs.each(this.renderProjItem);
     }
   },
-  displayProjItem: function(proj) {
+  renderProjItem: function(proj) {
     var view = new ProjItemView({model: proj});
     view.render();
   },
-  displayCreateProjModal: function() {
+  renderCreateProjModal: function() {
     var html = tplAdd();
     this.$modal.html(html).show();
   },
@@ -58,7 +58,8 @@ var ProjView = BaseView.extend({
     }, {
       wait: true,
       url: '/projects/create',
-      success: function() { self.$modal.hide(); console.log(self.projs) }
+      success: function() { self.$modal.hide(); },
+      error: function(model, xhr, options) { console.log(xhr); }
     });
   }
 });

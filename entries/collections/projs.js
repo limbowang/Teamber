@@ -5,7 +5,6 @@ var Projs = Backbone.Collection.extend({
   url: 'projects',
   teamid: 0,
   sync: function(method, model, options) {
-  	console.log(method);
   	if (method == "read") {
   		options.url = '/teams/' + this.teamid + '/projects';
   	}

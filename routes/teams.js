@@ -201,7 +201,28 @@ router.get('/:id/projects', teamMember, function(req, res, next) {
         });
       });
   }
-  
+});
+
+router.get('/:id/members', teamMember, function(req, res, next) {
+  var id = req.params.id;
+  if (id != 0) {
+    Team
+      .find(id)
+      .then(function(team) {
+        return team.getMembers(
+          {attributes: ['username', 'nickname', 'email', 'avatar']});
+      })
+      .then(function(members) {
+        console.log(members.toJSON);
+        res.json(members);
+      })
+      .catch(function(e) {
+        res.status(500).json({
+          result: "error",
+          msg: e
+        });
+      })
+  }
 });
 
 module.exports = router;
