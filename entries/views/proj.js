@@ -25,7 +25,7 @@ var SubProjItemView = Backbone.View.extend({
 var ProjView = BaseView.extend({
   initialize: function() {
     this.$projlist = $('#proj-list');
-    this.projs = new Projs();
+    // this.projs = new Projs();
     this.projs.on('reset', this.renderProjList, this);
     this.projs.on('add', this.renderProjItem, this);
   },

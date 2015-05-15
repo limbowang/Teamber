@@ -1,10 +1,9 @@
 $bg-grey: #f3f3f3;
 
-
 .main {
   padding-top: 50px;
   zoom: 1;
-  overflow: auto;
+  overflow: hidden;
   height: 100%;
 }
 
@@ -20,7 +19,35 @@ $bg-grey: #f3f3f3;
   .nav {
     width: 100%;
   }
+
+  .dropdown-menu {
+    overflow: auto;
+    height: 200px;
+  }
+
+  .tabs-expand {
+    overflow: auto;
+    width: 100%;
+    &>ul {
+      &>li {
+        a {
+          display: block;
+          padding: 10px;
+        }
+        ul {
+          display: none;
+          li {
+            a {
+              padding-left: 20px;
+            }
+          }
+        }
+      }
+    }
+  }
 }
+
+
 
 .board {
   width: 80%;

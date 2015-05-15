@@ -1,8 +1,5 @@
-var Teams = require('../collections/teams');
 var Team = require('../models/team');
-var Members = require('../collections/members');
 var Member = require('../models/member');
-var Projs = require('../collections/projs');
 var Proj = require('../models/proj');
 var tplTeamAdd = require('../templates/modal/teamadd.handlebars');
 var tplTeamItem = require('../templates/sidebar/teamitem.handlebars');
@@ -45,16 +42,17 @@ var TeamView = BaseView.extend({
     this.$teamchosen = $('#team-chosen span');
     this.$teamlist = $('#team-list');
     // teams
-    this.teams = new Teams();
+    // this.teams = new Teams();
     this.teams.on('reset', this.renderTeamList, this);
     this.teams.on('add', this.renderTeamItem, this);
     this.teams.fetch({reset: true});
     // members
-    this.members = new Members();
+    // this.members = new Members();
     this.members.on('reset', this.renderMemberList, this);
     // projects
-    this.projs = new Projs();
+    // this.projs = new Projs();
     this.projs.on('reset', this.renderProjList, this);
+    this.projs.on('add', this.renderProjItem, this);
   },
   events: {
     'click #team-new': 'renderTeamCreateModal',
@@ -121,8 +119,13 @@ var TeamView = BaseView.extend({
       }
     });
   },
-  switchTab: function() {
-    console.log(this);
+  switchTab: function(e) {
+    var $cur = $($e.currentTarget);
+    var index = $cur.data('index');
+    this.$board.find('.tab.active').removeClass('active');
+    this.$board.find('.panel.active').removeClass('active');
+    $cur.addClass('active');
+    this.$board.find('.panel[data-index=' + index + ']').addClass('active');
   }
 });
 

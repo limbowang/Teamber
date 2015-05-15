@@ -2,6 +2,10 @@ var HeaderView = require('./views/header');
 var TeamView = require('./views/team');
 var ProjView = require('./views/proj');
 
+var Teams = require('./collections/teams');
+var Members = require('./collections/members');
+var Projs = require('./collections/projs');
+
 var AppRouter = Backbone.Router.extend({
   routes: {
     // Default
@@ -13,22 +17,30 @@ var AppRouter = Backbone.Router.extend({
 });
 
 var init = function(){
+  // init collections
+  var 
+    teams = new Teams(),
+    members = new Members(),
+    projs = new Projs();
+
   // init views
   var
     headerView = new HeaderView(),
-    teamView = new TeamView(),
-    projView = new ProjView();
+    teamView = new TeamView({teams: teams, projs: projs, members: members}),
+    projView = new ProjView({projs: projs});
+  console.log(teamView);
+  console.log(projView);
 
   // init router after team collection reset
-  teamView.teams.once('reset', function() {
+  teams.once('reset', function() {
     var router = new AppRouter;
 
     router.on('route:showTeam', function(id) {
       if (teamView.teamid != id) {
         teamView.teamid = id;
         teamView.render();
-        projView.projs.teamid = id;
-        projView.projs.fetch({reset: true});
+        projs.teamid = id;
+        projs.fetch({reset: true});
       }
     });
 
@@ -37,7 +49,6 @@ var init = function(){
 
     router.on('route:defaultAction', function(actions){
       var teamid = '0';
-        console.log(teamView.teamid);
       if (teamView.teamid != teamid) {
         teamView.teamid = teamid;
         teamView.renderTeamChosen();

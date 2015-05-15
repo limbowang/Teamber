@@ -58,8 +58,8 @@ filters.teamOwner = function(req, res, next) {
 filters.teamMember = function(req, res, next) {
   var
     userId = req.user.id,
-    id = req.body.teamid === 0 || req.body.id || req.params.id;
-
+    id = req.body.teamid || req.body.id || req.params.id;
+  console.log(id);
   if (id == 0) {
     next();
     return ;
@@ -67,6 +67,7 @@ filters.teamMember = function(req, res, next) {
   Team
     .find(id)
     .then(function(team) {
+      console.log(team);
       if (!team) {
         res.status(500).json({
           result: "error",
