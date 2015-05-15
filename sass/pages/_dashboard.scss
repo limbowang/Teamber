@@ -1,34 +1,129 @@
+$bg-grey: #f3f3f3;
+
 .main {
-	padding-top: 50px;
-	zoom: 1;
-	overflow: auto;
-	height: 100%;
+  padding-top: 50px;
+  zoom: 1;
+  overflow: hidden;
+  height: 100%;
+}
 
-	.sidebar, .board {
-		position: relative;
-		float: left;
-		height: 100%;
-	}
+.sidebar, .board {
+  position: relative;
+  float: left;
+  height: 100%;
+}
 
-	.sidebar {
-		width: 20%;
+.sidebar {
+  width: 20%;
 
-		.nav {
-			width: 100%;
-		}
-	}
+  .nav {
+    width: 100%;
+  }
 
-	.board {
-		width: 80%;
-		padding: 20px;
-		background: $white;
+  .dropdown-menu {
+    overflow: auto;
+    height: 200px;
+  }
 
-		font-size: 40px;
-		text-align: center;
-		vertical-align: middle;
-	}
+  .tabs-expand {
+    overflow: auto;
+    width: 100%;
+    &>ul {
+      &>li {
+        a {
+          display: block;
+          padding: 10px;
+        }
+        ul {
+          display: none;
+          li {
+            a {
+              padding-left: 20px;
+            }
+          }
+        }
+      }
+    }
+  }
+}
 
-	.model {
-		z-index: 2000;
-	}
+
+
+.board {
+  width: 80%;
+  background: #fff;
+  
+  &>.header {
+    padding: 10px 20px;
+    border-bottom: 1px solid #eee;
+    overflow: hidden;
+    .title {
+      float: left;
+      font-size: 25px;
+    }
+
+    .tabs {
+      position: relative;
+      float: right;
+      .tab {
+        display: inline-block;
+        height: 36px;
+        line-height: 36px;
+        font-size: 16px;
+        padding: 0 30px;
+        &:hover {
+          cursor: pointer;
+        }
+        &.active {
+          background-color: $bg-grey;
+          cursor: default;
+        }
+      }
+    }
+  }
+
+  &>.panel {
+    display: none;
+    margin: 10px;
+    padding: 10px;
+
+    &.active {
+      display: block;
+    }
+
+    .header {
+      border-bottom: 1px solid #eee;
+      padding: 10px 20px;
+
+      .title {
+        font-size: 16px;
+      }
+    }
+
+    .member-list {
+      margin-top: 10px;
+      overflow: hidden;
+      li {
+        float: left;
+        padding: 10px 20px;
+        text-align: center;
+        
+        &:hover {
+          cursor: pointer;
+          background: $bg-grey;
+        }
+
+        .avatar {
+          width: 72px;
+          height: 72px;
+          border-radius: 5px;
+        }
+
+        .name {
+          padding: 5px 0;
+          margin: 0;
+        }
+      }
+    }
+  }
 }

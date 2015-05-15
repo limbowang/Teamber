@@ -15,7 +15,6 @@ module.exports = function(sequelize, DataTypes) {
       type: DataTypes.INTEGER
     },
     team_id: {
-      allowNull: false,
       type: DataTypes.INTEGER
     },
     is_private: {

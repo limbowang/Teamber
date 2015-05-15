@@ -33,13 +33,10 @@ router.post('/create', function(req, res, next) {
     })
     .then(function(team) {
       team.addMember(userId);
-      res.json({
-        result: "success",
-        data: team
-      });
+      res.json(team);
     })
     .catch(function(e) {
-      res.json({
+      res.status(500).json({
         result: "error",
         msg: e
       });
@@ -58,13 +55,10 @@ router.post('/:id/update', teamOwner, function(req, res, next) {
         {fields: ['name', 'description']});
     })
     .then(function(team) {
-      res.json({
-        result: "success",
-        data: team
-      });
+      res.json(team);
     })
     .catch(function(e) {
-      res.json({
+      res.status(500).json({
         result: "error",
         msg: e
       });
@@ -82,13 +76,10 @@ router.post('/:id/destroy', teamOwner, function(req, res, next) {
       return team.destroy();
     })
     .then(function(result) {
-      res.json({
-        result: "success",
-        data: result
-      });
+      res.json(result);
     })
     .catch(function(e) {
-      res.json({
+      res.status(500).json({
         result: "error",
         msg: e
       });
@@ -106,13 +97,10 @@ router.post('/:id/members/add', teamOwner, function(req, res, next) {
       return team.addMember(params.userid);
     })
     .then(function(result) {
-      res.json({
-        result: "success",
-        data: result
-      });
+      res.json(result);
     })
     .catch(function(e) {
-      res.json({
+      res.status(500).json({
         result: "error",
         msg: e
       });
@@ -139,13 +127,10 @@ router.post('/:id/members/remove', teamOwner, function(req, res, next) {
         });
     })
     .then(function(result) {
-      res.json({
-        result: "success",
-        data: result
-      });
+      res.json(result);
     })
     .catch(function(e) {
-      res.json({
+      res.status(500).json({
         result: "error",
         msg: e
       });
@@ -160,13 +145,10 @@ router.get('/', function(req, res, next) {
       return user.getTeams();
     })
     .then(function(teams) {
-      res.json({
-        result: "success",
-        data: teams
-      });
+      res.json(teams);
     })
     .catch(function(e) {
-      res.json({
+      res.status(500).json({
         result: "error",
         msg: e
       });
@@ -178,13 +160,10 @@ router.get('/:id', teamMember, function(req, res, next) {
   Team
     .find(id)
     .then(function(team) {
-      res.json({
-        result: "success",
-        data: team
-      });
+      res.json(team);
     })
     .catch(function(e) {
-      res.json({
+      res.status(500).json({
         result: "error",
         msg: e
       });
@@ -193,18 +172,15 @@ router.get('/:id', teamMember, function(req, res, next) {
 
 router.get('/:id/projects', teamMember, function(req, res, next) {
   var id = req.params.id;
-
+  var userId = req.session.userid;
   if (id == 0) {
     Project
-      .find({where: {creator_id: userId, is_private: true}})
+      .findAll({where: {creator_id: userId, is_private: true}})
       .then(function(projs) {
-        res.json({
-          result: "success",
-          data: projs
-        })
+        res.json(projs)
       })
       .catch(function(e) {
-        res.json({
+        res.status(500).json({
           result: "error",
           msg: e
         });
@@ -216,19 +192,37 @@ router.get('/:id/projects', teamMember, function(req, res, next) {
         return team.getProjects();
       })
       .then(function(projs) {
-        res.json({
-          result: "success",
-          data: projs
-        })
+        res.json(projs);
       })
       .catch(function(e) {
-        res.json({
+        res.status(500).json({
           result: "error",
           msg: e
         });
       });
   }
-  
+});
+
+router.get('/:id/members', teamMember, function(req, res, next) {
+  var id = req.params.id;
+  if (id != 0) {
+    Team
+      .find(id)
+      .then(function(team) {
+        return team.getMembers(
+          {attributes: ['username', 'nickname', 'email', 'avatar']});
+      })
+      .then(function(members) {
+        console.log(members.toJSON);
+        res.json(members);
+      })
+      .catch(function(e) {
+        res.status(500).json({
+          result: "error",
+          msg: e
+        });
+      })
+  }
 });
 
 module.exports = router;

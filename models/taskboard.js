@@ -27,7 +27,7 @@ module.exports = function(sequelize, DataTypes) {
         // suboroject
         Taskboard.belongsTo(models.Subproject, { foreignKey: 'subproject_id' });
         // Task
-        Taskboard.hasMany(models.Task, { foreignKey: 'task_id' });
+        Taskboard.hasMany(models.Task, { foreignKey: 'taskboard_id' });
       }
     }
   });

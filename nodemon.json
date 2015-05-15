@@ -1,0 +1,16 @@
+{
+  "verbose": false,
+  "env": {
+      "NODE_ENV": "development"
+  },
+  "execMap": {
+      "": "node app.js --debug"
+  },
+  "watch": [
+      "routes/",
+      "models/",
+      "lib/",
+      "app.js"
+  ],
+  "ext": "js"
+}

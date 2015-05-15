@@ -1,0 +1,54 @@
+// navbar
+.navbar-custom {
+  position: fixed;
+  top: 0;
+  left: 0;
+  border: none;
+  border-radius: 0;
+  width: 100%;
+  z-index: 2000;
+}
+
+// form
+.form-wrap {
+  margin: 0 35%;
+  padding-top: 100px;
+  
+  form {
+    padding: 30px;
+    background-color: $white;
+  }
+
+  .form-group {
+    position: relative; 
+
+    .tooltip {
+      right: 0;
+    }
+  }
+}
+
+// dropdown
+.dropdown-block {
+  .dropdown-toggle {
+    b {
+      position: absolute;
+      top: 20px;
+      right: 15px;
+    }
+  }
+  .dropdown-menu {
+    width: 100%;
+  }
+}
+
+// tooltip
+.tooltip {
+  opacity: 1;
+}
+
+// modal
+.modal {
+  z-index: 9999;
+  background-color: rgba(0, 0, 0, .8);
+}

@@ -1,9 +1,9 @@
-define(['backbone'], function(Backbone) {
-  return Backbone.Model.extend({
-    defaults: {
-      id: 0,
-      name: ''
-    },
-    url: 'teams'
-  });
+var Team = Backbone.Model.extend({
+  defaults: {
+  	id: 0,
+    name: ''
+  },
+  urlRoot: '/teams'
 });
+
+module.exports = Team;

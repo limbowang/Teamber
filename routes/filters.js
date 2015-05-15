@@ -24,14 +24,21 @@ filters.isAdmin = function(req, res, next) {
 filters.teamOwner = function(req, res, next) {
   var
     userId = req.user.id,
-    id = req.path.indexOf('/teams') > 0 ? 
-          req.params.id:
-          req.params.teamid;
-  
+    id = req.body.id || req.params.id;
+
+  if (id == 0) {
+    next();
+    return ;
+  }
   Team
     .find(id)
     .then(function(team) {
-      if (team.creator_id == userId) {
+      if (!team) {
+        res.status(500).json({
+          result: "error",
+          msg: "团队不存在"
+        });
+      } else if (team.creator_id == userId) {
         next();
       } else {
         res.json({
@@ -41,7 +48,7 @@ filters.teamOwner = function(req, res, next) {
       }
     })
     .catch(function(e) {
-      res.json({
+      res.status(500).json({
         result: "error",
         msg: e
       });
@@ -51,14 +58,22 @@ filters.teamOwner = function(req, res, next) {
 filters.teamMember = function(req, res, next) {
   var
     userId = req.user.id,
-    id = req.path.indexOf('/teams') > 0 ? 
-          req.params.id:
-          req.params.teamid;
-  
+    id = req.body.teamid || req.body.id || req.params.id;
+  console.log(id);
+  if (id == 0) {
+    next();
+    return ;
+  }
   Team
     .find(id)
     .then(function(team) {
-      if (team.hasMember(userId)) {
+      console.log(team);
+      if (!team) {
+        res.status(500).json({
+          result: "error",
+          msg: "团队不存在"
+        });
+      } else if (team.hasMember(userId)) {
         next();
       } else {
         res.json({
@@ -68,7 +83,8 @@ filters.teamMember = function(req, res, next) {
       }
     })
     .catch(function(e) {
-      res.json({
+      console.log(e);
+      res.status(500).json({
         result: "error",
         msg: e
       });

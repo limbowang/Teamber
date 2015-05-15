@@ -32,13 +32,10 @@ router.post('/create', function(req, res, next) {
       creator_id: userId
     })
     .then(function(subproj) {
-      res.json({
-        result: "success",
-        data: subproj
-      });
+      res.json(subproj);
     })
     .catch(function(e) {
-      res.json({
+      res.status(500).json({
         result: "error",
         msg: e
       });
@@ -56,13 +53,10 @@ router.post('/:id/update', function(req, res, next) {
         {fields: ['name']});
     })
     .then(function(subproj) {
-      res.json({
-        result: "success",
-        data: subproj
-      });
+      res.json(subproj);
     })
     .catch(function(e) {
-      res.json({
+      res.status(500).json({
         result: "error",
         msg: e
       });
@@ -78,13 +72,10 @@ router.post('/:id/destroy', function(req, res, next) {
       return subproj.destroy();
     })
     .then(function(result) {
-      res.json({
-        result: "success",
-        data: result
-      });
+      res.json(result);
     })
     .catch(function(e) {
-      res.json({
+      res.status(500).json({
         result: "error",
         msg: e
       });
@@ -96,13 +87,10 @@ router.get('/:id', function(req, res, next) {
   Subroject
     .find(id)
     .then(function(subproj) {
-      res.json({
-        result: "success",
-        data: subproj
-      });
+      res.json(subproj);
     })
     .catch(function(e) {
-      res.json({
+      res.status(500).json({
         result: "error",
         msg: e
       });
@@ -117,13 +105,10 @@ router.get('/:id/taskboards', function(req, res, next) {
     	return subproj.getTaskborads();
     })
     .then(function(taskboards) {
-      res.json({
-        result: "success",
-        data: taskboards
-      });
+      res.json(taskboards);
     })
     .catch(function(e) {
-      res.json({
+      res.status(500).json({
         result: "error",
         msg: e
       });

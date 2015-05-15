@@ -27,23 +27,7 @@ module.exports = function(sequelize, DataTypes) {
         Team.belongsTo(models.User, { foreignKey: 'creator_id' });
         Team.belongsToMany(models.User, { through: 'members', foreignKey: 'team_id', as: 'members'});
         // project
-        Team.hasMany(models.Project, { foreignKey: 'project_id' });
-      }
-    },
-    hooks: {
-      beforeCreate: function(team, options, fn) {
-        Team
-          .find({where: { name: team.name, creator_id: team.creator_id }})
-          .then(function(team) {
-            if (team) {
-              fn(new sequelize.ValidationError("团队名称已经使用"));
-            } else {
-              fn();
-            }
-          })
-          .catch(function(e) {
-            fn(e);
-          });
+        Team.hasMany(models.Project, { foreignKey: 'team_id' });
       }
     }
   });

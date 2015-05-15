@@ -30,13 +30,10 @@ router.post('/create', function(req, res, next) {
       creator_id: userId
     })
     .then(function(task) {
-      res.json({
-        result: "success",
-        data: task
-      });
+      res.json(task);
     })
     .catch(function(e) {
-      res.json({
+      res.status(500).json({
         result: "error",
         msg: e
       });
@@ -54,13 +51,10 @@ router.post('/:id/update', function(req, res, next) {
         {fields: ['name', 'due_time', 'taskboard_id']});
     })
     .then(function(taskboard) {
-      res.json({
-        result: "success",
-        data: taskboard
-      });
+      res.json(taskboard);
     })
     .catch(function(e) {
-      res.json({
+      res.status(500).json({
         result: "error",
         msg: e
       });
@@ -76,13 +70,10 @@ router.post('/:id/destroy', function(req, res, next) {
       return task.destroy();
     })
     .then(function(result) {
-      res.json({
-        result: "success",
-        data: result
-      });
+      res.json(result);
     })
     .catch(function(e) {
-      res.json({
+      res.status(500).json({
         result: "error",
         msg: e
       });
@@ -99,13 +90,10 @@ router.post('/:id/complete', function(req, res, next) {
       return task.complete();
     })
     .then(function(result) {
-      res.json({
-        result: "success",
-        data: result
-      });
+      res.json(result);
     })
     .catch(function(e) {
-      res.json({
+      res.status(500).json({
         result: "error",
         msg: e
       });
@@ -117,13 +105,10 @@ router.get('/:id', function(req, res, next) {
   Task
     .find(id)
     .then(function(task) {
-      res.json({
-        result: "success",
-        data: task
-      });
+      res.json(task);
     })
     .catch(function(e) {
-      res.json({
+      res.status(500).json({
         result: "error",
         msg: e
       });
@@ -135,13 +120,10 @@ router.get('/:id/subtasks', function(req, res, next) {
   Task
     .find({ where: { ptask_id: id } })
     .then(function(subtasks) {
-      res.json({
-        result: "success",
-        data: subtasks
-      });
+      res.json(subtasks);
     })
     .catch(function(e) {
-      res.json({
+      res.status(500).json({
         result: "error",
         msg: e
       });
@@ -156,13 +138,10 @@ router.get('/:id/comments', function(req, res, next) {
     	return task.getComments();
     })
     .then(function(comments) {
-      res.json({
-        result: "success",
-        data: comments
-      });
+      res.json(comments);
     })
     .catch(function(e) {
-      res.json({
+      res.status(500).json({
         result: "error",
         msg: e
       });
@@ -177,13 +156,10 @@ router.get('/:id/checkitems', function(req, res, next) {
     	return task.getCheckitems();
     })
     .then(function(checkitems) {
-      res.json({
-        result: "success",
-        data: checkitems
-      });
+      res.json(checkitems);
     })
     .catch(function(e) {
-      res.json({
+      res.status(500).json({
         result: "error",
         msg: e
       });
@@ -198,13 +174,10 @@ router.get('/:id/histories', function(req, res, next) {
     	return task.getHistories();
     })
     .then(function(histories) {
-      res.json({
-        result: "success",
-        data: histories
-      });
+      res.json(histories);
     })
     .catch(function(e) {
-      res.json({
+      res.status(500).json({
         result: "error",
         msg: e
       });

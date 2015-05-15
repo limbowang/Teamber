@@ -1,0 +1,12 @@
+.scrollable {
+	overflow: hidden;
+	
+	&:after {
+		position: absolute;
+		top: 0;
+		right: 0;
+		width: 10px;
+		height: 20%;
+		
+	}
+}

@@ -6,7 +6,6 @@
 @import "compass/reset";
 @import "bootstrap/bootstrap";
 @import "bootflat/bootflat";
-@import "color";
 
 html, body {
   height: 100%;
@@ -14,7 +13,7 @@ html, body {
 
 body {
   font-family: "Helvetica Neue", Helvetica, Microsoft Yahei, Hiragino Sans GB, WenQuanYi Micro Hei, sans-serif;
-  background-color: $color-bg;
+  background-color: #f7f6f6;
 }
 
 label {
@@ -24,10 +23,7 @@ label {
 }
 
 
-@import "header";
-@import "dropdown";
-@import "form-wrap";
-@import "tooltip";
+@import "custom";
 
 @import "pages/homepage";
 @import "pages/dashboard";
