@@ -63,10 +63,10 @@ var MemberItemTD = Backbone.View.extend({
 });
 
 var ProjItemView = Backbone.View.extend({
-  el: '#board .projs-list',
+  tagName: 'li',
   render: function() {
     var html = tplProjItem(this.model.toJSON());
-    this.$el.append(html);
+    this.$el.html(html);
     return this;
   }
 });
@@ -91,6 +91,7 @@ var TeamView = BaseView.extend({
     'click #team-new': 'renderTeamCreateModal',
     'click #team-add': 'createTeam',
     'click #team-update': 'updateTeam',
+    'click #team-delete': 'deleteTeam',
     'click .member-invite': 'renderMemberInviteModal',
     'click #member-add': 'addMember',
     'click .tab': 'switchTab'
@@ -121,9 +122,10 @@ var TeamView = BaseView.extend({
     this.members.each(this.renderMemberItem, this);
   },
   renderProjList: function() {
-    this.projs.each(this.renderProjItem);
+    this.projs.each(this.renderProjItem, this);
   },
   renderTeamItem: function(team) {
+    var self = this;
     var viewTeamItem = new TeamItemView({model: team});
     $('#team-list').append(viewTeamItem.render().el);
     team.on('change:name', function(team) {
@@ -131,12 +133,25 @@ var TeamView = BaseView.extend({
       this.$board.find('>.header >.title').html(team.get('name'));
       this.renderTeamChosen();
     }, this);
+    team.on('delete', function() {
+      this.destroy({
+        success: function() {
+          self.alert('success', '操作成功');
+          viewTeamItem.remove();
+          location.href = '#';
+        }
+      })
+    });
   },
   renderMemberItem: function(member) {
     var viewItem = new MemberItemView({model: member});
     this.$board.find('.member-list').append(viewItem.render().el);
     var viewTd = new MemberItemTD({model: member});
     this.$board.find('.members-table').append(viewTd.render().el);
+    member.on('change', function() {
+      viewItem.render();
+      viewTd.render();
+    })
     member.on('delete', function() {
       this.destroy({
         success: function() {
@@ -148,7 +163,17 @@ var TeamView = BaseView.extend({
   },
   renderProjItem: function(proj) {
     var view = new ProjItemView({model: proj});
-    view.render();
+    this.$board.find('.projs-list').append(view.render().el);
+    proj.on('change', function() {
+      view.render();
+    })
+    proj.on('delete', function() {
+      this.destroy({
+        success: function() {
+          view.remove();
+        }
+      })
+    })
   },
   renderTeamCreateModal: function() {
     var html = tplTeamAdd();
@@ -166,6 +191,7 @@ var TeamView = BaseView.extend({
       name: name,
       description: description
     }, {
+      wait: true,
       success: function(team, res, options) {
         self.$modal.hide();
         location.href = '#team-' + team.get('id');
@@ -187,6 +213,27 @@ var TeamView = BaseView.extend({
         self.alert('success', '更新成功');
       }
     });
+  },
+  deleteTeam: function(e) {
+    var self = this;
+    var $cur = $(e.currentTarget);
+    var $confirm = $cur.next('.confirm');
+    var $btnCancel = $confirm.find('[data-action="cancel"]');
+    var $btnConfirm = $confirm.find('[data-action=confirm]');
+
+    $cur.addClass('hide')
+    $confirm.removeClass('hide');
+
+    $btnCancel.on('click', function() {
+      $cur.removeClass('hide');
+      $confirm.addClass('hide');
+    })
+
+    $btnConfirm.on('click', function() {
+        self.teams
+        .findWhere({id: parseInt(self.teamid)})
+        .trigger('delete');
+      });
   },
   addMember: function() {
     var self = this;

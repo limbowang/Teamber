@@ -20,25 +20,25 @@ router.param('id', function(req, res, next, id) {
 router.post('/create', function(req, res, next) {
   var params = req.body;
   User
-    .create({
-      username: params.username,
-      password: params.password,
-      password_confirm: params.password_confirm,
-      email:    params.email,
-      nickname: params.nickname
-    })
-    .then(function(user) {
-      req.session.login    = "true";
-      req.session.userid       = user.id;
-      req.session.nickname = user.nickname;
-      req.session.avatar   = user.avatar;
-      res.redirect('/dashboard');
-    })
-    .catch(function(e, user) {
-      req.session.flash.errors = getValidateError(e);
-      req.session.flash.old = params;
-      res.redirect('/signup');
-    });
+  .create({
+    username: params.username,
+    password: params.password,
+    password_confirm: params.password_confirm,
+    email:    params.email,
+    nickname: params.nickname
+  })
+  .then(function(user) {
+    req.session.login    = "true";
+    req.session.userid       = user.id;
+    req.session.nickname = user.nickname;
+    req.session.avatar   = user.avatar;
+    res.redirect('/dashboard');
+  })
+  .catch(function(e, user) {
+    req.session.flash.errors = getValidateError(e);
+    req.session.flash.old = params;
+    res.redirect('/signup');
+  });
 });
 
 router.post('/:id/update', function(req, res, next) {

@@ -9,6 +9,8 @@ var Team = Backbone.Model.extend({
       options.url = '/teams/create';
     } else if (method == 'update') {
       options.url = '/teams/' + this.get('id') + '/update';
+    } else if (method == 'delete') {
+      options.url = '/teams/' + this.get('id') + '/destroy';
     }
     return Backbone.sync(method, model, options);
   }
