@@ -1,0 +1,13 @@
+<td>{{ username }}</td>
+<td>{{ email }}</td>
+{{#if is_owner  }}
+<td></td>
+{{^}}
+  <td>
+    <button class="btn btn-sm btn-warning" data-action="delete">删除</button>
+    <div class="confirm hide" data-email="{{ email }}">
+      <button class="btn btn-sm btn-danger" data-action="confirm">确认删除？</button>
+      <button class="btn btn-sm" data-action="cancel">取消</button>
+    </div>
+  </td>
+{{/if}}

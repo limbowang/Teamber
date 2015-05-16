@@ -24,7 +24,16 @@ filters.isAdmin = function(req, res, next) {
 filters.teamOwner = function(req, res, next) {
   var
     userId = req.user.id,
-    id = req.body.id || req.params.id;
+    id = null;
+
+  // get team id
+  if (!isNaN(req.body.teamid)) {
+    id = req.body.teamid;
+  } else if (!isNaN(req.body.id)) {
+    id = req.body.id;
+  } else if (!isNaN(req.params.id)) {
+    id = req.params.id;
+  }
 
   if (id == 0) {
     next();
@@ -58,8 +67,17 @@ filters.teamOwner = function(req, res, next) {
 filters.teamMember = function(req, res, next) {
   var
     userId = req.user.id,
-    id = req.body.teamid || req.body.id || req.params.id;
-  console.log(id);
+    id = null;
+
+  // get team id
+  if (!isNaN(req.body.teamid)) {
+    id = req.body.teamid;
+  } else if (!isNaN(req.body.id)) {
+    id = req.body.id;
+  } else if (!isNaN(req.params.id)) {
+    id = req.params.id;
+  }
+
   if (id == 0) {
     next();
     return ;
@@ -67,7 +85,6 @@ filters.teamMember = function(req, res, next) {
   Team
     .find(id)
     .then(function(team) {
-      console.log(team);
       if (!team) {
         res.status(500).json({
           result: "error",

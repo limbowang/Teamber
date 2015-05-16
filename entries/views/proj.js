@@ -30,7 +30,7 @@ var ProjView = BaseView.extend({
     this.projs.on('add', this.renderProjItem, this);
   },
   events: {
-    'click #proj-new': 'renderCreateProjModal',
+    'click .proj-new': 'renderCreateProjModal',
     'click #proj-add': 'createProj'
   },
   render: function() {
