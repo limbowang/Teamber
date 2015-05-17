@@ -105,7 +105,7 @@ var TeamView = BaseView.extend({
         this.$board.html(html);
         this.members.fetch({reset: true, teamid: this.teamid});
       } else {
-        location.href = '/';
+        location.href = '#';
       }
     }
   },
