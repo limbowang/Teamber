@@ -1,19 +1,19 @@
-var Proj = Backbone.Model.extend({
+var Task = Backbone.Model.extend({
   defaults: {
   },
-  url: '/projects',
+  url: '/tasks',
   sync: function(method, model, options) {
     console.log(method);
     options.wait = true;
     if (method == 'create') {
-      options.url = '/projects/create';
+      options.url = '/tasks/create';
     } else if (method == 'update') {
-      options.url = '/projects/' + this.get('id') + '/update';
+      options.url = '/tasks/' + this.get('id') + '/update';
     } else if (method == 'delete') {
-      options.url = '/projects/' + this.get('id') + '/destroy';
+      options.url = '/tasks/' + this.get('id') + '/destroy';
     }
     return Backbone.sync(method, model, options);
   }
 });
 
-module.exports = Proj;
+module.exports = Task;
