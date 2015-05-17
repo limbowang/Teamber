@@ -248,6 +248,11 @@ router.get('/:id/projects', teamMember, function(req, res, next) {
     Project
       .findAll({where: {creator_id: userId, is_private: true}})
       .then(function(projs) {
+        for(var key in projs) {
+          if (projs[key].team_id == null) {
+            projs[key].dataValues.team_id = 0;
+          }
+        }
         res.json(projs)
       })
       .catch(function(e) {

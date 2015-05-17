@@ -54,6 +54,12 @@ $bg-grey: #f3f3f3;
           a {
             display: block;
             padding: 10px;
+            &:hover {
+              background: $bg-grey;
+            }
+            &.active {
+              background: $bg-grey;
+            }
           }
           ul {
             display: none;
@@ -176,7 +182,17 @@ $bg-grey: #f3f3f3;
       }
 
       .projs-list {
+        li {
+          a {
+            display: block;
+            padding: 10px 20px;
+            border-bottom: 1px solid #eee;
 
+            &:hover {
+              background: $bg-grey;
+            }
+          }
+        }
       }
 
       .settings {

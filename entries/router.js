@@ -10,7 +10,7 @@ var AppRouter = Backbone.Router.extend({
   routes: {
     // Default
     'team-:id': 'showTeam',
-    'proj-:id': 'showProj',
+    'team-:tid/proj-:id': 'showProj',
     'subproj-:id': 'showSubProj',
     '*actions': 'defaultAction'
   }
@@ -42,7 +42,24 @@ var init = function(){
       }
     });
 
-    router.on('route:showProj', function(id) {
+    router.on('route:showProj', function(teamid, id) {
+      if (teamView.teamid != teamid) {
+        teamView.teamid = teamid;
+        teamView.renderTeamChosen();
+        projs.teamid = teamid;
+        projs.fetch({reset: true});
+        projs.once('reset', function() {
+          if (projView.projid != id) {
+            projView.projid = id;
+            projView.render();
+          }
+        });
+      } else {
+        if (projView.projid != id) {
+          projView.projid = id;
+          projView.render();
+        }
+      }
     });
 
     router.on('route:defaultAction', function(actions){

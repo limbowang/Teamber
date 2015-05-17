@@ -23,6 +23,7 @@ var SubProjItemView = Backbone.View.extend({
 });
 
 var ProjView = BaseView.extend({
+  projid: -1,
   initialize: function() {
     this.$projlist = $('#proj-list');
     // this.projs = new Projs();
@@ -34,6 +35,7 @@ var ProjView = BaseView.extend({
     'click #proj-add': 'createProj'
   },
   render: function() {
+    this.$board.html(this.projs.findWhere({id: parseInt(this.projid)}).get('name'));
   },
   renderProjList: function() {
     this.$projlist.html('');
@@ -58,7 +60,10 @@ var ProjView = BaseView.extend({
     }, {
       wait: true,
       url: '/projects/create',
-      success: function() { self.$modal.hide(); },
+      success: function(proj) { 
+        self.$modal.hide();
+        location.href = '#team-' + proj.get('team_id') + '/proj-' + proj.get('id'); 
+      },
       error: function(model, xhr, options) { console.log(xhr); }
     });
   }

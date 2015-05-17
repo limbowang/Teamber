@@ -32,6 +32,9 @@ router.post('/create', teamMember, function(req, res, next) {
       is_private: params.teamid == 0
     })
     .then(function(proj) {
+      if (proj.team_id == null) {
+        proj.dataValues.team_id = 0;
+      }
       res.json(proj);
     })
     .catch(function(e) {
@@ -53,6 +56,9 @@ router.post('/:id/update', function(req, res, next) {
         {fields: ['name']});
     })
     .then(function(proj) {
+      if (proj.team_id == null) {
+        proj.dataValues.team_id = 0;
+      }
       res.json(proj);
     })
     .catch(function(e) {
@@ -87,6 +93,9 @@ router.get('/:id', function(req, res, next) {
   Project
     .find(id)
     .then(function(proj) {
+      if (proj.team_id == null) {
+        proj.dataValues.team_id = 0;
+      }
       res.json(proj);
     })
     .catch(function(e) {
