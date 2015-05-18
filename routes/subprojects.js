@@ -8,6 +8,8 @@ var User   = models.User;
 var Team   = models.Team;
 var Project = models.Project;
 var Subproject = models.Subproject;
+var Taskboard = models.Taskboard;
+var Task = models.Task;
 var teamMember = filters.teamMember;
 var getValidateError = utils.getValidateError;
 
@@ -28,7 +30,7 @@ router.post('/create', function(req, res, next) {
   Subproject
     .create({
       name: params.name,
-      team_id: params.projid,
+      project_id: params.projid,
       creator_id: userId
     })
     .then(function(subproj) {
@@ -46,7 +48,7 @@ router.post('/:id/update', function(req, res, next) {
 	var
     params = req.body,
     id = req.params.id;
-  Subroject
+  Subproject
     .find(id)
     .then(function(subproj) {
       return subproj.updateAttributes(params, 
@@ -66,7 +68,7 @@ router.post('/:id/update', function(req, res, next) {
 router.post('/:id/destroy', function(req, res, next) {
 	var
     id = req.params.id;
-  Subroject
+  Subproject
     .find(id)
     .then(function(subproj) {
       return subproj.destroy();
@@ -84,7 +86,7 @@ router.post('/:id/destroy', function(req, res, next) {
 
 router.get('/:id', function(req, res, next) {
   var id = req.params.id;
-  Subroject
+  Subproject
     .find(id)
     .then(function(subproj) {
       res.json(subproj);
@@ -99,20 +101,27 @@ router.get('/:id', function(req, res, next) {
 
 router.get('/:id/taskboards', function(req, res, next) {
   var id = req.params.id;
-  Subroject
-    .find(id)
-    .then(function(subproj) {
-    	return subproj.getTaskborads();
-    })
-    .then(function(taskboards) {
-      res.json(taskboards);
-    })
-    .catch(function(e) {
-      res.status(500).json({
-        result: "error",
-        msg: e
-      });
-    })
+  Subproject
+  .find(id)
+  .then(function(subproj) {
+  	return subproj.getTaskboards({
+      include:[{
+        model: Task, 
+        where: {ptask_id: null},
+        required: false
+      }]
+    });
+  })
+  .then(function(taskboards) {
+    res.json(taskboards);
+  })
+  .catch(function(e) {
+    console.log(e);
+    res.status(500).json({
+      result: "error",
+      msg: e
+    });
+  })
 });
 
 module.exports = router;

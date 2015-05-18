@@ -77,16 +77,24 @@ $bg-grey: #f3f3f3;
 
 
   .board {
+    $header-height: 36px;
     width: 80%;
     background: #fff;
-    
     &>.header {
       padding: 10px 20px;
       border-bottom: 1px solid #eee;
-      overflow: hidden;
+      @include clearfix;
+
       .title {
         float: left;
         font-size: 25px;
+      }
+
+      .subtitle {
+        display: inline-block;
+        margin-left: 10px;
+        height: $header-height;
+        line-height: $header-height;
       }
 
       .tabs {
@@ -94,8 +102,8 @@ $bg-grey: #f3f3f3;
         float: right;
         .tab {
           display: inline-block;
-          height: 36px;
-          line-height: 36px;
+          height: $header-height;
+          line-height: $header-height;
           font-size: 16px;
           padding: 0 30px;
           &:hover {
@@ -120,6 +128,7 @@ $bg-grey: #f3f3f3;
       margin: 0;
       padding: 0 20px;
       height: 100%;
+      overflow: auto;
 
       &.active {
         display: block;
@@ -197,6 +206,26 @@ $bg-grey: #f3f3f3;
 
       .taskboard-list {
         overflow-x: auto;
+        
+        >li {
+          display: inline-block;
+          width: 180px;
+          margin: 0 10px;
+          text-align: center;
+          vertical-align: top;
+        }
+
+        .task-list {
+          >li {
+            text-align: left;
+            word-wrap: break-word;
+            word-break: break-all;
+          }
+
+          .task-add {
+            text-align: center;
+          }
+        }
       }
 
       .settings {

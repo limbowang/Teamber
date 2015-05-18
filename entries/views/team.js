@@ -58,7 +58,7 @@ var MemberItemTD = Backbone.View.extend({
   removeMember: function(e) {
     var $btnConfirm = $(e.currentTarget);
     $btnConfirm.addClass('btn-disabled').html('删除中');
-    this.model.trigger('delete');
+    this.model.destroy();
   }
 });
 
@@ -133,14 +133,8 @@ var TeamView = BaseView.extend({
       this.$board.find('>.header >.title').html(team.get('name'));
       this.renderTeamChosen();
     }, this);
-    team.on('delete', function() {
-      this.destroy({
-        success: function() {
-          self.alert('success', '操作成功');
-          viewTeamItem.remove();
-          location.href = '#';
-        }
-      })
+    team.on('destroy', function() {
+      viewTeamItem.remove();
     });
   },
   renderMemberItem: function(member) {
@@ -152,13 +146,9 @@ var TeamView = BaseView.extend({
       viewItem.render();
       viewTd.render();
     })
-    member.on('delete', function() {
-      this.destroy({
-        success: function() {
-          viewItem.remove();
-          viewTd.remove();
-        }
-      })
+    member.on('destroy', function() {
+      viewItem.remove();
+      viewTd.remove();
     })
   },
   renderProjItem: function(proj) {
@@ -167,12 +157,8 @@ var TeamView = BaseView.extend({
     proj.on('change', function() {
       view.render();
     })
-    proj.on('delete', function() {
-      this.destroy({
-        success: function() {
-          view.remove();
-        }
-      })
+    proj.on('destroy', function() {
+      view.remove();
     })
   },
   renderTeamCreateModal: function() {
@@ -232,7 +218,12 @@ var TeamView = BaseView.extend({
     $btnConfirm.on('click', function() {
         self.teams
         .findWhere({id: parseInt(self.teamid)})
-        .trigger('delete');
+        .destroy({
+          success: function() {
+            self.alert('success', '操作成功');
+            location.href = '#';
+          }
+        })
       });
   },
   addMember: function() {
