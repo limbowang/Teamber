@@ -6,8 +6,6 @@ var Teams = require('./collections/teams');
 var Members = require('./collections/members');
 var Projs = require('./collections/projs');
 var Subprojs = require('./collections/subprojs');
-var Tasksboards = require('./collections/taskboards');
-var Tasks = require('./collections/tasks');
 
 var AppRouter = Backbone.Router.extend({
   routes: {
@@ -25,15 +23,13 @@ var init = function(){
     teams = new Teams(),
     members = new Members(),
     projs = new Projs(),
-    subprojs = new Subprojs(),
-    tasksboards = new Tasksboards(),
-    tasks = new Tasks();
+    subprojs = new Subprojs();
 
   // init views
   var
     headerView = new HeaderView(),
     teamView = new TeamView({teams: teams, projs: projs, members: members}),
-    projView = new ProjView({projs: projs, subprojs: subprojs, tasksboards: tasksboards, tasks: tasks});
+    projView = new ProjView({projs: projs});
 
   // init router after team collection reset
   teams.once('reset', function() {

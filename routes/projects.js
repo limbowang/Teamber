@@ -35,9 +35,6 @@ router.post('/create', teamMember, function(req, res, next) {
       if (proj.team_id == null) {
         proj.dataValues.team_id = 0;
       }
-      proj.addSubproj({
-        
-      })
       res.json(proj);
     })
     .catch(function(e) {

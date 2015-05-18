@@ -18,7 +18,7 @@ module.exports = {
         references: "Users",
         referenceKey: "id"
       },
-      project_id: {
+      subproject_id: {
         allowNull: false,
         type: DataTypes.INTEGER,
         references: "Subprojects",
