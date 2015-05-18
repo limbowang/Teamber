@@ -9,8 +9,13 @@ var tplTaskAdd =require('../templates/board/task/taskadd.handlebars');
 var TaskItemView = Backbone.View.extend({
   tagName: 'li',
   render: function() {
+    var task = this.model;
     var html = tplTaskItem(this.model.toJSON());
     this.$el.html(html);
+    this.$el.find('a').on('click', function() {
+      var view = new TaskView({model: task});
+      view.render();
+    });
     return this;
   }
 });

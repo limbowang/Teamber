@@ -7,6 +7,8 @@ var Task = Backbone.Model.extend({
     options.wait = true;
     if (method == 'create') {
       options.url = '/tasks/create';
+    } else if(method == 'read') {
+      options.url = '/tasks/' + this.get('id');
     } else if (method == 'update') {
       options.url = '/tasks/' + this.get('id') + '/update';
     } else if (method == 'delete') {

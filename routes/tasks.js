@@ -4,6 +4,7 @@ var models  = require('../models');
 var utils   = require('./utils');
 
 var router = express.Router();
+var User = models.User;
 var Taskboard = models.Taskboard;
 var Task   = models.Task;
 var teamMember = filters.teamMember;
@@ -100,6 +101,94 @@ router.post('/:id/complete', function(req, res, next) {
     });
 });
 
+router.post('/:id/assign', function(req, res, next) {
+  var
+    id = req.params.id,
+    email = req.body.email;
+  User
+  .find({where: {email: email}, attributes: ['id', 'username', 'nickname', 'email', 'avatar']})
+  .then(function(user) {
+    if (user == null) {
+      res.status(500).json({
+        result: "error",
+        msg: "没有该用户"
+      });
+    } else {
+      Task
+      .find(id)
+      .then(function(task) {
+        task
+        .hasAssignment(user)
+        .then(function(hasAssign) {
+          if (hasAssign) {
+            res.status(500).json({
+              result: "error",
+              msg: "用户已经被分配"
+            });
+          } else {
+            task
+            .addAssignment(user)
+            .then(function(result) {
+              user.dataValues.task_id = task.id;
+              user.dataValues.id = undefined;
+              res.json(user);
+            });
+          }
+        })
+      })
+    }
+  })
+  .catch(function(e) {
+    res.status(500).json({
+      result: "error",
+      msg: e
+    });
+  });
+});
+
+router.post('/:id/dismiss', function(req, res, next) {
+  var
+    id = req.params.id,
+    email = req.body.email;
+  User
+  .find({where: {email: email}, attributes: ['id', 'username', 'nickname', 'email', 'avatar']})
+  .then(function(user) {
+    if (user == null) {
+      res.status(500).json({
+        result: "error",
+        msg: "没有该用户"
+      });
+    } else {
+      Task
+      .find(id)
+      .then(function(task) {
+        task
+        .hasAssignment(user)
+        .then(function(hasAssign) {
+          if (!hasAssign) {
+            res.status(500).json({
+              result: "error",
+              msg: "无法解散成员"
+            });
+          } else {
+            task
+            .removeAssignment(user)
+            .then(function(result) {
+              res.json({});
+            });
+          }
+        })
+      })
+    }
+  })
+  .catch(function(e) {
+    res.status(500).json({
+      result: "error",
+      msg: e
+    });
+  });
+});
+
 router.get('/:id', function(req, res, next) {
 	var id = req.params.id;
   Task
@@ -182,6 +271,34 @@ router.get('/:id/histories', function(req, res, next) {
         msg: e
       });
     })
+});
+
+router.get('/:id/assignments', teamMember, function(req, res, next) {
+  var id = req.params.id;
+  var userId = req.session.userid;
+  var curTask = null;
+  if (id != 0) {
+    Task
+      .find(id)
+      .then(function(task) {
+        return task.getAssignments(
+          {attributes: ['id', 'username', 'nickname', 'email', 'avatar']});
+      })
+      .then(function(tasks) {
+        for(var key in tasks) {
+          members[key].dataValues.id = undefined;
+          members[key].dataValues.task_id = curTask.id;
+        }
+        res.json(tasks);
+      })
+      .catch(function(e) {
+        console.log(e);
+        res.status(500).json({
+          result: "error",
+          msg: e
+        });
+      })
+  }
 });
 
 module.exports = router;
