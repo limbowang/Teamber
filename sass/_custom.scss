@@ -52,3 +52,19 @@
   z-index: 9999;
   background-color: rgba(0, 0, 0, .8);
 }
+
+// 
+.cols {
+  overflow: hidden;
+  .large-col {
+    width: 70%;
+    padding: 0 10px;
+    float: left;
+  }
+
+  .small-col {
+    width: 30%;
+    padding: 0 10px;
+    float: left;
+  }
+}

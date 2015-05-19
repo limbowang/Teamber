@@ -3,9 +3,9 @@
     <div class="modal-header">
       <button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
     </div>
-    <div class="modal-body">
+    <div class="modal-body task">
      <div class="cols">
-      <div class="large-cols panel">
+      <div class="large-col panel">
         <div class="title">{{ name }}</div>
         <ul class="nav nav-tabs nav-justified">
           <li class="tab" data-index="checkitem">检查项</li>
@@ -16,17 +16,11 @@
         <div class="tab-content">
           <div class="tab-pane active" data-index="checkitem"></div>
           <div class="tab-pane" data-index="subtask"></div>
-          <div class="tab-pane" data-index="comment">
-            <ul class="comments"></ul>
-            <div>
-              <textarea name="content"></textarea>
-              <button class="btn btn-success">发表评论</button>
-            </div>
-          </div>
+          <div class="tab-pane" data-index="comment"></div>
           <div class="tab-pane" data-index="history"></div>
         </div>
       </div>
-      <div class="small-cols">
+      <div class="small-col">
         <ul class="assignment"></ul>
       </div>
     </div>

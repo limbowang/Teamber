@@ -36,13 +36,12 @@ var init = function(){
     var router = new AppRouter;
 
     router.on('route:showTeam', function(id) {
-      if (teamView.teamid != id) {
-        teamView.teamid = id;
-        teamView.render();
-        projs.teamid = id;
-        projs.fetch({reset: true});
-      }
-    });
+      teamView.teamid = id;
+      teamView.render();
+      projs.teamid = id;
+      projs.fetch({reset: true});
+      projView.projid = -1;
+    })
 
     router.on('route:showProj', function(teamid, id) {
       if (teamView.teamid != teamid) {

@@ -1,10 +1,10 @@
 var Taskboards = require('../collections/taskboards');
 var Tasks = require('../collections/tasks');
 var TaskView = require('./task');
-var tplTaskboardItem = require('../templates/board/task/taskboarditem.handlebars');
-var tplTaskItem = require('../templates/board/task/taskitem.handlebars');
-var tplTaskboardAdd =require('../templates/board/task/taskboardadd.handlebars');
-var tplTaskAdd =require('../templates/board/task/taskadd.handlebars');
+var tplTaskboardItem = require('../templates/board/proj/taskboarditem.handlebars');
+var tplTaskItem = require('../templates/board/proj/taskitem.handlebars');
+var tplTaskboardAdd =require('../templates/board/proj/taskboardadd.handlebars');
+var tplTaskAdd =require('../templates/board/proj/taskadd.handlebars');
 
 var TaskItemView = Backbone.View.extend({
   tagName: 'li',

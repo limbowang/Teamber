@@ -26,7 +26,7 @@ router.post('/create', function(req, res, next) {
     userId = req.user.id;
   Checkitem
     .create({
-      name: params.name,
+      content: params.content,
       task_id: params.taskid,
       creator_id: userId
     })

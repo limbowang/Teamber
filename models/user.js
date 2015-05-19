@@ -61,7 +61,7 @@ module.exports = function(sequelize, DataTypes) {
         User.hasMany(models.Taskboard, { foreignKey: 'creator_id' });
         // Task
         User.hasMany(models.Task, { foreignKey: 'creator_id' });
-        User.belongsToMany(models.Task, { through: 'assignments', foreignKey: 'user_id' });
+        User.belongsToMany(models.Task, { through: 'assignments', foreignKey: 'user_id', as: 'AssignedTask' });
         // Comment
         User.hasMany(models.Comment, { foreignKey: 'creator_id' });
         // Checkitem

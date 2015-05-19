@@ -16,7 +16,6 @@ module.exports = function(sequelize, DataTypes) {
       type: DataTypes.INTEGER,
     },
     taskboard_id: {
-      allowNull: false,
       type: DataTypes.INTEGER,
     },
     ptask_id: {
@@ -33,7 +32,7 @@ module.exports = function(sequelize, DataTypes) {
       associate: function(models) {
         // User
         Task.belongsTo(models.User, { foreignKey: 'creator_id' });
-        Task.belongsToMany(models.User, { through: 'assignments', foreignKey: 'task_id' });
+        Task.belongsToMany(models.User, { through: 'assignments', foreignKey: 'task_id', as: 'Assignments' });
         // Taskboard
         Task.belongsTo(models.Taskboard, { foreignKey: 'taskboard_id' });
         // Task itself

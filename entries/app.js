@@ -1,4 +1,5 @@
 global.BaseView = require('./views/base');
+global.alert = require('./helpers/alert');
 
 var router = require('./router');
 

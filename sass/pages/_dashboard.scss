@@ -13,12 +13,11 @@ $bg-grey: #f3f3f3;
     height: 0;
     padding: 0;
     text-align: center;
-    z-index: 9999;
+    z-index: 10000;
 
     .alert {
       display: inline-block;
       padding: 10px 20px;
-      z-index: 9999;
     }
   }
 
@@ -149,20 +148,7 @@ $bg-grey: #f3f3f3;
         }
       }
 
-      .cols {
-        overflow: hidden;
-        .large-col {
-          width: 70%;
-          padding: 0 10px;
-          float: left;
-        }
-
-        .small-col {
-          width: 30%;
-          padding: 0 10px;
-          float: left;
-        }
-      }
+      
 
       .member-list {
         margin-top: 10px;
@@ -230,6 +216,26 @@ $bg-grey: #f3f3f3;
 
       .settings {
 
+      }
+    }
+  }
+}
+
+.task {
+  .checkitems {
+    >li {
+      .content {
+        display: inline-block;
+      }
+
+      .actions {
+        display: none;
+      }
+
+      &:hover {
+        .actions {
+          display: inline-block;
+        }
       }
     }
   }

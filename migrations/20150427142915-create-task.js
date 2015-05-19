@@ -19,7 +19,6 @@ module.exports = {
         referenceKey: "id"
       },
       taskboard_id: {
-        allowNull: false,
         type: DataTypes.INTEGER,
         references: "Taskboards",
         referenceKey: "id"

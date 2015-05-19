@@ -26,11 +26,12 @@ router.post('/create', function(req, res, next) {
     userId = req.user.id;
   Comment
     .create({
-      content: params.name,
+      content: params.content,
       task_id: params.taskid,
       creator_id: userId
     })
     .then(function(comment) {
+      comment.dataValues.is_own = true;
       res.json(comment);
     })
     .catch(function(e) {
@@ -52,6 +53,7 @@ router.post('/:id/update', function(req, res, next) {
         {fields: ['content']});
     })
     .then(function(comment) {
+      comment.dataValues.is_own = true;
       res.json(comment);
     })
     .catch(function(e) {

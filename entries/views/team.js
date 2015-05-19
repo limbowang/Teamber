@@ -94,7 +94,7 @@ var TeamView = BaseView.extend({
     'click #team-delete': 'deleteTeam',
     'click .member-invite': 'renderMemberInviteModal',
     'click #member-add': 'addMember',
-    'click .tab': 'switchTab'
+    'click #board .tab': 'switchTab'
   },
   render: function() {
     this.renderTeamChosen();

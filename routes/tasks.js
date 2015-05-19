@@ -24,11 +24,18 @@ router.post('/create', function(req, res, next) {
 	var
     params = req.body,
     userId = req.user.id;
+  if (params.taskboardid === undefined && params.ptaskid === undefined) {
+    res.status(500).json({
+      result: "error",
+      msg: "参数缺乏"
+    })
+  }
   Task
     .create({
       name: params.name,
       taskboard_id: params.taskboardid,
-      creator_id: userId
+      creator_id: userId,
+      ptask_id: params.ptaskid
     })
     .then(function(task) {
       res.json(task);
@@ -207,7 +214,7 @@ router.get('/:id', function(req, res, next) {
 router.get('/:id/subtasks', function(req, res, next) {
 	var id = req.params.id;
   Task
-    .find({ where: { ptask_id: id } })
+    .findAll({ where: { ptask_id: id } })
     .then(function(subtasks) {
       res.json(subtasks);
     })
@@ -221,12 +228,20 @@ router.get('/:id/subtasks', function(req, res, next) {
 
 router.get('/:id/comments', function(req, res, next) {
 	var id = req.params.id;
+  var userId = req.user.id;
   Task
     .find(id)
     .then(function(task) {
     	return task.getComments();
     })
     .then(function(comments) {
+      for(var key in comments) {
+        if (comments[key].creator_id == userId) {
+          comments[key].dataValues.is_own = true;
+        } else {
+          comments[key].dataValues.is_own = false;
+        }
+      }
       res.json(comments);
     })
     .catch(function(e) {
