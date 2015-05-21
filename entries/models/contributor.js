@@ -1,20 +1,20 @@
-var Member = Backbone.Model.extend({
+var Contributor = Backbone.Model.extend({
   defaults: {
   },
   idAttribute: "email",
-  url: '/members',
+  url: '/contributors',
   sync: function(method, model, options) {
     options.wait = true;
     console.log(method);
     if (method == 'create') {
-      options.url = 'teams/' + this.teamid + '/members/add';
+      options.url = '/projects/' + this.get('proj_id') + '/contributors/add';
     } else if (method == 'delete') {
       options.data = { email: this.get('email')};
       options.processData = true;
-      options.url = '/teams/' + this.get('team_id') + '/members/remove';
+      options.url = '/projects/' + this.get('proj_id') + '/contributors/remove';
     }
     return Backbone.sync(method, model, options);
   }
 });
 
-module.exports = Member;
+module.exports = Contributor;

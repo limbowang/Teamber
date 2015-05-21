@@ -21,7 +21,8 @@ module.exports = {
       team_id: {
         type: DataTypes.INTEGER,
         references: "Teams",
-        referenceKey: "id"
+        referenceKey: "id",
+        onDelete: 'cascade'
       },
       is_private: {
         allowNull: false,

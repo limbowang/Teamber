@@ -29,6 +29,11 @@ module.exports = function(sequelize, DataTypes) {
         // project
         Team.hasMany(models.Project, { foreignKey: 'team_id' });
       }
+    },
+    instanceMethods: {
+      toJSON: function() {
+        return this.dataValues;
+      }
     }
   });
   return Team;

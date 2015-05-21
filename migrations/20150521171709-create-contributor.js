@@ -1,26 +1,21 @@
 "use strict";
 module.exports = {
   up: function(migration, DataTypes, done) {
-    migration.createTable("Teams", {
-      id: {
-        allowNull: false,
-        autoIncrement: true,
-        primaryKey: true,
-        type: DataTypes.INTEGER
-      },
-      name: {
-        allowNull: false,
-        type: DataTypes.STRING(20)
-      },
-      creator_id: {
+    migration.createTable("Contributors", {
+      project_id: {
         allowNull: false,
         type: DataTypes.INTEGER,
-        references: "Users",
+        primaryKey: true,
+        references: "Projects",
         referenceKey: "id",
         onDelete: 'cascade'
       },
-      description: {
-        type: DataTypes.STRING
+      user_id: {
+        allowNull: false,
+        type: DataTypes.INTEGER,
+        primaryKey: true,
+        references: "Users",
+        referenceKey: "id",
       },
       createdAt: {
         allowNull: false,
@@ -33,6 +28,6 @@ module.exports = {
     }).done(done);
   },
   down: function(migration, DataTypes, done) {
-    migration.dropTable("Teams").done(done);
+    migration.dropTable("Contributors").done(done);
   }
 };

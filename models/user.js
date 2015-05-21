@@ -51,17 +51,18 @@ module.exports = function(sequelize, DataTypes) {
     classMethods: {
       associate: function(models) {
         // Team
-        User.hasMany(models.Team, { foreignKey: 'creator_id', as: 'OwnTeam'});
+        User.hasMany(models.Team, { foreignKey: 'creator_id', as: 'OwnTeams'});
         User.belongsToMany(models.Team, { through: 'members', foreignKey: 'user_id', as: 'Teams'});
         // Project
-        User.hasMany(models.Project, { foreignKey: 'creator_id' });
+        User.hasMany(models.Project, { foreignKey: 'creator_id', as: 'OwnProject' });
+        User.belongsToMany(models.Project, { through: 'contributors', foreignKey: 'user_id', as: 'Projects'});
         // Subproject
         User.hasMany(models.Subproject, { foreignKey: 'creator_id' });
         // Taskboard
         User.hasMany(models.Taskboard, { foreignKey: 'creator_id' });
         // Task
         User.hasMany(models.Task, { foreignKey: 'creator_id' });
-        User.belongsToMany(models.Task, { through: 'assignments', foreignKey: 'user_id', as: 'AssignedTask' });
+        User.belongsToMany(models.Task, { through: 'assignments', foreignKey: 'user_id', as: 'AssignedTasks' });
         // Comment
         User.hasMany(models.Comment, { foreignKey: 'creator_id' });
         // Checkitem
@@ -110,6 +111,13 @@ module.exports = function(sequelize, DataTypes) {
           .finally(function() {
             callback(res, error);
           });
+      }
+    },
+    instanceMethods: {
+      toJSON: function() {
+        this.dataValues.id = undefined;
+        this.dataValues.password = undefined;
+        return this.dataValues;
       }
     },
     hooks: {

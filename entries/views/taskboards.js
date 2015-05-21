@@ -136,7 +136,8 @@ var TaskboardsView = Backbone.View.extend({
   tagName: 'ul',
   className: 'taskboard-list',
   subprojid: 0,
-  initialize: function() {
+  initialize: function(members) {
+    this.members = members;
     this.taskboards = new Taskboards();
     this.taskboards.on('reset', this.render, this);
     this.taskboards.on('add', this.renderTaskboardItem, this);
@@ -155,7 +156,7 @@ var TaskboardsView = Backbone.View.extend({
     return this;
   },
   renderTaskboardItem: function(taskboard) {
-    var viewTaskboard = new TaskboardItemView({model: taskboard});
+    var viewTaskboard = new TaskboardItemView({members: this.members, model: taskboard});
     this.$liTaskboardAdd.before(viewTaskboard.render().el);
     taskboard.on('destroy', function() {
       viewTaskboard.remove();

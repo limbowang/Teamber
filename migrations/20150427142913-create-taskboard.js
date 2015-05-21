@@ -22,7 +22,8 @@ module.exports = {
         allowNull: false,
         type: DataTypes.INTEGER,
         references: "Subprojects",
-        referenceKey: "id"
+        referenceKey: "id",
+        onDelete: 'cascade'
       },
       createdAt: {
         allowNull: false,

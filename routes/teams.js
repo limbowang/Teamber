@@ -124,7 +124,6 @@ router.post('/:id/members/add', teamOwner, function(req, res, next) {
               .addMember(user)
               .then(function(result) {
                 user.dataValues.team_id = team.id;
-                user.dataValues.id = undefined;
                 res.json(user);
               });
             }
@@ -165,7 +164,6 @@ router.post('/:id/members/remove', teamOwner, function(req, res, next) {
         Team
         .find(id)
         .then(function(team) {
-          console.log(team.creator_id, user.id);
           if (team.creator_id == user.id) {
             res.status(500).json({
               result: "error",
@@ -216,6 +214,7 @@ router.get('/', function(req, res, next) {
           teams[key].dataValues.is_owner = false;
         }
       }
+      console.log(teams[0].toJSON());
       res.json(teams);
     })
     .catch(function(e) {
@@ -283,33 +282,47 @@ router.get('/:id/members', teamMember, function(req, res, next) {
   var id = req.params.id;
   var userId = req.session.userid;
   var curTeam = null;
-  if (id != 0) {
+  if (id == 0) {
+    User
+    .find(userId)
+    .then(function(member) {
+      member.dataValues.is_owner = true;
+      member.dataValues.team_id = id;
+      res.json([member]);
+    })
+    .catch(function(e) {
+      console.log(e);
+      res.status(500).json({
+        result: "error",
+        msg: e
+      });
+    })
+  } else {
     Team
-      .find(id)
-      .then(function(team) {
-        curTeam = team;
-        return team.getMembers(
-          {attributes: ['id', 'username', 'nickname', 'email', 'avatar']});
-      })
-      .then(function(members) {
-        for(var key in members) {
-          if (curTeam.creator_id == members[key].id) {
-            members[key].dataValues.is_owner = true;
-          } else {
-            members[key].dataValues.is_owner = false;
-          }
-          members[key].dataValues.id = undefined;
-          members[key].dataValues.team_id = curTeam.id;
+    .find(id)
+    .then(function(team) {
+      curTeam = team;
+      return team.getMembers(
+        {attributes: ['id', 'username', 'nickname', 'email', 'avatar']});
+    })
+    .then(function(members) {
+      for(var key in members) {
+        if (curTeam.creator_id == members[key].id) {
+          members[key].dataValues.is_owner = true;
+        } else {
+          members[key].dataValues.is_owner = false;
         }
-        res.json(members);
-      })
-      .catch(function(e) {
-        console.log(e);
-        res.status(500).json({
-          result: "error",
-          msg: e
-        });
-      })
+        members[key].dataValues.team_id = id;
+      }
+      res.json(members);
+    })
+    .catch(function(e) {
+      console.log(e);
+      res.status(500).json({
+        result: "error",
+        msg: e
+      });
+    })
   }
 });
 

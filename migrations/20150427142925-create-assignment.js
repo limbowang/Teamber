@@ -7,7 +7,8 @@ module.exports = {
         type: DataTypes.INTEGER,
         primaryKey: true,
         references: "Tasks",
-        referenceKey: "id"
+        referenceKey: "id",
+        onDelete: 'cascade'
       },
       user_id: {
         allowNull: false,

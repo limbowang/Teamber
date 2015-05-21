@@ -288,7 +288,35 @@ router.get('/:id/histories', function(req, res, next) {
     })
 });
 
-router.get('/:id/assignments', teamMember, function(req, res, next) {
+router.get('/:id/assignments', function(req, res, next) {
+  var id = req.params.id;
+  var userId = req.session.userid;
+  var curTask = null;
+  if (id != 0) {
+    Task
+      .find(id)
+      .then(function(task) {
+        return task.getAssignments(
+          {attributes: ['id', 'username', 'nickname', 'email', 'avatar']});
+      })
+      .then(function(tasks) {
+        for(var key in tasks) {
+          members[key].dataValues.id = undefined;
+          members[key].dataValues.task_id = curTask.id;
+        }
+        res.json(tasks);
+      })
+      .catch(function(e) {
+        console.log(e);
+        res.status(500).json({
+          result: "error",
+          msg: e
+        });
+      })
+  }
+});
+
+router.get('/:id/unassignments', teamMember, function(req, res, next) {
   var id = req.params.id;
   var userId = req.session.userid;
   var curTask = null;

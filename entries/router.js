@@ -29,7 +29,7 @@ var init = function(){
   var
     headerView = new HeaderView(),
     teamView = new TeamView({teams: teams, projs: projs, members: members}),
-    projView = new ProjView({projs: projs});
+    projView = new ProjView({projs: projs, members: members});
 
   // init router after team collection reset
   teams.once('reset', function() {

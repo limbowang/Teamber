@@ -21,7 +21,8 @@ module.exports = {
       taskboard_id: {
         type: DataTypes.INTEGER,
         references: "Taskboards",
-        referenceKey: "id"
+        referenceKey: "id",
+        onDelete: 'cascade'
       },
       ptask_id: {
         type: DataTypes.INTEGER

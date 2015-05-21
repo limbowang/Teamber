@@ -233,7 +233,6 @@ var TeamView = BaseView.extend({
       email: email
     }, {
       wait: true,
-      url: 'teams/' + this.teamid + '/members/add',
       success: function(member, res, options) {
         self.$modal.hide();
       }

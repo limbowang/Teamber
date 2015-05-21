@@ -18,7 +18,8 @@ module.exports = {
         allowNull: false,
         type: DataTypes.INTEGER,
         references: "Teams",
-        referenceKey: "id"
+        referenceKey: "id",
+        onDelete: 'cascade'
       },
       value: {
         allowNull: false,

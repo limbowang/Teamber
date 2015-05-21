@@ -83,7 +83,7 @@ var ProjView = BaseView.extend({
     })
   },
   renderSubprojPanel: function(subproj) {
-    var view = new TaskboardsView();
+    var view = new TaskboardsView({members: this.members});
     this.$subprojSelect.html(subproj.get('name'));
     this.$panelTasks.html(view.el);
     view.taskboards.subprojid = subproj.get('id');
