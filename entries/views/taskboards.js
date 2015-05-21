@@ -49,6 +49,7 @@ var TaskAddView = Backbone.View.extend({
     var name = this.$formTaskNew.find('input[name="name"]').val();
     this.collection.create({
       name: name,
+      projid: this.collection.projid,
       taskboardid: this.collection.taskboardid
     }, {
       wait: true,
@@ -65,6 +66,8 @@ var TaskboardItemView = Backbone.View.extend({
   initialize: function() {
     this.$tasklist = this.$el.find('.task-list');
     this.tasks = new Tasks();
+    this.tasks.projid = this.model.projid;
+    this.tasks.taskboardid = this.model.get('id');
     this.tasks.on('reset', this.renderTaskList, this);
     this.tasks.on('add', this.renderTaskItem, this);
   },
@@ -76,7 +79,6 @@ var TaskboardItemView = Backbone.View.extend({
     this.$el.find('.task-list').append(viewTaskAdd.render().el);
     this.$liAddTask = this.$el.find('.task-add');
 
-    this.tasks.taskboardid = this.model.get('id');
     this.tasks.add(this.model.get('Tasks'));
     return this;
   },
@@ -136,8 +138,7 @@ var TaskboardsView = Backbone.View.extend({
   tagName: 'ul',
   className: 'taskboard-list',
   subprojid: 0,
-  initialize: function(members) {
-    this.members = members;
+  initialize: function() {
     this.taskboards = new Taskboards();
     this.taskboards.on('reset', this.render, this);
     this.taskboards.on('add', this.renderTaskboardItem, this);
@@ -156,7 +157,8 @@ var TaskboardsView = Backbone.View.extend({
     return this;
   },
   renderTaskboardItem: function(taskboard) {
-    var viewTaskboard = new TaskboardItemView({members: this.members, model: taskboard});
+    taskboard.projid = this.taskboards.projid;
+    var viewTaskboard = new TaskboardItemView({model: taskboard});
     this.$liTaskboardAdd.before(viewTaskboard.render().el);
     taskboard.on('destroy', function() {
       viewTaskboard.remove();

@@ -5,7 +5,7 @@ var Members = Backbone.Collection.extend({
   url: '/members',
   sync: function(method, model, options) {
     options.wait = true;
-  	console.log(method);
+  	console.log(method + " members");
     if (method == "read") {
   		options.url = '/teams/' + options.teamid + '/members';
   	}

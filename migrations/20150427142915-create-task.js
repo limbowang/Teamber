@@ -18,6 +18,12 @@ module.exports = {
         references: "Users",
         referenceKey: "id"
       },
+      project_id: {
+        type: DataTypes.INTEGER,
+        references: "Projects",
+        referenceKey: "id",
+        onDelete: 'cascade'
+      },
       taskboard_id: {
         type: DataTypes.INTEGER,
         references: "Taskboards",

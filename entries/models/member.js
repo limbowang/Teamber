@@ -3,12 +3,11 @@ var Member = Backbone.Model.extend({
   },
   idAttribute: "email",
   url: '/members',
+  teamid: -1,
   sync: function(method, model, options) {
     options.wait = true;
     console.log(method);
-    if (method == 'create') {
-      options.url = 'teams/' + this.teamid + '/members/add';
-    } else if (method == 'delete') {
+    if (method == 'delete') {
       options.data = { email: this.get('email')};
       options.processData = true;
       options.url = '/teams/' + this.get('team_id') + '/members/remove';

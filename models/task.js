@@ -15,6 +15,9 @@ module.exports = function(sequelize, DataTypes) {
       allowNull: false,
       type: DataTypes.INTEGER,
     },
+    project_id: {
+      type: DataTypes.INTEGER,
+    },
     taskboard_id: {
       type: DataTypes.INTEGER,
     },

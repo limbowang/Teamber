@@ -49,7 +49,7 @@ var ProjView = BaseView.extend({
       this.$board.html(html);
       this.$subprojlist = $('#subproj-list');
       this.$subprojSelect = $('#subproj-select > span');
-      this.$panelTasks = $('.panel[data-index="tasks"]');
+      this.$panelTasks = $('.panel[data-index="tasks"] .content');
       this.subprojs.projid = this.projid;
       this.subprojs.fetch({reset: true});
     } else {
@@ -83,9 +83,10 @@ var ProjView = BaseView.extend({
     })
   },
   renderSubprojPanel: function(subproj) {
-    var view = new TaskboardsView({members: this.members});
+    var view = new TaskboardsView();
     this.$subprojSelect.html(subproj.get('name'));
     this.$panelTasks.html(view.el);
+    view.taskboards.projid = subproj.get('project_id');
     view.taskboards.subprojid = subproj.get('id');
     view.taskboards.fetch({reset: true});
   },

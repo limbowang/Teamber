@@ -214,10 +214,10 @@ router.get('/', function(req, res, next) {
           teams[key].dataValues.is_owner = false;
         }
       }
-      console.log(teams[0].toJSON());
       res.json(teams);
     })
     .catch(function(e) {
+      console.log(e);
       res.status(500).json({
         result: "error",
         msg: e

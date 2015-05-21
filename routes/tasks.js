@@ -33,6 +33,7 @@ router.post('/create', function(req, res, next) {
   Task
     .create({
       name: params.name,
+      project_id: params.projid,
       taskboard_id: params.taskboardid,
       creator_id: userId,
       ptask_id: params.ptaskid
