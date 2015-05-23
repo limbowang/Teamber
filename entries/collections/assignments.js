@@ -1,4 +1,4 @@
-var Assignment = require('../models/member');
+var Assignment = require('../models/assignment');
 
 var Assignments = Backbone.Collection.extend({
   model: Assignment,

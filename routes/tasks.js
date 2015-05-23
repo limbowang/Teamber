@@ -113,6 +113,7 @@ router.post('/:id/assign', function(req, res, next) {
   var
     id = req.params.id,
     email = req.body.email;
+  console.log(email);
   User
   .find({where: {email: email}, attributes: ['id', 'username', 'nickname', 'email', 'avatar']})
   .then(function(user) {
@@ -297,43 +298,16 @@ router.get('/:id/assignments', function(req, res, next) {
     Task
       .find(id)
       .then(function(task) {
+        curTask = task;
         return task.getAssignments(
           {attributes: ['id', 'username', 'nickname', 'email', 'avatar']});
       })
-      .then(function(tasks) {
-        for(var key in tasks) {
-          members[key].dataValues.id = undefined;
-          members[key].dataValues.task_id = curTask.id;
+      .then(function(assigns) {
+        for(var key in assigns) {
+          assigns[key].dataValues.id = undefined;
+          assigns[key].dataValues.task_id = curTask.id;
         }
-        res.json(tasks);
-      })
-      .catch(function(e) {
-        console.log(e);
-        res.status(500).json({
-          result: "error",
-          msg: e
-        });
-      })
-  }
-});
-
-router.get('/:id/unassignments', teamMember, function(req, res, next) {
-  var id = req.params.id;
-  var userId = req.session.userid;
-  var curTask = null;
-  if (id != 0) {
-    Task
-      .find(id)
-      .then(function(task) {
-        return task.getAssignments(
-          {attributes: ['id', 'username', 'nickname', 'email', 'avatar']});
-      })
-      .then(function(tasks) {
-        for(var key in tasks) {
-          members[key].dataValues.id = undefined;
-          members[key].dataValues.task_id = curTask.id;
-        }
-        res.json(tasks);
+        res.json(assigns);
       })
       .catch(function(e) {
         console.log(e);

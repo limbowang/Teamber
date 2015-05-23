@@ -246,4 +246,30 @@ $bg-grey: #f3f3f3;
       }
     }
   }
+
+  .user {
+    .assign {
+      display: inline-block;
+      width: 10px;
+      height: 10px;
+      border-radius: 5px;
+      border: 1px solid #eee;
+      &.active {
+        background: #5cb85c;
+      }
+    }
+
+    .avatar {
+      width: 36px;
+      height: 36px;
+      border-radius: 5px;
+    }
+    .nickname {
+      text-align: center;
+    }
+  }
+
+  .invite {
+    display: none;
+  }
 }

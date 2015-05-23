@@ -1,12 +1,24 @@
 var Projs = require('../collections/projs');
 var Subprojs = require('../collections/subprojs');
+var Contributors = require('../collections/contributors');
 var Proj = require('../models/proj');
 var TaskboardsView = require('./taskboards');
 var tplProjItem = require('../templates/sidebar/projitem.handlebars');
 var tplBoard = require('../templates/board/proj/board.handlebars');
 var tplSubProjItem = require('../templates/board/proj/subprojitem.handlebars');
+var tplContributorItem = require('../templates/board/proj/contributoritem.handlebars');
 var tplProjAdd = require('../templates/modal/projadd.handlebars');
 var tplSubrojAdd = require('../templates/modal/subprojadd.handlebars');
+
+var ContributorItemView = Backbone.View.extend({
+  tagName: 'li',
+  className: 'user',
+  render: function() {
+    var html = tplContributorItem(this.model.toJSON());
+    this.$el.html(html);
+    return this;
+  }
+});
 
 var ProjItemView = Backbone.View.extend({
   tagName: 'li',
@@ -28,19 +40,22 @@ var SubProjItemView = Backbone.View.extend({
 
 var ProjView = BaseView.extend({
   projid: -1,
-  initialize: function() {
-    this.$projlist = $('#proj-list');
-    this.subprojs = new Subprojs();
-    this.projs.on('reset', this.renderProjList, this);
-    this.projs.on('add', this.renderProjItem, this);
-    this.subprojs.on('reset', this.renderSubprojList, this);
-    this.subprojs.on('add', this.renderSubprojItem, this);
-  },
   events: {
     'click .proj-new': 'renderCreateProjModal',
     'click .subproj-new': 'renderCreateSubprojModal',
     'click #proj-add': 'createProj',
     'click #subproj-add': 'createSubproj'
+  },
+  initialize: function() {
+    this.$projlist = $('#proj-list');
+    this.subprojs = new Subprojs();
+    this.contributors = new Contributors();
+    this.projs.on('reset', this.renderProjList, this);
+    this.projs.on('add', this.renderProjItem, this);
+    this.subprojs.on('reset', this.renderSubprojList, this);
+    this.subprojs.on('add', this.renderSubprojItem, this);
+    this.contributors.on('reset', this.renderContributorList, this);
+    this.contributors.on('add', this.renderContributorItem, this);
   },
   render: function() {
     var proj = this.projs.findWhere({id: parseInt(this.projid)});
@@ -50,8 +65,11 @@ var ProjView = BaseView.extend({
       this.$subprojlist = $('#subproj-list');
       this.$subprojSelect = $('#subproj-select > span');
       this.$panelTasks = $('.panel[data-index="tasks"] .content');
+      this.$contributorList = $('.contributor-list');
       this.subprojs.projid = this.projid;
+      this.contributors.projid = this.projid;
       this.subprojs.fetch({reset: true});
+      this.contributors.fetch({reset: true});
     } else {
       location.href = '#';
     }
@@ -65,6 +83,10 @@ var ProjView = BaseView.extend({
     if (this.subprojs.length > 0) {
       this.renderSubprojPanel(this.subprojs.at(0));
     }
+  },
+  renderContributorList: function() {
+    this.$contributorList.html('');
+    this.contributors.each(this.renderContributorItem, this);
   },
   renderProjItem: function(proj) {
     var view = new ProjItemView({model: proj});
@@ -82,8 +104,15 @@ var ProjView = BaseView.extend({
       view.remove();
     })
   },
+  renderContributorItem: function(contributor) {
+    var view = new ContributorItemView({model: contributor});
+    this.$contributorList.append(view.render().el);
+    contributor.on('remove', function() {
+      view.remove();
+    })
+  },
   renderSubprojPanel: function(subproj) {
-    var view = new TaskboardsView();
+    var view = new TaskboardsView({contributors: this.contributors});
     this.$subprojSelect.html(subproj.get('name'));
     this.$panelTasks.html(view.el);
     view.taskboards.projid = subproj.get('project_id');

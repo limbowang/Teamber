@@ -86,6 +86,7 @@ var TaskboardItemView = Backbone.View.extend({
     this.tasks.each(this.renderTaskItem, this);
   },
   renderTaskItem: function(task) {
+    task.contributors = this.model.contributors;
     var viewTask = new TaskItemView({model: task});
     this.$liAddTask.before(viewTask.render().el);
     task.on('destroy', function() {
@@ -138,12 +139,14 @@ var TaskboardsView = Backbone.View.extend({
   tagName: 'ul',
   className: 'taskboard-list',
   subprojid: 0,
-  initialize: function() {
+  initialize: function(options) {
     this.taskboards = new Taskboards();
     this.taskboards.on('reset', this.render, this);
     this.taskboards.on('add', this.renderTaskboardItem, this);
     this.taskboards.on('reset', this.fixWidth, this);
     this.taskboards.on('add', this.fixWidth, this);
+    // delegate contributots
+    this.contributors = options.contributors;
   },
   render: function() {
     this.$el.html('');
@@ -158,6 +161,7 @@ var TaskboardsView = Backbone.View.extend({
   },
   renderTaskboardItem: function(taskboard) {
     taskboard.projid = this.taskboards.projid;
+    taskboard.contributors = this.contributors;
     var viewTaskboard = new TaskboardItemView({model: taskboard});
     this.$liTaskboardAdd.before(viewTaskboard.render().el);
     taskboard.on('destroy', function() {

@@ -7,6 +7,7 @@ var router = express.Router();
 var User   = models.User;
 var Team   = models.Team;
 var Project = models.Project;
+var Task = models.Task;
 var teamMember = filters.teamMember;
 var getValidateError = utils.getValidateError;
 
@@ -32,7 +33,6 @@ router.post('/create', teamMember, function(req, res, next) {
       is_private: params.teamid == 0
     })
     .then(function(proj) {
-      proj.addContributor(userId);
       if (proj.team_id == null) {
         proj.dataValues.team_id = 0;
       }
@@ -89,96 +89,6 @@ router.post('/:id/destroy', function(req, res, next) {
     });
 });
 
-router.post('/:id/contributors/add', function(req, res, next) {
-  var
-    params = req.body,
-    email = params.email,
-    id = req.params.id;
-  User
-  .find({where: {email: email}, attributes: ['id', 'username', 'nickname', 'email', 'avatar']})
-  .then(function(user) {
-    if (user == null) {
-      res.status(500).json({
-        result: "error",
-        msg: "没有该用户"
-      });
-    } else {
-      Project
-      .find(id)
-      .then(function(proj) {
-        proj
-        .hasContributor(user)
-        .then(function(hasContributor) {
-          if (hasContributor) {
-            res.status(500).json({
-              result: "error",
-              msg: "用户已经在您的项目中"
-            });
-          } else {
-            proj
-            .addContributor(user)
-            .then(function(result) {
-              user.dataValues.proj_id = proj.id;
-              res.json(user);
-            });
-          }
-        })
-      })
-    }
-  })
-  .catch(function(e) {
-    res.status(500).json({
-      result: "error",
-      msg: e
-    });
-  });
-});
-
-router.post('/:id/contributors/remove', function(req, res, next) {
-  var
-    params = req.body,
-    id = req.params.id,
-    userId = req.session.userid;
-
-  User
-  .find({where: {email: params.email}})
-  .then(function(user) {
-    if (user == null) {
-      res.status(500).json({
-        result: "error",
-        msg: "没有该用户"
-      });
-    } else {
-      Project
-      .find(id)
-      .then(function(proj) {
-        proj
-        .hasContributor(user)
-        .then(function(hasContributor) {
-          if (!hasContributor) {
-            res.status(500).json({
-              result: "error",
-              msg: "用户不在您的项目"
-            });
-          } else {
-            proj
-            .removeContributor(user)
-            .then(function(result) {
-              res.json({});
-            });
-          }
-        })
-      })
-    }
-  })
-  .catch(function(e) {
-    res.status(500).json({
-      result: "error",
-      msg: e
-    });
-  });
-});
-
 router.get('/:id', function(req, res, next) {
   var id = req.params.id;
   Project
@@ -218,23 +128,19 @@ router.get('/:id/subprojects', function(req, res, next) {
 router.get('/:id/contributors', function(req, res, next) {
   var id = req.params.id;
   var userId = req.session.userid;
-  var curProj = null;
   
-  Project
-  .find(id)
-  .then(function(proj) {
-    curProj = proj;
-    return proj.getContributors(
-      {attributes: ['id', 'username', 'nickname', 'email', 'avatar']});
+  User
+  .findAll({
+    include: [{
+      model: Task,
+      as: 'AssignedTasks',
+      where: {project_id: id}
+    }]
   })
   .then(function(contributors) {
     for(var key in contributors) {
-      if (curProj.creator_id == contributors[key].id) {
-        contributors[key].dataValues.is_owner = true;
-      } else {
-        contributors[key].dataValues.is_owner = false;
-      }
       contributors[key].dataValues.proj_id = id;
+      contributors[key].dataValues.AssignedTasks = undefined;
     }
     res.json(contributors);
   })

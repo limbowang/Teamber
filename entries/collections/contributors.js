@@ -7,7 +7,7 @@ var Contributors = Backbone.Collection.extend({
     options.wait = true;
   	console.log(method);
     if (method == "read") {
-  		options.url = '/projects/' + options.projid + '/contributors';
+  		options.url = '/projects/' + this.projid + '/contributors';
   	}
   	return Backbone.sync(method, model, options);
   }

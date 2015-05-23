@@ -1,45 +1,126 @@
+var Members = require('../collections/members');
+var Assignments = require('../collections/assignments');
 var Comments = require('../collections/comments');
 var Checkitems = require('../collections/checkitems');
-var Assignments = require('../collections/assignments');
 var Histories = require('../collections/histories');
 var Subtasks = require('../collections/tasks');
 var tplTaskView = require('../templates/board/task/taskview.handlebars');
 var tplCheckitemView = require('../templates/board/task/checkitem.handlebars');
 var tplCommentView = require('../templates/board/task/comment.handlebars');
 var tplHistoryView = require('../templates/board/task/history.handlebars');
-var tplAssignmentView = require('../templates/board/task/assignment.handlebars');
 var tplSubtaskView = require('../templates/board/task/subtask.handlebars');
 var tplCheckitemAddView = require('../templates/board/task/checkitemadd.handlebars');
 var tplCommentAddView = require('../templates/board/task/commentadd.handlebars');
-var tplAssignmentAddView = require('../templates/board/task/assignmentadd.handlebars');
 var tplSubtaskAddView = require('../templates/board/task/subtaskadd.handlebars');
+var tplAssignmentView = require('../templates/board/assign/userview.handlebars');
+var tplUserItemView = require('../templates/board/assign/memberitem.handlebars');
+var tplInviteItemView = require('../templates/board/assign/inviteitem.handlebars');
 
-
-var AssignmentView = Backbone.View.extend({
+var InviteItemView = Backbone.View.extend({
   tagName: 'li',
+  className: 'user',
+  events: {
+    'click': 'changeState'
+  },
   render: function() {
-    var html = tplAssignmentView(this.model.toJSON());
+    var data = this.model.toJSON();
+    data.avatar = data.avatar || '/images/default.png';
+    var html = tplInviteItemView(data);
+    this.$el.html(html);
+    return this;
+  },
+  changeState: function() {
+    this.model.set('assigned', !this.model.get('assigned'));
+  }
+});
+
+var UserItemView = Backbone.View.extend({
+  tagName: 'li',
+  className: 'user',
+  render: function() {
+    var data = this.model.toJSON();
+    data.avatar = data.avatar || '/images/default.png';
+    var html = tplUserItemView(data);
     this.$el.html(html);
     return this;
   }
 });
 
 var AssignmentListView = Backbone.View.extend({
-  tagName: 'ul',
   className: 'assignments',
+  events: {
+    'click .invite-button': 'renderInvite',
+    'click .invite-close': 'hideInvite'
+  },
+  initialize: function() {
+    var result = location.hash.match(new RegExp('#team-(.*)/'));
+    if (result && result.length > 1) {
+      this.teamid = result[1];
+    } else {
+      location.href = '#';
+    }
+    this.members = new Members();
+    this.members.on('add', this.renderInviteItem, this);
+    this.collection.on('add', this.renderUserItem, this);
+  },
   render: function() {
-    var html = tplAssignmentAddView();
+    var html = tplAssignmentView();
     this.$el.html(html);
-    this.$assignmentAdd = this.$el.find('.assignment-add');
-    this.collection.on('add', this.renderItem, this);
+    this.$userlist = this.$el.find('.user-list');
+    this.$invite = this.$el.find('.invite');
+    this.$invitelist = this.$invite.find('.invite-list');
     return this;
   },
-  renderItem: function(assignment) {
-    var view = new AssignmentView({model: assignment});
-    this.$assignmentAdd.before(view.render().el);
+  renderUserItem: function(assignment) {
+    var view = new UserItemView({model: assignment});
+    this.$userlist.append(view.render().el);
     assignment.on('destroy', function() {
       view.remove();
     });
+  },
+  renderInviteItem: function(member) {
+    var self = this;
+    if (this.collection.findWhere({email: member.get('email')})) {
+      member.set('assigned', true);
+    } else {
+      member.set('assigned', false);
+    }
+    var view = new InviteItemView({model: member});
+    this.$invitelist.append(view.render().el);
+    member.on('change:assigned', function(member) {
+      var email = member.get('email');
+      if (member.get('assigned')) {
+        self.collection.create({
+          email: email
+        }, {
+          wait: true,
+          taskid: self.collection.taskid,
+          success: function() {
+            view.render();
+          }
+        })
+      } else {
+        self.collection.findWhere({email: email}).destroy({
+          wait: true,
+          taskid: self.collection.taskid,
+          success: function() {
+            view.render(); 
+          }
+        });
+      }
+    });
+    member.on('destroy', function() {
+      view.remove();
+    });
+  },
+  renderInvite: function() {
+    this.members.fetch({teamid: this.teamid});
+    this.$invite.show();
+    this.$userlist.hide();
+  },
+  hideInvite: function() {
+    this.$invite.hide();
+    this.$userlist.show();
   }
 });
 
@@ -241,6 +322,9 @@ var TaskView = Backbone.View.extend({
     this.subtasks = new Subtasks();
     this.comments.taskid = this.checkitems.taskid = this.histories.taskid =
       this.assignments.taskid = this.subtasks.ptaskid = this.model.get('id');
+    // delegate contributors
+    this.assignments.on('add', function() { this.model.contributors.fetch() }, this);
+    this.assignments.on('destroy', function() { this.model.contributors.fetch() }, this);
   },
   render: function() {
     var self = this;
@@ -260,11 +344,12 @@ var TaskView = Backbone.View.extend({
         // render subtasks
         var viewSubtasks = new SubtaskListView({collection: self.subtasks});
         self.$el.find('.tab-pane[data-index="subtask"]').html(viewSubtasks.render().el);
+        // render assignments
+        var viewAssignments = new AssignmentListView({collection: self.assignments});
+        self.$el.find('.small-col').html(viewAssignments.render().el);
         // initialize list
         self.checkitems.fetch();
-        // render assignments
-        // var viewAssignments = new AssignmentListView({collection: self.assignments});
-        // self.$el.find('.tab-pane[data-index="assignment"]').html(viewAssignments.render().el);
+        self.assignments.fetch();
       }
     });
   },

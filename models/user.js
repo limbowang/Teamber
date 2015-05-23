@@ -55,7 +55,6 @@ module.exports = function(sequelize, DataTypes) {
         User.belongsToMany(models.Team, { through: 'members', foreignKey: 'user_id', as: 'Teams'});
         // Project
         User.hasMany(models.Project, { foreignKey: 'creator_id', as: 'OwnProject' });
-        User.belongsToMany(models.Project, { through: 'contributors', foreignKey: 'user_id', as: 'Projects'});
         // Subproject
         User.hasMany(models.Subproject, { foreignKey: 'creator_id' });
         // Taskboard
