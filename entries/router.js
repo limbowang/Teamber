@@ -1,18 +1,20 @@
 var HeaderView = require('./views/header');
 var TeamView = require('./views/team');
 var ProjView = require('./views/proj');
+var CalendarView = require('./views/calendar');
+var MytasksView = require('./views/mytasks');
 
 var Teams = require('./collections/teams');
 var Members = require('./collections/members');
 var Projs = require('./collections/projs');
-var Subprojs = require('./collections/subprojs');
 
 var AppRouter = Backbone.Router.extend({
   routes: {
     // Default
     'team-:id': 'showTeam',
     'team-:tid/proj-:id': 'showProj',
-    'subproj-:id': 'showSubProj',
+    'calendar': 'showCalendar',
+    'mytasks': 'showTasks',
     '*actions': 'defaultAction'
   }
 });
@@ -22,8 +24,7 @@ var init = function(){
   var 
     teams = new Teams(),
     members = new Members(),
-    projs = new Projs(),
-    subprojs = new Subprojs();
+    projs = new Projs();
 
   // init views
   var
@@ -62,6 +63,30 @@ var init = function(){
         }
       }
     });
+
+    router.on('route:showCalendar', function() {
+      if (teamView.teamid < 0) {
+        var teamid = '0';
+        teamView.teamid = teamid;
+        teamView.renderTeamChosen();
+        projView.projs.teamid = teamid;
+        projView.projs.fetch({reset: true});
+      }
+      var cal = new CalendarView();
+      cal.render();
+    })
+
+    router.on('route:showTasks', function() {
+      if (teamView.teamid < 0) {
+        var teamid = '0';
+        teamView.teamid = teamid;
+        teamView.renderTeamChosen();
+        projView.projs.teamid = teamid;
+        projView.projs.fetch({reset: true});
+      }
+      var mytasks = new MytasksView();
+      mytasks.render();
+    })
 
     router.on('route:defaultAction', function(actions){
       var teamid = '0';

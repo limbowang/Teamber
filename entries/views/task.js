@@ -312,7 +312,7 @@ var HistoryListView = Backbone.View.extend({
 var TaskView = Backbone.View.extend({
   el: '#modal',
   events: {
-    'click .tab': 'switchTab'
+    'click .tab': 'switchTab',
   },
   initialize: function() {
     this.comments = new Comments();
@@ -322,6 +322,8 @@ var TaskView = Backbone.View.extend({
     this.subtasks = new Subtasks();
     this.comments.taskid = this.checkitems.taskid = this.histories.taskid =
       this.assignments.taskid = this.subtasks.ptaskid = this.model.get('id');
+    // delegate events on task
+    this.model.on('change:due_time', this.updateDueTime, this);
     // delegate contributors
     this.assignments.on('add', function() { this.model.contributors.fetch() }, this);
     this.assignments.on('destroy', function() { this.model.contributors.fetch() }, this);
@@ -332,6 +334,10 @@ var TaskView = Backbone.View.extend({
       success: function(task) {
         var html = tplTaskView(self.model.toJSON());
         self.$el.html(html).show();
+        // set due
+        self.$dueTime = self.$el.find('.due');
+        self.$datepanel = self.$el.find('.datepanel');
+        self.bindDatepanelEvents();
         // render comments
         var viewComments = new CommentListView({collection: self.comments});
         self.$el.find('.tab-pane[data-index="comment"]').html(viewComments.render().el);
@@ -352,6 +358,29 @@ var TaskView = Backbone.View.extend({
         self.assignments.fetch();
       }
     });
+  },
+  bindDatepanelEvents: function() {
+    var self = this;
+    $('.set-due').on('click', function() {
+      if (self.$datepanel.hasClass('hide')) {
+        self.$datepanel.removeClass('hide');
+      } else {
+        self.$datepanel.addClass('hide');
+      }
+    })
+    self.$datepanel.find('.datepicker')
+      .datepicker()
+      .on('changeDate', function(ev) {
+        if (self.model.get('due_time') != ev.date) {
+          self.model.set('due_time', ev.date);
+        }
+        self.$datepanel.addClass('hide');
+      });
+    self.$datepanel.find('.btn-cancel')
+      .on('click', function() {
+        self.model.set('due_time', null);
+        self.$datepanel.addClass('hide');
+      })
   },
   switchTab: function(e) {
     var $cur = $(e.currentTarget);
@@ -376,6 +405,22 @@ var TaskView = Backbone.View.extend({
       default:
         break;
     }
+  },
+  updateDueTime: function(model) {
+    var self = this;
+    var time = model.get('due_time');
+    model.save({
+      'due_time': time
+    }, {
+      wait: true,
+      success: function() {
+        console.log(time);
+        self.$dueTime.html(time);
+      }
+    })
+  },
+  updateComplete: function() {
+
   }
 });
 

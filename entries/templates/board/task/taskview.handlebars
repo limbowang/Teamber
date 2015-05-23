@@ -7,6 +7,14 @@
      <div class="cols">
       <div class="large-col panel">
         <div class="title">{{ name }}</div>
+        <div class="row">
+          <span class="due">{{ due_time }}</span>
+          <a class="set-due">设置日期</a>
+          <div class="datepanel hide">
+            <div class="datepicker"></div>
+            <button class="btn btn-default btn-cancel">取消设置</button>
+          </div>
+        </div>
         <ul class="nav nav-tabs nav-justified">
           <li class="tab" data-index="checkitem">检查项</li>
           <li class="tab" data-index="subtask">子项目</li>
