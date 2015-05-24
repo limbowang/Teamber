@@ -72,6 +72,7 @@ var init = function(){
         projView.projs.teamid = teamid;
         projView.projs.fetch({reset: true});
       }
+      projView.projid = -1;
       var cal = new CalendarView();
       cal.render();
     })
@@ -86,6 +87,7 @@ var init = function(){
       }
       var mytasks = new MytasksView();
       mytasks.render();
+      projView.projid = -1;
     })
 
     router.on('route:defaultAction', function(actions){
@@ -96,6 +98,9 @@ var init = function(){
         projView.projs.teamid = teamid;
         projView.projs.fetch({reset: true});
       }
+      var mytasks = new MytasksView();
+      mytasks.render();
+      projView.projid = -1;
     });
 
     // start history

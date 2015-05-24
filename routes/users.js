@@ -5,17 +5,9 @@ var utils   = require('./utils');
 
 var router = express.Router();
 var User   = models.User;
+var Team = models.Team;
+var Project = models.Project;
 var getValidateError = utils.getValidateError;
-
-router.param('id', function(req, res, next, id) {
-  if (isNaN(id)) {
-    var err = new Error('Not Found');
-    err.status = 404;
-    next(err);
-  } else {
-    next();
-  }
-});
 
 router.post('/create', function(req, res, next) {
   var params = req.body;
@@ -41,14 +33,67 @@ router.post('/create', function(req, res, next) {
   });
 });
 
-router.post('/:id/update', function(req, res, next) {
+router.post('/:username/update', function(req, res, next) {
 });
 
-router.post('/:id/destroy', function(req, res, next) {
+router.post('/:username/destroy', function(req, res, next) {
 });
 
-router.get('/:id', function(req, res, next) {
+router.get('/:username', function(req, res, next) {
   res.render('index', { title: 'User test' });
 });
+
+router.get('/own/calendar', function(req, res, next) {
+  res.json({
+    success: 1,
+    result: [{
+      "id": "293", 
+      "title": "This is warning class event with very long title to check how it fits to evet in day view", 
+      "url": "http://www.example.com/", 
+      "class": "event-warning", 
+      "start": "1362938400000", 
+      "end": "1363197686300"
+    }]
+  });
+});
+
+router.get('/own/tasks', function(req, res, next) {
+  var params = req.params;
+  var type = params.type;
+  var userId = req.user.id;
+  var query = {
+    include: [{
+      model: Project,
+      attributes: ['team_id']
+    }]
+  }
+  if (type == 'complete') {
+    query.where = { complete_at: {$ne: null} };
+  } else if (type == 'overdue') {
+    query.where = { due_time: {$lt: new Date()}}
+  } else if (type == "incomplete") {
+    query.where = { complete_at: null }
+  }
+  User
+  .find(userId)
+  .then(function(user) {
+    return user.getAssignedTasks(query)
+  })
+  .then(function(tasks) {
+    for(var key in tasks) {
+      var team_id = tasks[key].Project.team_id || 0;
+      tasks[key].dataValues.Project = undefined;
+      tasks[key].dataValues.team_id = team_id;
+    }
+    res.json(tasks);
+  })
+  .catch(function(e) {
+    console.log(e);
+    res.status(500).json({
+      result: "error",
+      msg: e
+    });
+  });
+})
 
 module.exports = router;

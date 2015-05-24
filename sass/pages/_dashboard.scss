@@ -273,3 +273,8 @@ $bg-grey: #f3f3f3;
     display: none;
   }
 }
+
+#calendar {
+  height: 100%;
+  overflow-y: auto;
+}

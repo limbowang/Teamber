@@ -101,9 +101,19 @@ router.get('/:id/tasks', function(req, res, next) {
   Taskboard
     .find(id)
     .then(function(taskboard) {
-    	return taskboard.getTasks();
+    	return taskboard.getTasks({
+        include: [{
+          model: Project,
+          attributes: ['team_id']
+        }]
+      });
     })
     .then(function(tasks) {
+      for(var key in tasks) {
+        var team_id = tasks[key].Project.team_id || 0;
+        tasks[key].dataValues.Project = undefined;
+        tasks[key].dataValues.team_id = team_id;
+      }
       res.json(tasks);
     })
     .catch(function(e) {

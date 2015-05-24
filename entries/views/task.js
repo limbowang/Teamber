@@ -53,12 +53,6 @@ var AssignmentListView = Backbone.View.extend({
     'click .invite-close': 'hideInvite'
   },
   initialize: function() {
-    var result = location.hash.match(new RegExp('#team-(.*)/'));
-    if (result && result.length > 1) {
-      this.teamid = result[1];
-    } else {
-      location.href = '#';
-    }
     this.members = new Members();
     this.members.on('add', this.renderInviteItem, this);
     this.collection.on('add', this.renderUserItem, this);
@@ -325,8 +319,10 @@ var TaskView = Backbone.View.extend({
     // delegate events on task
     this.model.on('change:due_time', this.updateDueTime, this);
     // delegate contributors
-    this.assignments.on('add', function() { this.model.contributors.fetch() }, this);
-    this.assignments.on('destroy', function() { this.model.contributors.fetch() }, this);
+    if (this.model.contributors) {
+      this.assignments.on('add', function() { this.model.contributors.fetch() }, this);
+      this.assignments.on('destroy', function() { this.model.contributors.fetch() }, this);
+    }
   },
   render: function() {
     var self = this;
@@ -352,6 +348,10 @@ var TaskView = Backbone.View.extend({
         self.$el.find('.tab-pane[data-index="subtask"]').html(viewSubtasks.render().el);
         // render assignments
         var viewAssignments = new AssignmentListView({collection: self.assignments});
+        // hack team id
+        if (task.get('team_id') || task.get('team_id') === 0) {
+          viewAssignments.teamid = task.get('team_id');
+        }
         self.$el.find('.small-col').html(viewAssignments.render().el);
         // initialize list
         self.checkitems.fetch();

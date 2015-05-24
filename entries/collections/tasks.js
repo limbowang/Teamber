@@ -7,11 +7,13 @@ var Tasks = Backbone.Collection.extend({
   ptaskid: -1,
   sync: function(method, model, options) {
     options.wait = true;
-    if (method == "read") {
-      if (this.ptaskid < 0) {
-        options.url = '/taskboards/' + this.taskboardid + '/tasks';
-      } else {
-        options.url = '/tasks/' + this.ptaskid + '/subtasks';
+    if (!options.url) {
+      if (method == "read") {
+        if (this.ptaskid < 0) {
+          options.url = '/taskboards/' + this.taskboardid + '/tasks';
+        } else {
+          options.url = '/tasks/' + this.ptaskid + '/subtasks';
+        }
       }
     }
     return Backbone.sync(method, model, options);

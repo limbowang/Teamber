@@ -21,7 +21,8 @@
     "mysql": "^2.6.1",
     "node-compass": "0.2.3",
     "sequelize": "2.0.5",
-    "serve-favicon": "~2.2.0"
+    "serve-favicon": "~2.2.0",
+    "underscore": "^1.8.3"
   },
   "devDependencies": {
     "browserify-handlebars": "^1.0.0",

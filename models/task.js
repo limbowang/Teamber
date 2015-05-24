@@ -36,6 +36,8 @@ module.exports = function(sequelize, DataTypes) {
         // User
         Task.belongsTo(models.User, { foreignKey: 'creator_id' });
         Task.belongsToMany(models.User, { through: 'assignments', foreignKey: 'task_id', as: 'Assignments' });
+        // Project
+        Task.belongsTo(models.Project, { foreignKey: 'project_id' });
         // Taskboard
         Task.belongsTo(models.Taskboard, { foreignKey: 'taskboard_id' });
         // Task itself
