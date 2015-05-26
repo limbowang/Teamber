@@ -25,6 +25,10 @@ module.exports = {
         referenceKey: "id",
         onDelete: 'cascade'
       },
+      is_default: {
+        allowNull: false,
+        type: DataTypes.BOOLEAN
+      },
       createdAt: {
         allowNull: false,
         type: DataTypes.DATE

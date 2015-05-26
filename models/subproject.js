@@ -18,6 +18,10 @@ module.exports = function(sequelize, DataTypes) {
     project_id: {
       allowNull: false,
       type: DataTypes.INTEGER
+    },
+    is_default: {
+      allowNull: false,
+      type: DataTypes.BOOLEAN
     }
   }, {
     classMethods: {

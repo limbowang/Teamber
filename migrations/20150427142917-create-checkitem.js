@@ -18,7 +18,7 @@ module.exports = {
         referenceKey: "id"
       },
       checked: {
-        type: DataTypes.INTEGER,
+        type: DataTypes.BOOLEAN,
         defaultValue: false
       },
       checker_id: {

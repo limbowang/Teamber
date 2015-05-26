@@ -7,6 +7,7 @@ var router = express.Router();
 var User   = models.User;
 var Team   = models.Team;
 var Project = models.Project;
+var Subproject = models.Subproject;
 var Task = models.Task;
 var teamMember = filters.teamMember;
 var getValidateError = utils.getValidateError;
@@ -33,10 +34,18 @@ router.post('/create', teamMember, function(req, res, next) {
       is_private: params.teamid == 0
     })
     .then(function(proj) {
-      if (proj.team_id == null) {
-        proj.dataValues.team_id = 0;
-      }
-      res.json(proj);
+      Subproject.create({
+        name: '默认',
+        project_id: proj.id,
+        creator_id: userId,
+        is_default: true
+      })
+      .then(function(subproj) {
+        if (proj.team_id == null) {
+          proj.dataValues.team_id = 0;
+        }
+        res.json(proj);        
+      })
     })
     .catch(function(e) {
       res.status(500).json({
