@@ -326,4 +326,52 @@ router.get('/:id/members', teamMember, function(req, res, next) {
   }
 });
 
+router.get('/:id/members/:nickname', teamMember, function(req, res, next) {
+  var id = req.params.id;
+  var nickname = req.params.nickname;
+  var curTeam = null;
+  if (id == 0) {
+    User
+    .find(userId)
+    .then(function(member) {
+      member.dataValues.is_owner = true;
+      member.dataValues.team_id = id;
+      res.json([member]);
+    })
+    .catch(function(e) {
+      console.log(e);
+      res.status(500).json({
+        result: "error",
+        msg: e
+      });
+    })
+  } else {
+    Team
+    .find(id)
+    .then(function(team) {
+      curTeam = team;
+      return team.getMembers(
+        {attributes: ['id', 'username', 'nickname', 'email', 'avatar']});
+    })
+    .then(function(members) {
+      for(var key in members) {
+        if (curTeam.creator_id == members[key].id) {
+          members[key].dataValues.is_owner = true;
+        } else {
+          members[key].dataValues.is_owner = false;
+        }
+        members[key].dataValues.team_id = id;
+      }
+      res.json(members);
+    })
+    .catch(function(e) {
+      console.log(e);
+      res.status(500).json({
+        result: "error",
+        msg: e
+      });
+    })
+  }
+});
+
 module.exports = router;

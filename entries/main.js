@@ -6,7 +6,8 @@ global._ = require('underscore');
 require('../bower_components/bootflat/js/bootstrap');
 require('../bower_components/bootflat/js/html5shiv');
 require('../bower_components/bootstrap-datepicker/js/bootstrap-datepicker');
-require('../bower_components//bootstrap-calendar/js/calendar');
+require('../bower_components/bootstrap-calendar/js/calendar');
+require('../bower_components/Chart.js/Chart');
 
 // emulate http with post
 Backbone.emulateHTTP = true;
