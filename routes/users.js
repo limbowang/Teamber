@@ -58,7 +58,7 @@ router.get('/own/calendar', function(req, res, next) {
 });
 
 router.get('/own/tasks', function(req, res, next) {
-  var params = req.params;
+  var params = req.query;
   var type = params.type;
   var userId = req.user.id;
   var query = {

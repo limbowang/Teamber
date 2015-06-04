@@ -53,6 +53,7 @@ var MyTaskView = Backbone.View.extend({
   },
   switchTab: function(e) {
     var $cur = $(e.currentTarget);
+    var self = this;
     if (!$cur.hasClass('active')) {
       this.tasks.fetch({
         wait: true,
