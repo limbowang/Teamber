@@ -6,7 +6,10 @@
     <div class="modal-body task">
      <div class="cols">
       <div class="large-col panel">
-        <div class="title">{{ name }}</div>
+        <div class="title">
+          <input class="complete" type="checkbox" {{#if complete_at }}checked="checked"{{/if}}>
+          <span>{{ name }}</span>
+        </div>
         <div class="row">
           <span class="due">{{ due_time }}</span>
           <a class="set-due">设置日期</a>

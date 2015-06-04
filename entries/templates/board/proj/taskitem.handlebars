@@ -1,2 +1,3 @@
-<input type="checkbox" />
+<input class="complete" type="checkbox" {{#if complete_at }}checked="checked"{{^}}{{/if}} value="{{ name }}" />
+
 <a id="task-{{ id }}" data-id="{{ id }}" data-name="{{ name }}">{{ name }}</a>

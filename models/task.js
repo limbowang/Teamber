@@ -46,8 +46,6 @@ module.exports = function(sequelize, DataTypes) {
         Task.hasMany(models.Comment, { foreignKey: 'task_id' });
         // Checkitem
         Task.hasMany(models.Checkitem, { foreignKey: 'task_id' });
-        // History
-        Task.hasMany(models.History, { foreignKey: 'task_id' });
       }
     },
     instanceMethods: {

@@ -307,6 +307,7 @@ var TaskView = Backbone.View.extend({
   el: '#modal',
   events: {
     'click .tab': 'switchTab',
+    'change .complete': 'updateComplete'
   },
   initialize: function() {
     this.comments = new Comments();
@@ -393,8 +394,8 @@ var TaskView = Backbone.View.extend({
       case 'comment':
         this.comments.fetch();
         break;
-      case 'subtask':
-        this.subtasks.fetch();
+      case 'checkitem':
+        this.checkitems.fetch();
         break;
       case 'subtask':
         this.subtasks.fetch();
@@ -420,7 +421,9 @@ var TaskView = Backbone.View.extend({
     })
   },
   updateComplete: function() {
-
+    this.model.save({
+      isComplete: (this.model.get('complete_at') == null).toString()
+    })
   }
 });
 

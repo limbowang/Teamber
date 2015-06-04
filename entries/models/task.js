@@ -3,7 +3,6 @@ var Task = Backbone.Model.extend({
   },
   url: '/tasks',
   sync: function(method, model, options) {
-    console.log(method);
     options.wait = true;
     if (method == 'create') {
       options.url = '/tasks/create';

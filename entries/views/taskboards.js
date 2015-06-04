@@ -8,6 +8,12 @@ var tplTaskAdd =require('../templates/board/proj/taskadd.handlebars');
 
 var TaskItemView = Backbone.View.extend({
   tagName: 'li',
+  events: {
+    'click .complete': 'updateComplete'
+  },
+  initialize: function() {
+    this.model.on('change', this.render, this);
+  },
   render: function() {
     var task = this.model;
     var html = tplTaskItem(this.model.toJSON());
@@ -16,7 +22,14 @@ var TaskItemView = Backbone.View.extend({
       var view = new TaskView({model: task});
       view.render();
     });
+    var $cbComplete = this.$el.find('input[type="checkbox"]');
     return this;
+  },
+  updateComplete: function() {
+    var task = this.model;
+    task.save({
+      isComplete: (task.get('complete_at') == null).toString()
+    })
   }
 });
 

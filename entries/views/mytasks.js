@@ -19,6 +19,9 @@ var TaskItemView = Backbone.View.extend({
 
 var MyTaskView = Backbone.View.extend({
   el: '#board',
+  events: {
+    'click .tab': 'switchTab'
+  },
   initialize: function() {
     this.tasks = new Tasks();
     this.tasks.on('reset', this.renderList, this);
@@ -30,18 +33,36 @@ var MyTaskView = Backbone.View.extend({
     this.tasks.fetch({
       wait: true,
       url: '/users/own/tasks',
+      data: {
+        type: $('.tab.active').data('index')
+      },
       reset: true
     });
   },
   renderList: function() {
+    this.$el.find('.panel.active .task-list').html('');
     this.tasks.each(this.renderItem, this);
   },
   renderItem: function(task) {
     var view = new TaskItemView({model: task});
-    this.$el.find('.task-list').append(view.render().el);
+    var $activePanel = this.$el.find('.panel.active');
+    $activePanel.find('.task-list').append(view.render().el);
     task.on('destroy', function() {
       view.remove();
     })
+  },
+  switchTab: function(e) {
+    var $cur = $(e.currentTarget);
+    if (!$cur.hasClass('active')) {
+      this.tasks.fetch({
+        wait: true,
+        url: '/users/own/tasks',
+        data: {
+          type: $cur.data('index')
+        },
+        reset: true
+      });
+    }
   }
 });
 

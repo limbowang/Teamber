@@ -7,6 +7,7 @@ var router = express.Router();
 var User = models.User;
 var Taskboard = models.Taskboard;
 var Task   = models.Task;
+var Project = models.Project;
 var teamMember = filters.teamMember;
 var getValidateError = utils.getValidateError;
 
@@ -56,13 +57,26 @@ router.post('/:id/update', function(req, res, next) {
   Task
     .find(id)
     .then(function(task) {
-      return task.updateAttributes(params, 
-        {fields: ['name', 'due_time', 'taskboard_id']});
+      console.log(params.isComplete, typeof params.isComplete);
+      if (params.isComplete == 'true') {
+        params.complete_at = models.sequelize.fn('NOW');
+      } else if (params.isComplete == 'false'){
+      console.log(params.isComplete);
+        params.complete_at = null;
+      }
+      return task
+      .updateAttributes(params, 
+        {fields: ['name', 'due_time', 'taskboard_id', 'complete_at']
+      })
+      .then(function(task) {
+        return task.reload();
+      });
     })
-    .then(function(taskboard) {
-      res.json(taskboard);
+    .then(function(task) {
+      res.json(task);
     })
     .catch(function(e) {
+      console.log(e);
       res.status(500).json({
         result: "error",
         msg: e
@@ -201,8 +215,18 @@ router.post('/:id/dismiss', function(req, res, next) {
 router.get('/:id', function(req, res, next) {
 	var id = req.params.id;
   Task
-    .find(id)
+    .find({
+      where: {
+        id: id
+      },
+      include: [{
+        model: Project
+      }]
+    })
     .then(function(task) {
+      var teamid = task.dataValues.Project.team_id;
+      task.dataValues.team_id = teamid? teamid : 0;
+      task.dataValues.Project = undefined;
       res.json(task);
     })
     .catch(function(e) {
@@ -277,7 +301,7 @@ router.get('/:id/histories', function(req, res, next) {
   Task
     .find(id)
     .then(function(task) {
-    	return task.getHistories();
+    	return task.getCheckitems();
     })
     .then(function(histories) {
       res.json(histories);

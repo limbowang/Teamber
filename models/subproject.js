@@ -21,7 +21,8 @@ module.exports = function(sequelize, DataTypes) {
     },
     is_default: {
       allowNull: false,
-      type: DataTypes.BOOLEAN
+      type: DataTypes.BOOLEAN,
+      defaultValue: false
     }
   }, {
     classMethods: {

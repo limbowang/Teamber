@@ -20,6 +20,8 @@
     "handlebars": "~3.0.3",
     "bootstrap": "~3.3.4",
     "bootstrap-calendar": "~0.2.4",
-    "Chart.js": "~1.0.2"
+    "Chart.js": "~1.0.2",
+    "bootstrap-datepicker": "~1.4.0",
+    "underscore": "~1.8.3"
   }
 }
