@@ -327,51 +327,65 @@ router.get('/:id/members', teamMember, function(req, res, next) {
 });
 
 router.get('/:id/members/:nickname', teamMember, function(req, res, next) {
-  var id = req.params.id;
+  var id = req.params.id != 0? req.params.id : null;
   var nickname = req.params.nickname;
   var curTeam = null;
-  if (id == 0) {
-    User
-    .find(userId)
-    .then(function(member) {
-      member.dataValues.is_owner = true;
-      member.dataValues.team_id = id;
-      res.json([member]);
-    })
-    .catch(function(e) {
-      console.log(e);
+  var curUser = null;
+  User
+  .find({
+    where: {nickname: nickname},
+    attributes: ['id', 'username', 'nickname', 'email', 'avatar']
+  })
+  .then(function(user) {
+    curUser = user;
+    if (!user) {
       res.status(500).json({
         result: "error",
-        msg: e
+        msg: "用户不在您的团队"
       });
-    })
-  } else {
-    Team
-    .find(id)
-    .then(function(team) {
-      curTeam = team;
-      return team.getMembers(
-        {attributes: ['id', 'username', 'nickname', 'email', 'avatar']});
-    })
-    .then(function(members) {
-      for(var key in members) {
-        if (curTeam.creator_id == members[key].id) {
-          members[key].dataValues.is_owner = true;
-        } else {
-          members[key].dataValues.is_owner = false;
-        }
-        members[key].dataValues.team_id = id;
+    } else {
+      return user.getAssignedTasks({
+        attributes: ['complete_at'],
+        include: [{
+          model: Project,
+          attributes: ['team_id'],
+          where: {
+            team_id: id
+          }
+        }]
+      });
+    }
+  })
+  .then(function(tasks) {
+    var user = curUser.get({plain: true});
+    user.assigns = {};
+    user.completes = {};
+    for (var key in tasks) {
+      var dateAssigned = new Date(tasks[key]['assignments']['updatedAt']).toDateString();
+      var dateComplete = tasks[key].complete_at? new Date(tasks[key].complete_at).toDateString() : null;
+      if (user.assigns[dateAssigned]) {
+        user.assigns[dateAssigned]++;
+      } else {
+        user.assigns[dateAssigned] = 1;
       }
-      res.json(members);
-    })
-    .catch(function(e) {
-      console.log(e);
-      res.status(500).json({
-        result: "error",
-        msg: e
-      });
-    })
-  }
+      if (dateComplete) {
+        if (user.completes[dateComplete]) {
+          user.completes[dateComplete]++;
+        } else {
+          user.completes[dateComplete] = 1;
+        }
+      }
+    }
+    // user.tasks = tasks.get({plain: true});
+    res.json(user);
+  })
+  .catch(function(e) {
+    console.log(e);
+    res.status(500).json({
+      result: "error",
+      msg: e
+    });
+  });
 });
 
 module.exports = router;

@@ -51,7 +51,7 @@ utils.auth = function(req, res, next) {
       if (needLoginPageList.indexOf(req.path) >= 0) {
         res.redirect('/signin');
       } else {
-        res.status(400).json({
+        res.status(500).json({
           error: '您还未登录'
         });
       }
