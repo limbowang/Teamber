@@ -44,16 +44,47 @@ router.get('/:username', function(req, res, next) {
 });
 
 router.get('/own/calendar', function(req, res, next) {
-  res.json({
-    success: 1,
-    result: [{
-      "id": "293", 
-      "title": "This is warning class event with very long title to check how it fits to evet in day view", 
-      "url": "http://www.example.com/", 
-      "class": "event-warning", 
-      "start": "1362938400000", 
-      "end": "1363197686300"
-    }]
+  var userId = req.user.id;
+  User
+  .find(userId)
+  .then(function(user) {
+    return user.getAssignedTasks({
+      where: {
+        due_time: {$ne: null}
+      }
+    })
+  })
+  .then(function(tasks) {
+    var result = [];
+    for (var key in tasks) {
+      var item = {};
+      item.id = tasks[key].id;
+      item.title = tasks[key].name;
+      // item.start = new Date(tasks[key].createdAt).getTime();
+      item.start = item.end = new Date(tasks[key].due_time).getTime();
+      item['class'] = "event-warning";
+      console.log(item);
+      result.push(item);
+    }
+    res.json({
+      success: 1,
+      result: result
+      // result: [{
+      //   "id": "293", 
+      //   "title": "This is warning class event with very long title to check how it fits to evet in day view", 
+      //   "url": "http://www.example.com/", 
+      //   "class": "event-warning", 
+      //   "start": "1362938400000", 
+      //   "end": "1363197686300"
+      // }]
+    });
+  })
+  .catch(function(e) {
+    console.log(e);
+    res.status(500).json({
+      result: "error",
+      msg: e
+    });
   });
 });
 

@@ -37,18 +37,28 @@ var MemberItemView = Backbone.View.extend({
     if ($profile.length != 0) {
       $profile.remove();
     }
+    var self = this;
     var data = this.model.toJSON();
-    data.avatar = data.avatar || '/images/default.png';
-    var html = tplMemberView(data);
-    this.$el.append(html);
-    $profile = this.$el.find('.profile');
-    setTimeout(function() {
-      $(document).on('click', onClick);
-      function onClick(e) {
-        $profile.remove();
-        $(document).off('click', onClick);
-      }
-    }, 0);
+    Backbone.$.ajax({
+      url: '/teams/' + data.members.team_id + '/members/' + data.username,
+      success: function(data) {
+        data.avatar = data.avatar || '/images/default.png';
+        self.$el.append(tplMemberView(data));
+        $profile = self.$el.find('.profile');
+        // fix position
+        if ($profile.offset().left + $profile.width() > window.innerWidth) {
+          $profile.css('left', -$profile.width());
+        }
+        setTimeout(function() {
+          $(document).on('click', onClick);
+          function onClick(e) {
+            $profile.remove();
+            $(document).off('click', onClick);
+          }
+        }, 0);
+      },
+      error: function() {}
+    })
   }
 });
 

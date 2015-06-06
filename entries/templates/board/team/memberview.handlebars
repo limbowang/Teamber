@@ -8,24 +8,26 @@
   </div>
   <div class="overview">
     <h5>最近一周</h5>
+    {{#with counts}}
     <ul class="info-tabs">
       <li class="tab">
         <span class="title">接受任务</span>
-        <span class="data">1</span>
+        <span class="data">{{ assigns }}</span>
       </li>
       <li class="tab">
         <span class="title">已完成任务</span>
-        <span class="data">1</span>
+        <span class="data">{{ completes }}</span>
       </li>
       <li class="tab">
         <span class="title">未完成任务</span>
-        <span class="data">1</span>
+        <span class="data">{{ incompletes }}</span>
       </li>
       <li class="tab">
         <span class="title">过期任务</span>
-        <span class="data">1</span>
+        <span class="data">{{ overdue }}</span>
       </li>
-    </div>
+    </ul>
+    {{/with }}
   </div>
   {{!-- <div class="analysis">
     <h5>统计</h5>

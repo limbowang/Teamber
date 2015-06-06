@@ -345,7 +345,7 @@ router.get('/:id/members/:nickname', teamMember, function(req, res, next) {
       });
     } else {
       return user.getAssignedTasks({
-        attributes: ['complete_at'],
+        attributes: ['complete_at', 'due_time', 'createdAt'],
         include: [{
           model: Project,
           attributes: ['team_id'],
@@ -358,11 +358,22 @@ router.get('/:id/members/:nickname', teamMember, function(req, res, next) {
   })
   .then(function(tasks) {
     var user = curUser.get({plain: true});
+    var dateToday = new Date();
+    var dateWeekAgo = new Date(dateToday);
+    dateWeekAgo.setDate(dateWeekAgo.getDate() - 7);
     user.assigns = {};
     user.completes = {};
+    user.counts = {};
+    user.counts.assigns = 0;
+    user.counts.completes = 0;
+    user.counts.incompletes = 0;
+    user.counts.overdue = 0;
+
     for (var key in tasks) {
-      var dateAssigned = new Date(tasks[key]['assignments']['updatedAt']).toDateString();
-      var dateComplete = tasks[key].complete_at? new Date(tasks[key].complete_at).toDateString() : null;
+      var dateCreated = new Date(tasks[key]['createdAt']);
+      var dateAssigned = new Date(tasks[key]['assignments']['updatedAt']);
+      var dateComplete = tasks[key].complete_at? new Date(tasks[key].complete_at) : null;
+      var dateDue = tasks[key].due_time? new Date(tasks[key].due_time) : null;
       if (user.assigns[dateAssigned]) {
         user.assigns[dateAssigned]++;
       } else {
@@ -373,6 +384,18 @@ router.get('/:id/members/:nickname', teamMember, function(req, res, next) {
           user.completes[dateComplete]++;
         } else {
           user.completes[dateComplete] = 1;
+        }
+      }
+      // get count
+      if (dateCreated > dateWeekAgo && dateCreated < dateToday) {
+        user.counts.assigns++;
+        if (dateComplete) {
+          user.counts.completes++;
+        } else {
+          user.counts.incompletes++;
+        }
+        if (dateDue < dateToday) {
+          user.counts.overdue++;
         }
       }
     }

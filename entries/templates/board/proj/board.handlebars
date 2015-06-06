@@ -1,5 +1,12 @@
 <div class="header">
-  <div class="title">{{ name }}</div>
+  <div class="title">
+    {{#if team_id}}
+    <a class="back" href="#team-{{team_id}}">
+      <span class="glyphicon glyphicon-chevron-left" aria-hidden="true"></span>
+    </a>
+    {{/if}}
+    {{ name }}
+  </div>
   <div class="dropdown subtitle">
     <span>子项目：</span>
     <a id="subproj-select" href="javascript:void(0)" class="dropdown-toggle" data-toggle="dropdown">

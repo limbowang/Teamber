@@ -431,7 +431,7 @@ var TaskView = Backbone.View.extend({
     var date = null;
     if (time) {
       date = new Date(time);
-      date = (date.getYear() + 1900) + '-' + date.getMonth() + '-' + date.getDate();
+      date = date.getFullYear() + '-' + date.getMonthFormatted() + '-' + date.getDateFormatted();
     }
     return date;
   }

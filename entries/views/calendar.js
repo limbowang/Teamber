@@ -8,7 +8,7 @@ var CalendarView = Backbone.View.extend({
     this.$calendar = $('#calendar .content');
     var calendar = this.$calendar.calendar({
       tmpl_path: '/templates/calendar/',
-      day: '2013-03-12',
+      day: 'now',
       events_source: '/users/own/calendar'
     });
 

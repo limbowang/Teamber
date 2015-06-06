@@ -87,6 +87,16 @@ $bg-grey: #f3f3f3;
       .title {
         float: left;
         font-size: 25px;
+        
+        .back {
+          display: inline-block;
+          margin-left: -10px;
+          span {
+            font-size: 20px;
+            font-weight: lighter;
+            color: #eee;
+          }
+        }
       }
 
       .subtitle {
@@ -182,7 +192,7 @@ $bg-grey: #f3f3f3;
           .profile {
             position: absolute;
             top: 0;
-            left: 0;
+            left: 112px;
             z-index: 999;
             background-color: #eee;
             width: 320px;
@@ -226,6 +236,11 @@ $bg-grey: #f3f3f3;
             }
           }
         }
+      }
+
+      .title {
+        word-wrap: break-word;
+        word-break: break-all;
       }
 
       .contributor-list {
