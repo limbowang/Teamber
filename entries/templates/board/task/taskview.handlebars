@@ -10,8 +10,8 @@
           <input class="complete" type="checkbox" {{#if complete_at }}checked="checked"{{/if}}>
           <span>{{ name }}</span>
         </div>
-        <div class="row">
-          <span class="due">{{ due_time }}</span>
+        <div class="due">
+          <span class="time">{{ due_time }}</span>
           <a class="set-due">设置日期</a>
           <div class="datepanel hide">
             <div class="datepicker"></div>
@@ -22,7 +22,7 @@
           <li class="tab" data-index="checkitem">检查项</li>
           <li class="tab" data-index="subtask">子项目</li>
           <li class="tab" data-index="comment">评论</li>
-          <li class="tab" data-index="history">历史</li>
+          {{!-- <li class="tab" data-index="history">历史</li> --}}
         </ul>
         <div class="tab-content">
           <div class="tab-pane active" data-index="checkitem"></div>

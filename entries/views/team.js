@@ -7,6 +7,7 @@ var tplTeamItem = require('../templates/sidebar/teamitem.handlebars');
 var tplMemberItem = require('../templates/board/team/memberitem.handlebars');
 var tplMemberTD = require('../templates/board/team/membertd.handlebars');
 var tplMemberAdd = require('../templates/modal/memberadd.handlebars');
+var tplMemberView = require('../templates/board/team/memberview.handlebars');
 var tplProjItem = require('../templates/board/team/projitem.handlebars');
 
 var TeamItemView = Backbone.View.extend({
@@ -21,12 +22,33 @@ var TeamItemView = Backbone.View.extend({
 var MemberItemView = Backbone.View.extend({
   tagName: 'li',
   className: 'member',
+  events: {
+    'click': 'renderMemberProfile'
+  },
   render: function() {
     var data = this.model.toJSON();
     data.avatar = data.avatar || '/images/default.png';
     var html = tplMemberItem(data);
     this.$el.append(html);
     return this;
+  },
+  renderMemberProfile: function() {
+    var $profile = this.$el.find('.profile');
+    if ($profile.length != 0) {
+      $profile.remove();
+    }
+    var data = this.model.toJSON();
+    data.avatar = data.avatar || '/images/default.png';
+    var html = tplMemberView(data);
+    this.$el.append(html);
+    $profile = this.$el.find('.profile');
+    setTimeout(function() {
+      $(document).on('click', onClick);
+      function onClick(e) {
+        $profile.remove();
+        $(document).off('click', onClick);
+      }
+    }, 0);
   }
 });
 
@@ -195,6 +217,7 @@ var TeamView = BaseView.extend({
       name: name,
       description: description
     }, {
+      wait: true,
       success: function() {
         self.alert('success', '更新成功');
       }

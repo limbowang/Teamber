@@ -53,7 +53,7 @@
   background-color: rgba(0, 0, 0, .8);
 }
 
-// 
+// columns
 .cols {
   overflow: hidden;
   .large-col {
@@ -66,5 +66,17 @@
     width: 30%;
     padding: 0 10px;
     float: left;
+  }
+}
+
+// tabs
+.nav-tabs {
+  .tab {
+    padding: 5px 10px;
+    text-align: center;
+
+    &:hover {
+      cursor: pointer;
+    }
   }
 }

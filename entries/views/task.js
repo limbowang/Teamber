@@ -329,10 +329,12 @@ var TaskView = Backbone.View.extend({
     var self = this;
     this.model.fetch({
       success: function(task) {
-        var html = tplTaskView(self.model.toJSON());
+        var data = self.model.toJSON();
+        data.due_time = self.formatDate(data.due_time);
+        var html = tplTaskView(data);
         self.$el.html(html).show();
         // set due
-        self.$dueTime = self.$el.find('.due');
+        self.$dueTime = self.$el.find('.due > .time');
         self.$datepanel = self.$el.find('.datepanel');
         self.bindDatepanelEvents();
         // render comments
@@ -372,8 +374,9 @@ var TaskView = Backbone.View.extend({
     self.$datepanel.find('.datepicker')
       .datepicker()
       .on('changeDate', function(ev) {
-        if (self.model.get('due_time') != ev.date) {
-          self.model.set('due_time', ev.date);
+        var date = self.formatDate(ev.date);
+        if (self.model.get('due_time') != date) {
+          self.model.set('due_time', date);
         }
         self.$datepanel.addClass('hide');
       });
@@ -415,8 +418,7 @@ var TaskView = Backbone.View.extend({
     }, {
       wait: true,
       success: function() {
-        console.log(time);
-        self.$dueTime.html(time);
+        self.$dueTime.html(self.formatDate(time));
       }
     })
   },
@@ -424,6 +426,14 @@ var TaskView = Backbone.View.extend({
     this.model.save({
       isComplete: (this.model.get('complete_at') == null).toString()
     })
+  },
+  formatDate: function(time) {
+    var date = null;
+    if (time) {
+      date = new Date(time);
+      date = (date.getYear() + 1900) + '-' + date.getMonth() + '-' + date.getDate();
+    }
+    return date;
   }
 });
 

@@ -155,12 +155,11 @@ $bg-grey: #f3f3f3;
         height: 100%;
       }
 
-      
-
       .member-list {
         margin-top: 10px;
-        overflow: hidden;
-        li {
+        @include clearfix();
+        >li {
+          position: relative;
           float: left;
           padding: 10px 20px;
           text-align: center;
@@ -173,17 +172,80 @@ $bg-grey: #f3f3f3;
           .avatar {
             width: 72px;
             height: 72px;
-            border-radius: 5px;
           }
 
           .name {
             padding: 5px 0;
             margin: 0;
           }
+
+          .profile {
+            position: absolute;
+            top: 0;
+            left: 0;
+            z-index: 999;
+            background-color: #eee;
+            width: 320px;
+            text-align: left;
+
+            h5 {
+              font-size: 14px;
+              padding-left: 5px;
+              margin: 0;
+            }
+
+            .title {
+              @include clearfix();
+              .avatar {
+                float: left;
+                width: 64px;
+                height: 64px;
+                padding: 5px;
+                box-sizing: border-box;
+              }
+              .info {
+                padding: 5px;
+              }
+            }
+
+            .overview {
+              .info-tabs {
+                font-size: 0;
+                >.tab {
+                  display: inline-block;
+                  width: 25%;
+                  padding: 5px;
+                  box-sizing: border-box;
+                  text-align: center;
+                  font-size: 14px;
+                  span {
+                    display: block;
+                  }
+                }
+              }
+            }
+          }
         }
       }
 
-      .projs-list {
+      .contributor-list {
+        .user {
+          padding: 5px;
+          @include clearfix();
+          .avatar {
+            float: left;
+            width: 32px;
+            height: 32px;
+          }
+          .name {
+            float: left;
+            padding: 5px;
+          }
+        }
+      }
+
+      >.task-list,
+      >.projs-list {
         li {
           a {
             display: block;
@@ -199,24 +261,60 @@ $bg-grey: #f3f3f3;
 
       .taskboard-list {
         overflow-x: auto;
+        margin-top: 5px;
+        font-size: 0;
         
         >li {
           display: inline-block;
           width: 180px;
           margin: 0 10px;
+          padding: 5px 10px;
+          font-size: 14px;
           text-align: center;
+          border: 1px solid #ccc;
           vertical-align: top;
+
+          >.header {
+            padding: 0;
+          }
+
+          > hr {
+            margin: 5px;
+            border-top: 1px solid #ccc;
+          }
+
+          .taskboard-new {
+            text-align: center;
+            .form-control {
+              margin-bottom: 5px;
+            }
+          }
         }
 
         .task-list {
           >li {
+            padding: 5px;
+            margin-bottom: 5px;
+            border: 1px solid #ccc;
             text-align: left;
             word-wrap: break-word;
             word-break: break-all;
+
+            >* {
+              vertical-align: middle;
+              margin: 0;
+            }
+
+            &:last-child {
+              border: none;
+            }
           }
 
           .task-add {
             text-align: center;
+            .form-control {
+              margin-bottom: 5px;
+            }
           }
         }
       }
@@ -229,8 +327,40 @@ $bg-grey: #f3f3f3;
 }
 
 .task {
-  .checkitems {
+
+  .title {
+    span {
+      font-size: 20px;
+    }
+  }
+
+  .due {
+    margin: 10px 0;
+
+    .datepanel {
+      position: absolute;
+      background-color: #fff;
+      z-index: 999;
+    }
+  }
+
+  .checkitems,
+  .subtasks,
+  .comments {
+    .form-control {
+      margin-bottom: 5px;
+    }
+
     >li {
+      padding: 5px;
+      border: 1px solid #ccc;
+      margin-bottom: 5px;
+
+      >* {
+        vertical-align: middle;
+        margin: 0;
+      }
+
       .content {
         display: inline-block;
       }
@@ -244,10 +374,24 @@ $bg-grey: #f3f3f3;
           display: inline-block;
         }
       }
+
+      &:last-child {
+        border: none;
+      }
+    }
+  }
+
+  .comments {
+    >li {
+      border: none;
     }
   }
 
   .user {
+    &:hover {
+      cursor: pointer;
+    }
+
     .assign {
       display: inline-block;
       width: 10px;
@@ -275,6 +419,12 @@ $bg-grey: #f3f3f3;
 }
 
 #calendar {
+  margin-left: 10px;
   height: 100%;
   overflow-y: auto;
+
+  .page-header {
+    margin: 0;
+    padding: 10px;
+  }
 }

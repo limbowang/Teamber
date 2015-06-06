@@ -20,26 +20,28 @@
 <div class="panel active" data-index="tasks">
   <div class="cols">
     <div class="large-col content"></div>
-    <div class="small-col sidebar">
-      <span>项目名称：{{ name }}</span>
+    <div class="small-col overview">
+      <h5>项目名称：<span class="title">{{ name }}</span></h5>
+      <h6>贡献者</h6>
       <ul class="contributor-list"></ul>
     </div>
   </div>
 </div>
 <div class="panel" data-index="settings">
-  <div class="small-col">
+  <div class="cols">
+    <div class="small-col">
       <h5>修改项目信息</h5>
-      <div id="team-info">
+      <div id="proj-info" data-id="{{ id }}">
         <div class="form-group">
           <label>项目名称</label>
           <input type="text" name="name" class="form-control" id="name" placeholder="名称" value="{{ name }}">
         </div>
         <div class="form-group">
-          <button id="team-update" class="btn btn-primary">更新</button>
+          <button id="proj-update" class="btn btn-primary">更新</button>
         </div>
       </div>
       <h5>删除项目</h5>
-      <a id="team-delete" class="btn btn-danger">删除项目</a>
+      <a id="proj-delete" class="btn btn-danger">删除项目</a>
       <div class="confirm hide" data-id="{{ id }}">
         <button class="btn btn-sm btn-danger" data-action="confirm">确认删除？</button>
         <button class="btn btn-sm" data-action="cancel">取消</button>
@@ -50,11 +52,12 @@
       <table class="table table-bordered">
         <thead>
           <td>项目名称</td>
-          <td></td>
+          <td>操作</td>
         </thead>
         <tbody class="subprojs-table">
         </tbody>
       </table>
     </div>
+  </div>
 </div>
 </div>

@@ -185,7 +185,8 @@ var TaskboardsView = Backbone.View.extend({
     var width = this.$liTaskboardAdd.width();
     var margin = 2 * parseInt(this.$liTaskboardAdd.css('margin-left'));
     var padding = 2 * parseInt(this.$liTaskboardAdd.css('padding-left'));
-    var actualWidth =  width + margin + padding;
+    var border = 2;
+    var actualWidth =  width + margin + padding + border;
     this.$el.css({width: (this.taskboards.length + 1) * actualWidth});
   }
 });
