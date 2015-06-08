@@ -126,10 +126,42 @@ var AssignmentListView = Backbone.View.extend({
 
 var SubtaskView = Backbone.View.extend({
   tagName: 'li',
+  events: {
+    'click [data-action="delete"]': 'removeSubtask',
+    'click .complete': 'updateComplete',
+    'click .name': 'updateName'
+  },
   render: function() {
     var html = tplSubtaskView(this.model.toJSON());
     this.$el.html(html);
     return this;
+  },
+  removeSubtask: function() {
+    this.model.destroy();
+  },
+  updateComplete: function() {
+    this.model.save({
+      isComplete: (this.model.get('complete_at') == null).toString()
+    })
+  },
+  updateName: function(e) {
+    var self = this;
+    $title = $(e.currentTarget);
+    $title.attr('contenteditable', true).focus();
+    $title.one('blur', function() {
+      var name = $title.html();
+      if (name == "") {
+        $title.html(self.model.get('name'));
+      } else if (name != self.model.get('name')) {
+        $title.attr('contenteditable', '');
+        self.model.save({
+          name: name
+        }, {
+          wait: true,
+          success: function() {}
+        }) 
+      }
+    })
   }
 });
 
@@ -186,7 +218,9 @@ var SubtaskListView = Backbone.View.extend({
 var CheckitemView = Backbone.View.extend({
   tagName: 'li',
   events: {
-    'click [data-action="delete"]': 'removeCheckitem'
+    'click [data-action="delete"]': 'removeCheckitem',
+    'click .complete': 'updateCheck',
+    'click .content': 'updateContent'
   },
   render: function() {
     var html = tplCheckitemView(this.model.toJSON());
@@ -195,6 +229,30 @@ var CheckitemView = Backbone.View.extend({
   },
   removeCheckitem: function() {
     this.model.destroy();
+  },
+  updateCheck: function() {
+    this.model.save({
+      isChecked: (this.model.get('check_at') == null).toString()
+    })
+  },
+  updateContent: function(e) {
+    var self = this;
+    $title = $(e.currentTarget);
+    $title.attr('contenteditable', true).focus();
+    $title.one('blur', function() {
+      var content = $title.html();
+      if (content == "") {
+        $title.html(self.model.get('content'));
+      } else if (content != self.model.get('content')) {
+        $title.attr('contenteditable', '');
+        self.model.save({
+          content: content
+        }, {
+          wait: true,
+          success: function() {}
+        }) 
+      }
+    })
   }
 });
 
@@ -322,7 +380,9 @@ var TaskView = Backbone.View.extend({
   el: '#modal',
   events: {
     'click .tab': 'switchTab',
-    'change .complete': 'updateComplete'
+    'change .title > .complete': 'updateComplete',
+    'click .title > span': 'updateName',
+    'click [data-dismiss="modal"]': 'closeView'
   },
   initialize: function() {
     this.comments = new Comments();
@@ -428,6 +488,25 @@ var TaskView = Backbone.View.extend({
         break;
     }
   },
+  updateName: function(e) {
+    var self = this;
+    $title = $(e.currentTarget);
+    $title.attr('contenteditable', true).focus();
+    $title.one('blur', function() {
+      var name = $title.html();
+      if (name == "") {
+        $title.html(self.model.get('name'));
+      } else if (name != self.model.get('name')) {
+        $title.attr('contenteditable', '');
+        self.model.save({
+          name: name
+        }, {
+          wait: true,
+          success: function() {}
+        }) 
+      }
+    })
+  },
   updateDueTime: function(model) {
     var self = this;
     var time = model.get('due_time');
@@ -455,6 +534,10 @@ var TaskView = Backbone.View.extend({
       date = date.getFullYear() + '-' + date.getMonthFormatted() + '-' + date.getDateFormatted();
     }
     return date;
+  },
+  closeView: function() {
+    this.$el.off();
+    this.$el.hide();
   }
 });
 

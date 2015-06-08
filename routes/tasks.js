@@ -57,11 +57,9 @@ router.post('/:id/update', function(req, res, next) {
   Task
     .find(id)
     .then(function(task) {
-      console.log(params.isComplete, typeof params.isComplete);
       if (params.isComplete == 'true') {
         params.complete_at = models.sequelize.fn('NOW');
       } else if (params.isComplete == 'false'){
-      console.log(params.isComplete);
         params.complete_at = null;
       }
       return task

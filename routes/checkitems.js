@@ -44,12 +44,20 @@ router.post('/create', function(req, res, next) {
 router.post('/:id/update', function(req, res, next) {
 	var
     params = req.body,
-    id = req.params.id;
+    id = req.params.id,
+    userId = req.user.id;
   Checkitem
     .find(id)
     .then(function(checkitem) {
+      if (params.isChecked == 'true') {
+        params.check_at = models.sequelize.fn('NOW');
+        params.checker_id = userId;
+      } else if (params.isChecked == 'false'){
+        params.check_at = null;
+        params.checker_id = null;
+      }
       return checkitem.updateAttributes(params, 
-        {fields: ['name', 'checked', 'checker_id']});
+        {fields: ['content', 'check_at', 'checker_id']});
     })
     .then(function(checkitem) {
       res.json(checkitem);

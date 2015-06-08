@@ -1,5 +1,5 @@
-<input type="checkbox">
-<span>{{ name }}</span>
+<input class="complete" type="checkbox" {{#if complete_at }}checked="checked"{{/if}}>
+<span class="name">{{ name }}</span>
 <div class="actions">
   {{!-- <a data-action="edit">编辑</a> --}}
   <a data-action="delete">删除</a>

@@ -15,6 +15,7 @@ var TaskItemView = Backbone.View.extend({
     this.model.on('change', this.render, this);
   },
   render: function() {
+    console.log(4444444);
     var task = this.model;
     var html = tplTaskItem(this.model.toJSON());
     this.$el.html(html);
@@ -78,6 +79,9 @@ var TaskAddView = Backbone.View.extend({
 
 var TaskboardItemView = Backbone.View.extend({
   tagName: 'li',
+  events: {
+    'click .title': 'updateName'
+  },
   initialize: function() {
     this.$tasklist = this.$el.find('.task-list');
     this.tasks = new Tasks();
@@ -106,6 +110,25 @@ var TaskboardItemView = Backbone.View.extend({
     this.$liAddTask.before(viewTask.render().el);
     task.on('destroy', function() {
       viewTask.remove();
+    })
+  },
+  updateName: function(e) {
+    var self = this;
+    $title = $(e.currentTarget);
+    $title.attr('contenteditable', true).focus();
+    $title.one('blur', function() {
+      var name = $title.html();
+      if (name == "") {
+        $title.html(self.model.get('name'));
+      } else if (name != self.model.get('name')) {
+        $title.attr('contenteditable', '');
+        self.model.save({
+          name: name
+        }, {
+          wait: true,
+          success: function() {}
+        }) 
+      }
     })
   }
 });

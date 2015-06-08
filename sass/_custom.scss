@@ -80,3 +80,13 @@
     }
   }
 }
+
+// selection
+::-moz-selection { 
+  background: #4FC1E9;
+  color: #fff;
+}
+::selection { 
+  background: #4FC1E9; 
+  color: #fff;
+}

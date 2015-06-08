@@ -291,6 +291,19 @@ $bg-grey: #f3f3f3;
 
           >.header {
             padding: 0;
+            
+            .title {
+              display: block;
+              border: none;
+              box-shadow: none;
+              outline: none;
+              padding-bottom: 5px;
+              margin-bottom: 10px;
+              border-bottom: 1px solid #eee;
+              &:focus {
+                border-bottom-color: #48CFAD;
+              }
+            }
           }
 
           > hr {
@@ -346,6 +359,12 @@ $bg-grey: #f3f3f3;
   .title {
     span {
       font-size: 20px;
+      border: none;
+      box-shadow: none;
+      outline: none;
+      &:focus {
+        border-bottom: 1px solid #48CFAD;
+      }
     }
   }
 
@@ -375,9 +394,16 @@ $bg-grey: #f3f3f3;
         vertical-align: middle;
         margin: 0;
       }
-
+      
+      .name,
       .content {
         display: inline-block;
+        border: none;
+        box-shadow: none;
+        outline: none;
+        &:focus {
+          border-bottom: 1px solid #48CFAD;
+        }
       }
 
       .actions {
