@@ -123,6 +123,10 @@ module.exports = function(sequelize, DataTypes) {
       beforeCreate: function(user, options, fn) {
         user.password = utils.hash(user.password);
         fn();
+      },
+      beforeUpdate: function(user, options, fn) {
+        user.password = utils.hash(user.password);
+        fn();
       }
     }
   });

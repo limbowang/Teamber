@@ -1,0 +1,32 @@
+{{> header}}
+<div id="main" class="main">
+<h5>用户管理</h5>
+<table class="table table-bordered">
+  <thead>
+    <td>用户</td>
+    <td>邮箱</td>
+    <td>昵称</td>
+    <td></td>
+  </thead>
+  <tbody class="members-table">
+  {{#each users}}
+    <tr>
+      <td>{{ username }}</td>
+      <td>{{ email }}</td>
+      <td>{{ nickname }}</td>
+      {{#if is_admin}}
+        <td></td>
+      {{^}}
+      <td>
+        <button class="btn btn-sm btn-warning" data-action="delete">删除</button>
+        <div class="confirm hide" data-email="{{ email }}">
+          <button class="btn btn-sm btn-danger" data-action="confirm">确认删除？</button>
+          <button class="btn btn-sm" data-action="cancel">取消</button>
+        </div>
+      </td>
+      {{/if}}
+    </tr>
+  {{/each}}
+  </tbody>
+</table>
+</div>

@@ -8,7 +8,7 @@ var User   = models.User;
 var Subproject = models.Subproject;
 var Taskboard = models.Taskboard;
 var teamMember = filters.teamMember;
-var getValidateError = utils.getValidateError;
+var parseError = utils.parseError;
 
 router.param('id', function(req, res, next, id) {
   if (isNaN(id)) {

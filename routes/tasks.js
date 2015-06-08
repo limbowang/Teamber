@@ -9,7 +9,7 @@ var Taskboard = models.Taskboard;
 var Task   = models.Task;
 var Project = models.Project;
 var teamMember = filters.teamMember;
-var getValidateError = utils.getValidateError;
+var parseError = utils.parseError;
 
 router.param('id', function(req, res, next, id) {
   if (isNaN(id)) {

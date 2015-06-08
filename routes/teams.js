@@ -9,7 +9,7 @@ var Team   = models.Team;
 var Project = models.Project;
 var teamOwner = filters.teamOwner;
 var teamMember = filters.teamMember;
-var getValidateError = utils.getValidateError;
+var parseError = utils.parseError;
 
 router.param('id', function(req, res, next, id) {
   if (isNaN(id)) {
@@ -100,7 +100,7 @@ router.post('/:id/members/add', teamOwner, function(req, res, next) {
       });
   } else {
     User
-    .find({where: {email: email}, attributes: ['id', 'username', 'nickname', 'email', 'avatar']})
+    .find({where: {email: email}, attributes: ['id', 'description', 'username', 'nickname', 'email', 'avatar']})
     .then(function(user) {
       if (user == null) {
         res.status(500).json({
@@ -303,7 +303,7 @@ router.get('/:id/members', teamMember, function(req, res, next) {
     .then(function(team) {
       curTeam = team;
       return team.getMembers(
-        {attributes: ['id', 'username', 'nickname', 'email', 'avatar']});
+        {attributes: ['id', 'username', 'description', 'nickname', 'email', 'avatar']});
     })
     .then(function(members) {
       for(var key in members) {
@@ -334,7 +334,7 @@ router.get('/:id/members/:nickname', teamMember, function(req, res, next) {
   User
   .find({
     where: {nickname: nickname},
-    attributes: ['id', 'username', 'nickname', 'email', 'avatar']
+    attributes: ['id', 'username', 'description', 'nickname', 'email', 'avatar']
   })
   .then(function(user) {
     curUser = user;

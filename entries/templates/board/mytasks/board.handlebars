@@ -4,6 +4,7 @@
     <div class="tab active" data-index="incomplete">未完成</div>
     <div class="tab" data-index="complete">已完成</div>
     <div class="tab" data-index="overdue">已过期</div>
+    <div class="tab" data-index="profile">个人资料</div>
   </div>
 </div>
 
@@ -16,5 +17,45 @@
 </div>
 <div class="panel" data-index="overdue">
   <ul class="task-list"></ul>
+</div>
+<div class="panel cols" data-index="profile">
+  <div class="small-col">
+    <div class="profile">
+      <h5>修改个人资料</h5>
+      <div class="form-group">
+        <label>头像</label>
+        <img class="avatar" src="{{ avatar }}" alt="{{ username }}">
+        <input type="file" name="avatar" class="form-control" id="avatar" hidden="hidden" value="{{ nickname }}">
+      </div>
+      <div class="form-group">
+        <label>昵称</label>
+        <input type="text" name="nickname" class="form-control" id="nickname" placeholder="昵称" value="{{ nickname }}">
+      </div>
+      <div class="form-group">
+        <label>邮箱</label>
+        <input type="text" name="email" class="form-control" id="email" placeholder="邮箱" value="{{ email }}">
+      </div>
+      <div class="form-group">
+        <label>介绍</label>
+        <textarea name="description" class="form-control" id="description" placeholder="描述">{{ description }}</textarea>
+      </div>
+      <div class="form-group">
+        <button id="info-update" class="btn btn-primary">更新</button>
+      </div>
+      <hr>
+      <h5>修改密码</h5>
+      <div class="form-group">
+        <label>原密码</label>
+        <input type="password" name="password_old" class="form-control" id="password_old" placeholder="原密码">
+      </div>
+      <div class="form-group">
+        <label>新密码</label>
+        <input type="password" name="password_new" class="form-control" id="password_new" placeholder="新密码">
+      </div>
+      <div class="form-group">
+        <button id="password-update" class="btn btn-primary">更新</button>
+      </div>
+    </div>
+  </div>
 </div>
 </div>

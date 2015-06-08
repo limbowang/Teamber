@@ -57,7 +57,9 @@ var MemberItemView = Backbone.View.extend({
           }
         }, 0);
       },
-      error: function() {}
+      error: function(model, xhr, options) {
+        alert('warning', xhr.responseJSON.msg);
+      }
     })
   }
 });
@@ -213,6 +215,9 @@ var TeamView = BaseView.extend({
       success: function(team, res, options) {
         self.$modal.hide();
         location.href = '#team-' + team.get('id');
+      },
+      error: function(model, xhr, options) {
+        alert('warning', xhr.responseJSON.msg);
       }
     });
   },
@@ -229,7 +234,10 @@ var TeamView = BaseView.extend({
     }, {
       wait: true,
       success: function() {
-        self.alert('success', '更新成功');
+        alert('success', '更新成功');
+      },
+      error: function(model, xhr, options) {
+        alert('warning', xhr.responseJSON.msg);
       }
     });
   },
@@ -249,15 +257,18 @@ var TeamView = BaseView.extend({
     })
 
     $btnConfirm.on('click', function() {
-        self.teams
-        .findWhere({id: parseInt(self.teamid)})
-        .destroy({
-          success: function() {
-            self.alert('success', '操作成功');
-            location.href = '#';
-          }
-        })
-      });
+      self.teams
+      .findWhere({id: parseInt(self.teamid)})
+      .destroy({
+        success: function() {
+          alert('success', '操作成功');
+          location.href = '#';
+        },
+        error: function(model, xhr, options) {
+          alert('warning', xhr.responseJSON.msg);
+        }
+      })
+    });
   },
   addMember: function() {
     var self = this;
@@ -269,6 +280,9 @@ var TeamView = BaseView.extend({
       url: 'teams/' + this.teamid + '/members/add',
       success: function(member, res, options) {
         self.$modal.hide();
+      },
+      error: function(model, xhr, options) {
+        alert('warning', xhr.responseJSON.msg);
       }
     })
   },

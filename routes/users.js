@@ -7,7 +7,7 @@ var router = express.Router();
 var User   = models.User;
 var Team = models.Team;
 var Project = models.Project;
-var getValidateError = utils.getValidateError;
+var parseError = utils.parseError;
 
 router.post('/create', function(req, res, next) {
   var params = req.body;
@@ -27,20 +27,75 @@ router.post('/create', function(req, res, next) {
     res.redirect('/dashboard');
   })
   .catch(function(e, user) {
-    req.session.flash.errors = getValidateError(e);
+    req.session.flash.errors = parseError(e);
     req.session.flash.old = params;
     res.redirect('/signup');
   });
 });
 
 router.post('/:username/update', function(req, res, next) {
+  var 
+    params = req.body,
+    username = req.params.username;
+  User
+  .find({
+    where: {
+      username: username
+    }
+  })
+  .then(function(user) {
+    console.log(params)
+    if (params.passwordOld) {
+      if (user.password == utils.hash(params.passwordOld)) {
+        params.password = params.passwordNew;
+        return user.updateAttributes(params, 
+          {fields: ['password']});
+      } else {
+        res.status(500).json({
+          result: "error",
+          msg: '原密码有错误'
+        });
+      }
+    } else {
+      return user.updateAttributes(params, 
+        {fields: ['email', 'nickname', 'description']});
+    }
+  })
+  .then(function(user) {
+    user.dataValues.password = undefined;
+    user.dataValues.id = undefined;
+    res.json(user);
+  })
+  .catch(function(e) {
+    console.log(e);
+    res.status(500).json({
+      result: "error",
+      msg: parseError(e)
+    });
+  });
 });
 
 router.post('/:username/destroy', function(req, res, next) {
 });
 
 router.get('/:username', function(req, res, next) {
-  res.render('index', { title: 'User test' });
+});
+
+router.get('/own/profile', function(req, res, next) {
+  var userId = req.user.id;
+  User
+  .find(userId, {
+    attributes: ['username', 'nickname', 'email', 'avatar']
+  })
+  .then(function(user) {
+    res.json(user);
+  })
+  .catch(function(e) {
+    res.status(500).json({
+      result: "error",
+      msg: e
+    });
+  })
 });
 
 router.get('/own/calendar', function(req, res, next) {
@@ -69,14 +124,6 @@ router.get('/own/calendar', function(req, res, next) {
     res.json({
       success: 1,
       result: result
-      // result: [{
-      //   "id": "293", 
-      //   "title": "This is warning class event with very long title to check how it fits to evet in day view", 
-      //   "url": "http://www.example.com/", 
-      //   "class": "event-warning", 
-      //   "start": "1362938400000", 
-      //   "end": "1363197686300"
-      // }]
     });
   })
   .catch(function(e) {

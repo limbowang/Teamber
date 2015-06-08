@@ -35,7 +35,9 @@ utils.auth = function(req, res, next) {
     '/users/create'
   ];
   var needLoginPageList = [
-    '/dashboard'
+    '/dashboard',
+    '/signout',
+    '/profile'
   ];
   var isLogined = req.session.login;
   if (noAuthPathList.indexOf(req.path) >= 0) {
@@ -65,7 +67,7 @@ utils.hash = function(value) {
   return sha2.digest('hex');
 }
 
-utils.getValidateError = function(e) {
+utils.parseError = function(e) {
   var errors = {};
   e = e.errors;
   for (var i = 0; i < e.length; i++) {

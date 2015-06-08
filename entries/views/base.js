@@ -10,19 +10,6 @@ var BaseView = Backbone.View.extend({
       self.$modal.hide();
     });
 
-    this.alertTimeout = null;
-
-    this.alert = function(type, msg) {
-      var self =this;
-      var delay = 3000;
-      var $notification = $('#notification');
-      $notification.html('<div class="alert alert-' + type + '">' + msg + '</div>');
-      this.alertTimeout = setTimeout(function() {
-        clearTimeout(self.alertTimeout);
-        $notification.html('');
-      }, delay)
-    }
-
     // init collections
     for (var key in collections) {
       this[key] = collections[key];

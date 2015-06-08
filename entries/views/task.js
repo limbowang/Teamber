@@ -91,6 +91,9 @@ var AssignmentListView = Backbone.View.extend({
           taskid: self.collection.taskid,
           success: function() {
             view.render();
+          },
+          error: function(model, xhr, options) {
+            alert('warning', xhr.responseJSON.msg);
           }
         })
       } else {
@@ -99,6 +102,9 @@ var AssignmentListView = Backbone.View.extend({
           taskid: self.collection.taskid,
           success: function() {
             view.render(); 
+          },
+          error: function(model, xhr, options) {
+            alert('warning', xhr.responseJSON.msg);
           }
         });
       }
@@ -169,6 +175,9 @@ var SubtaskListView = Backbone.View.extend({
       success: function() {
         $textarea.val('');
         alert('success', '添加成功');
+      },
+      error: function(model, xhr, options) {
+        alert('warning', xhr.responseJSON.msg);
       }
     })
   }
@@ -231,6 +240,9 @@ var CheckitemListView = Backbone.View.extend({
       success: function() {
         $textarea.val('');
         alert('success', '添加成功');
+      },
+      error: function(model, xhr, options) {
+        alert('warning', xhr.responseJSON.msg);
       }
     })
   }
@@ -284,6 +296,9 @@ var CommentListView = Backbone.View.extend({
       success: function() {
         $textarea.val('');
         alert('success', '评论成功');
+      },
+      error: function(model, xhr, options) {
+        alert('warning', xhr.responseJSON.msg);
       }
     })
   }
@@ -359,6 +374,9 @@ var TaskView = Backbone.View.extend({
         // initialize list
         self.checkitems.fetch();
         self.assignments.fetch();
+      },
+      error: function(model, xhr, options) {
+        alert('warning', xhr.responseJSON.msg);
       }
     });
   },
@@ -419,6 +437,9 @@ var TaskView = Backbone.View.extend({
       wait: true,
       success: function() {
         self.$dueTime.html(self.formatDate(time));
+      },
+      error: function(model, xhr, options) {
+        alert('warning', xhr.responseJSON.msg);
       }
     })
   },

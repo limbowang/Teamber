@@ -187,7 +187,9 @@ var ProjView = BaseView.extend({
         self.$modal.hide();
         location.href = '#team-' + proj.get('team_id') + '/proj-' + proj.get('id'); 
       },
-      error: function(model, xhr, options) { console.log(xhr); }
+      error: function(model, xhr, options) {
+        alert('warning', xhr.responseJSON.msg);
+      }
     });
   },
   updateProj: function() {
@@ -201,7 +203,10 @@ var ProjView = BaseView.extend({
     }, {
       wait: true,
       success: function() {
-        self.alert('success', '更新成功');
+        alert('success', '更新成功');
+      },
+      error: function(model, xhr, options) {
+        alert('warning', xhr.responseJSON.msg);
       }
     });
   },
@@ -226,12 +231,15 @@ var ProjView = BaseView.extend({
         .findWhere({id: projid})
         .destroy({
           success: function() {
-            self.alert('success', '操作成功');
+            alert('success', '操作成功');
             if (parseInt(self.projs.teamid)) {
               location.href = '#team-' + self.projs.teamid;
             } else {
               location.href = '#';
             }
+          },
+          error: function(model, xhr, options) {
+            alert('warning', xhr.responseJSON.msg);
           }
         })
       });
@@ -245,10 +253,13 @@ var ProjView = BaseView.extend({
     }, {
       wait: true,
       success: function(subproj) { 
+        alert('success', '操作成功');
         self.$modal.hide();
         self.renderSubprojPanel(subproj);
       },
-      error: function(model, xhr, options) { console.log(xhr); }
+      error: function(model, xhr, options) {
+        alert('warning', xhr.responseJSON.msg);
+      }
     });
   },
   updateSubproj: function() {

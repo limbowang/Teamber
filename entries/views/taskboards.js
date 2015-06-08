@@ -69,7 +69,9 @@ var TaskAddView = Backbone.View.extend({
       success: function(subproj) { 
         self.renderCancel();
       },
-      error: function(model, xhr, options) { console.log(xhr); }
+      error: function(model, xhr, options) {
+        alert('warning', xhr.responseJSON.msg);
+      }
     });
   }
 });
@@ -143,7 +145,9 @@ var TaskboardAddView = Backbone.View.extend({
       success: function(subproj) { 
         self.renderCancel();
       },
-      error: function(model, xhr, options) { console.log(xhr); }
+      error: function(model, xhr, options) {
+        alert('warning', xhr.responseJSON.msg);
+      }
     });
   }
 })

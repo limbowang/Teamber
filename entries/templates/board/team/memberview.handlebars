@@ -4,6 +4,9 @@
     <div class="info">
       <p>昵称：{{ nickname }}</p>
       <p>邮箱：{{ email }}</p>
+      {{#if description }}
+      <p>介绍：{{ description }}</p>
+      {{/if}}
     </div>
   </div>
   <div class="overview">
