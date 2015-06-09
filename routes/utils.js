@@ -10,7 +10,8 @@ utils.loadUser = function(req, res, next) {
     res.locals.user = req.user = {
       id:       req.session.userid,
       nickname: req.session.nickname,
-      avatar:   req.session.avatar
+      avatar:   req.session.avatar,
+      is_admin: req.session.admin
     };
   }
   next();
@@ -37,7 +38,7 @@ utils.auth = function(req, res, next) {
   var needLoginPageList = [
     '/dashboard',
     '/signout',
-    '/profile'
+    '/admin'
   ];
   var isLogined = req.session.login;
   if (noAuthPathList.indexOf(req.path) >= 0) {

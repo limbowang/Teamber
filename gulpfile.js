@@ -37,7 +37,7 @@ gulp.task('css', function() {
 });
 
 gulp.task('js', function() {
-  gulp.src('./entries/main.js')
+  gulp.src(['./entries/main.js', './entries/admin.js'])
     .pipe(browserify({
       transform: [browserifyHandlebars],
       insertGlobals : true

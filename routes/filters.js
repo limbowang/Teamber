@@ -14,7 +14,7 @@ filters.isNotAuth = function(req, res, next) {
 
 filters.isAdmin = function(req, res, next) {
   var isAdmin = req.session.admin;
-  if (isAdmin && isAdmin == "true") {
+  if (isAdmin) {
     next();
   } else {
     res.redirect('/');

@@ -127,6 +127,8 @@ var MyTaskView = Backbone.View.extend({
     var $formProfile = $('.profile');
     var passwordOld = $formProfile.find('input[name="password_old"]').val();
     var passwordNew = $formProfile.find('input[name="password_new"]').val();
+    $formProfile.find('input[name="password_old"]').val('');
+    $formProfile.find('input[name="password_new"]').val('');
     if (passwordOld && passwordNew) {
       this.user
       .save({},{

@@ -33,6 +33,11 @@ module.exports = {
       avatar: {
         type: DataTypes.STRING
       },
+      is_admin: {
+        allowNull: false,
+        type: DataTypes.BOOLEAN,
+        defaultValue: false
+      },
       createdAt: {
         allowNull: false,
         type: DataTypes.DATE

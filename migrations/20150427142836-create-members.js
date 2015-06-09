@@ -17,6 +17,11 @@ module.exports = {
         references: "Users",
         referenceKey: "id"
       },
+      auth: {
+        allowNull: false,
+        type: DataTypes.ENUM('ADMIN', 'MEMBER'),
+        defaultValue: 'MEMBER'
+      },
       createdAt: {
         allowNull: false,
         type: DataTypes.DATE

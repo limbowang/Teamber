@@ -109,7 +109,7 @@ var ProjView = BaseView.extend({
       this.contributors.fetch({reset: true});
 
       proj.on('change:name', function(proj) {
-        this.$board.find('>.header >.title').html(proj.get('name'));
+        this.$board.find('>.header >.title >span').html(proj.get('name'));
         this.$board.find('.overview .title').html(proj.get('name'));
       }, this);
     } else {
@@ -144,12 +144,18 @@ var ProjView = BaseView.extend({
     var self = this;
     var viewItem = new SubProjItemView({model: subproj});
     this.$subprojlist.append(viewItem.render().el);
-    viewItem.$el.on('click', function(){ self.renderSubprojPanel(subproj) });
+    viewItem.$el.on('click', function() { 
+      self.renderSubprojPanel(subproj); 
+    });
     var viewTd = new SubProjTDView({model: subproj});
     this.$board.find('.subprojs-table').append(viewTd.render().el);
-    subproj.on('destroy', function() {
+    subproj.on('destroy', function(subproj) {
       viewItem.remove();
       viewTd.remove();
+      console.log(self.$subprojSelect.attr('data-id'), subproj.get('id'))
+      if (self.$subprojSelect.attr('data-id') == subproj.get('id')) {
+        self.renderSubprojPanel(self.subprojs.findWhere({is_default: true}));
+      }
     })
   },
   renderContributorItem: function(contributor) {
@@ -162,6 +168,7 @@ var ProjView = BaseView.extend({
   renderSubprojPanel: function(subproj) {
     var view = new TaskboardsView({contributors: this.contributors});
     this.$subprojSelect.html(subproj.get('name'));
+    this.$subprojSelect.attr('data-id', subproj.get('id'));
     this.$panelTasks.html(view.el);
     view.taskboards.projid = subproj.get('project_id');
     view.taskboards.subprojid = subproj.get('id');
@@ -256,17 +263,12 @@ var ProjView = BaseView.extend({
         alert('success', '操作成功');
         self.$modal.hide();
         self.renderSubprojPanel(subproj);
+        $tabTasks = $('tab[data-index="tasks"]');
       },
       error: function(model, xhr, options) {
         alert('warning', xhr.responseJSON.msg);
       }
     });
-  },
-  updateSubproj: function() {
-
-  },
-  deleteSubproj: function() {
-
   }
 });
 

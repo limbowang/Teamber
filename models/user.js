@@ -46,6 +46,11 @@ module.exports = function(sequelize, DataTypes) {
     },
     avatar: {
       type: DataTypes.STRING
+    },
+    is_admin: {
+      type: DataTypes.BOOLEAN,
+      allowNull: false,
+      defaultValue: false
     }
   }, {
     classMethods: {

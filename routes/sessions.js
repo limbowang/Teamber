@@ -15,6 +15,7 @@ router.post('/create', function(req, res, next) {
 			req.session.userid   = user.id;
 			req.session.nickname = user.nickname;
 			req.session.avatar   = user.avatar;
+			req.session.admin   = user.is_admin;
 			res.redirect('/dashboard');
 		} else {
 			req.session.flash.errors = e;

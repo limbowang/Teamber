@@ -2,7 +2,9 @@
 <td>{{ email }}</td>
 {{#if is_owner  }}
 <td></td>
+<td></td>
 {{^}}
+	<td>{{ auth}}<button class="btn btn-sm btn-info">修改</button></td>
   <td>
     <button class="btn btn-sm btn-warning" data-action="delete">删除</button>
     <div class="confirm hide" data-email="{{ email }}">

@@ -16,7 +16,7 @@ module.exports = function(sequelize, DataTypes) {
     },
     check_at: {
       type: DataTypes.DATE,
-      defaultValue: false
+      defaultValue: null
     },
     checker_id: {
       type: DataTypes.INTEGER

@@ -1,5 +1,5 @@
 {{> header}}
-<div id="main" class="main">
+<div id="main" class="main container">
 <h5>用户管理</h5>
 <table class="table table-bordered">
   <thead>
@@ -19,7 +19,7 @@
       {{^}}
       <td>
         <button class="btn btn-sm btn-warning" data-action="delete">删除</button>
-        <div class="confirm hide" data-email="{{ email }}">
+        <div class="confirm hide" data-username="{{ username }}">
           <button class="btn btn-sm btn-danger" data-action="confirm">确认删除？</button>
           <button class="btn btn-sm" data-action="cancel">取消</button>
         </div>
@@ -30,3 +30,5 @@
   </tbody>
 </table>
 </div>
+
+<script src="/javascripts/admin.js"></script>

@@ -18,7 +18,8 @@ module.exports = {
         referenceKey: "id"
       },
       check_at: {
-        type: DataTypes.DATE
+        type: DataTypes.DATE,
+        defaultValue: null
       },
       checker_id: {
         type: DataTypes.INTEGER,

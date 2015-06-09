@@ -37,21 +37,8 @@ router.get('/signup', function(req, res, next) {
   });
 });
 
-router.get('/profile', function(req, res, next) {
+router.get('/admin', filters.isAdmin, function(req, res, next) {
   var userId = req.user.id;
-    console.log(userId);
-  User
-  .find(userId)
-  .then(function(user) {
-    console.log(user);
-    res.render('profile', { title: '个人资料', user: user});
-  })
-  .catch(function(e) {
-    res.render('profile', { title: '个人资料' });
-  })
-});
-
-router.get('/admin', function(req, res, next) {
   User
   .findAll()
   .then(function(users) {

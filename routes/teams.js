@@ -140,6 +140,62 @@ router.post('/:id/members/add', teamOwner, function(req, res, next) {
   }
 });
 
+router.post('/:id/members/update', teamOwner, function(req, res, next) {
+  var
+    params = req.body,
+    email = params.email,
+    id = req.params.id;
+  if (id == 0) {
+      res.status(500).json({
+        result: "error",
+        msg: "无法添加成员"
+      });
+  } else {
+    User
+    .find({
+      where: {
+        email: email
+      }
+    })
+    .then(function(user) {
+      if (user == null) {
+        res.status(500).json({
+          result: "error",
+          msg: "没有该用户"
+        });
+      } else {
+        Team
+        .find(id)
+        .then(function(team) {
+          team
+          .hasMember(user)
+          .then(function(hasMember) {
+            if (hasMember) {
+              res.status(500).json({
+                result: "error",
+                msg: "用户已经在您的团队中"
+              });
+            } else {
+              team
+              .addMember(user)
+              .then(function(result) {
+                user.dataValues.team_id = team.id;
+                res.json(user);
+              });
+            }
+          })
+        })
+      }
+    })
+    .catch(function(e) {
+      res.status(500).json({
+        result: "error",
+        msg: e
+      });
+    });
+  }
+});
+
 router.post('/:id/members/remove', teamOwner, function(req, res, next) {
   var
     params = req.body,
@@ -303,7 +359,7 @@ router.get('/:id/members', teamMember, function(req, res, next) {
     .then(function(team) {
       curTeam = team;
       return team.getMembers(
-        {attributes: ['id', 'username', 'description', 'nickname', 'email', 'avatar']});
+        {attributes: ['id', 'username', 'description', 'nickname', 'email', 'avatar', 'members.auth']});
     })
     .then(function(members) {
       for(var key in members) {

@@ -44,12 +44,25 @@ router.post('/:username/update', function(req, res, next) {
     }
   })
   .then(function(user) {
-    console.log(params)
     if (params.passwordOld) {
       if (user.password == utils.hash(params.passwordOld)) {
         params.password = params.passwordNew;
-        return user.updateAttributes(params, 
-          {fields: ['password']});
+        user
+        .updateAttributes(params, {
+          fields: ['password']
+        })
+        .then(function(user) {
+          user.dataValues.password = undefined;
+          user.dataValues.id = undefined;
+          res.json(user);
+        })
+        .catch(function(e) {
+          console.log(e);
+          res.status(500).json({
+            result: "error",
+            msg: parseError(e)
+          });
+        });
       } else {
         res.status(500).json({
           result: "error",
@@ -57,14 +70,23 @@ router.post('/:username/update', function(req, res, next) {
         });
       }
     } else {
-      return user.updateAttributes(params, 
-        {fields: ['email', 'nickname', 'description']});
+      user
+      .updateAttributes(params,{
+        fields: ['email', 'nickname', 'description']
+      })
+      .then(function(user) {
+        user.dataValues.password = undefined;
+        user.dataValues.id = undefined;
+        res.json(user);
+      })
+      .catch(function(e) {
+        console.log(e);
+        res.status(500).json({
+          result: "error",
+          msg: parseError(e)
+        });
+      });
     }
-  })
-  .then(function(user) {
-    user.dataValues.password = undefined;
-    user.dataValues.id = undefined;
-    res.json(user);
   })
   .catch(function(e) {
     console.log(e);
@@ -75,7 +97,47 @@ router.post('/:username/update', function(req, res, next) {
   });
 });
 
-router.post('/:username/destroy', function(req, res, next) {
+router.post('/:username/destroy', filters.isAdmin, function(req, res, next) {
+  var username = req.params.username;
+  User
+  .find({
+    where: {
+      username: username
+    }
+  })
+  .then(function(user) {
+    if (!user) {
+      res.status(500).json({
+        result: "error",
+        msg: '用户不存在'
+      });
+    } else if (user.is_admin) {
+      res.status(500).json({
+        result: "error",
+        msg: '无法删除管理员'
+      });
+    } else {
+      user
+      .destroy()
+      .then(function(result) {
+        res.json(result);
+      })
+      .catch(function(e) {
+        console.log(e);
+        res.status(500).json({
+          result: "error",
+          msg: e
+        });
+      });
+    }
+  })
+  .catch(function(e) {
+    console.log(e);
+    res.status(500).json({
+      result: "error",
+      msg: e
+    });
+  });
 });
 
 router.get('/:username', function(req, res, next) {
