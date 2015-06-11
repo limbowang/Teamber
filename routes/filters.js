@@ -50,7 +50,7 @@ filters.teamOwner = function(req, res, next) {
       } else if (team.creator_id == userId) {
         next();
       } else {
-        res.json({
+        res.status(500).json({
           result: "error",
           msg: "没有权限"
         });
@@ -93,7 +93,7 @@ filters.teamMember = function(req, res, next) {
       } else if (team.hasMember(userId)) {
         next();
       } else {
-        res.json({
+        res.status(500).json({
           result: "error",
           msg: "没有权限"
         });

@@ -72,8 +72,18 @@ var MemberItemTD = Backbone.View.extend({
     'click [data-action="cancel"]': 'renderCancel'
   },
   render: function() {
-    var html = tplMemberTD(this.model.toJSON());
-    this.$el.html(html);
+    var data = this.model.toJSON();
+    if (data.is_owner) {
+      data.auth = '团队创建者';
+    } else if (data.auth == 'ADMIN') {
+      data.auth = '团队管理者';
+    } else if (data.auth == 'MEMBER') {
+      data.auth = '团队成员';
+    } else {
+      data.auth = '';
+    }
+    this.$el.html(tplMemberTD(data));
+    this.$el.find('[data-name="' + data.auth + '"]').addClass('active');
     return this;
   },
   renderConfirm: function(e) {
@@ -127,6 +137,7 @@ var TeamView = BaseView.extend({
     'click #team-update': 'updateTeam',
     'click #team-delete': 'deleteTeam',
     'click .member-invite': 'renderMemberInviteModal',
+    'click #team-quit': 'quitTeam',
     'click #member-add': 'addMember',
     'click #board .tab': 'switchTab'
   },
@@ -135,8 +146,13 @@ var TeamView = BaseView.extend({
     if (this.teamid != '0') {
       var team = this.teams.findWhere({id: parseInt(this.teamid)});
       if (team) {
-        var html = tplBoard(team.toJSON());
-        this.$board.html(html);
+        var data = team.toJSON();
+        if (data.is_owner || data.auth == 'ADMIN') {
+          data.admin = true;
+        } else {
+          data.admin = false;
+        }
+        this.$board.html(tplBoard(data));
         this.members.fetch({reset: true, teamid: this.teamid});
       } else {
         location.href = '#';
@@ -285,6 +301,36 @@ var TeamView = BaseView.extend({
         alert('warning', xhr.responseJSON.msg);
       }
     })
+  },
+  quitTeam: function(e) {
+    var self = this;
+    var $cur = $(e.currentTarget);
+    var $confirm = $cur.next('.confirm');
+    var $btnCancel = $confirm.find('[data-action="cancel"]');
+    var $btnConfirm = $confirm.find('[data-action=confirm]');
+
+    $cur.addClass('hide')
+    $confirm.removeClass('hide');
+
+    $btnCancel.on('click', function() {
+      $cur.removeClass('hide');
+      $confirm.addClass('hide');
+    })
+
+    $btnConfirm.on('click', function() {
+      Backbone.$.ajax({
+        url: 'teams/' + self.teamid + '/members/quit',
+        method: 'POST',
+        success: function() {
+          alert('success', '退出成功');
+          self.teams.findWhere({id: parseInt(self.teamid)}).trigger('destroy');
+          location.href = '#';
+        },
+        error: function() {
+          alert('warning', '操作失败');
+        }
+      })
+    });
   },
   switchTab: function(e) {
     var $cur = $(e.currentTarget);

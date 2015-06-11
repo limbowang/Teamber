@@ -1,10 +1,20 @@
 <td>{{ username }}</td>
 <td>{{ email }}</td>
 {{#if is_owner  }}
-<td></td>
+<td>{{ auth }}</td>
 <td></td>
 {{^}}
-	<td>{{ auth}}<button class="btn btn-sm btn-info">修改</button></td>
+  <td class="dropdown">{{ auth }}
+    <button data-action="update" class="btn btn-sm btn-info" data-toggle="dropdown">修改</button>
+    <ul class="options dropdown-menu">
+      <li>
+        <a data-name="admin">团队管理者</a>
+      </li>
+      <li>
+        <a data-name="member">团队成员</a>
+      </li>
+    </ul>
+  </td>
   <td>
     <button class="btn btn-sm btn-warning" data-action="delete">删除</button>
     <div class="confirm hide" data-email="{{ email }}">
