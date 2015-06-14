@@ -80,7 +80,8 @@ var TaskAddView = Backbone.View.extend({
 var TaskboardItemView = Backbone.View.extend({
   tagName: 'li',
   events: {
-    'click .title': 'updateName'
+    'click .title': 'updateName',
+    'click .taskboard-delete': 'deleteTaskboard'
   },
   initialize: function() {
     this.$tasklist = this.$el.find('.task-list');
@@ -128,6 +129,17 @@ var TaskboardItemView = Backbone.View.extend({
           wait: true,
           success: function() {}
         }) 
+      }
+    })
+  },
+  deleteTaskboard: function(e) {
+    this.model.destroy({
+      wait: true,
+      success: function() {
+        alert('success', '删除成功');
+      },
+      error: function() {
+        alert('warning', '删除成功');
       }
     })
   }

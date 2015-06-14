@@ -382,6 +382,7 @@ var TaskView = Backbone.View.extend({
     'click .tab': 'switchTab',
     'change .title > .complete': 'updateComplete',
     'click .title > span': 'updateName',
+    'click .task-delete': 'deleteTask',
     'click [data-dismiss="modal"]': 'closeView'
   },
   initialize: function() {
@@ -525,6 +526,19 @@ var TaskView = Backbone.View.extend({
   updateComplete: function() {
     this.model.save({
       isComplete: (this.model.get('complete_at') == null).toString()
+    })
+  },
+  deleteTask: function(e) {
+    var self = this;
+    this.model.destroy({
+      wait: true,
+      success: function() {
+        alert('success', '删除成功');
+        self.$el.hide();
+      },
+      error: function() {
+        alert('warning', '删除成功');
+      }
     })
   },
   formatDate: function(time) {

@@ -205,7 +205,7 @@ router.post('/:id/members/update', teamOwner, function(req, res, next) {
         })
         .then(function(result) {
           user.dataValues.auth = auth;
-          user.dataValues.team_id = team.id;
+          user.dataValues.team_id = id;
           res.json(user);
         })
         .catch(function(e) {
@@ -268,12 +268,62 @@ router.post('/:id/members/remove', teamOwner, function(req, res, next) {
                 team
                 .removeMember(user)
                 .then(function(result) {
-                  res.json({});
+                  user
+                  .getAssignedTasks({
+                    include: [{
+                      model: Project,
+                      attributes: ['team_id'],
+                      where: {
+                        team_id: id
+                      }
+                    }]
+                  })
+                  .then(function(tasks) {
+                    user
+                    .removeAssignedTasks(tasks)
+                    .then(function(result) {
+                      res.json({});
+                    })
+                    .catch(function(e) {
+                      console.log(e);
+                      res.status(500).json({
+                        result: "error",
+                        msg: e
+                      });
+                    });
+                  })
+                  .catch(function(e) {
+                    console.log(e);
+                    res.status(500).json({
+                      result: "error",
+                      msg: e
+                    });
+                  });
+                })
+                .catch(function(e) {
+                  console.log(e);
+                  res.status(500).json({
+                    result: "error",
+                    msg: e
+                  });
                 });
               }
             })
+            .catch(function(e) {
+              console.log(e);
+              res.status(500).json({
+                result: "error",
+                msg: e
+              });
+            });
           }
         })
+        .catch(function(e) {
+          res.status(500).json({
+            result: "error",
+            msg: e
+          });
+        });
       }
     })
     .catch(function(e) {
@@ -327,7 +377,37 @@ router.post('/:id/members/quit', function(req, res, next) {
                 team
                 .removeMember(user)
                 .then(function(result) {
-                  res.json({});
+                  user
+                  .getAssignedTasks({
+                    include: [{
+                      model: Project,
+                      attributes: ['team_id'],
+                      where: {
+                        team_id: id
+                      }
+                    }]
+                  })
+                  .then(function(tasks) {
+                    user
+                    .removeAssignedTasks(tasks)
+                    .then(function(result) {
+                      res.json({});
+                    })
+                    .catch(function(e) {
+                      console.log(e);
+                      res.status(500).json({
+                        result: "error",
+                        msg: e
+                      });
+                    });
+                  })
+                  .catch(function(e) {
+                    console.log(e);
+                    res.status(500).json({
+                      result: "error",
+                      msg: e
+                    });
+                  });
                 })
                 .catch(function(e) {
                   res.status(500).json({
@@ -497,14 +577,14 @@ router.get('/:id/members', teamMember, function(req, res, next) {
   }
 });
 
-router.get('/:id/members/:nickname', teamMember, function(req, res, next) {
+router.get('/:id/members/:username', function(req, res, next) {
   var id = req.params.id != 0? req.params.id : null;
-  var nickname = req.params.nickname;
+  var username = req.params.username;
   var curTeam = null;
   var curUser = null;
   User
   .find({
-    where: {nickname: nickname},
+    where: {username: username},
     attributes: ['id', 'username', 'description', 'nickname', 'email', 'avatar']
   })
   .then(function(user) {

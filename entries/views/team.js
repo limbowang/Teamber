@@ -40,7 +40,7 @@ var MemberItemView = Backbone.View.extend({
     var self = this;
     var data = this.model.toJSON();
     Backbone.$.ajax({
-      url: '/teams/' + data.members.team_id + '/members/' + data.username,
+      url: '/teams/' + data.team_id + '/members/' + data.username,
       success: function(data) {
         data.avatar = data.avatar || '/images/default.png';
         self.$el.append(tplMemberView(data));
@@ -69,7 +69,8 @@ var MemberItemTD = Backbone.View.extend({
   events: {
     'click [data-action="delete"]': 'renderConfirm',
     'click [data-action="confirm"]': 'removeMember',
-    'click [data-action="cancel"]': 'renderCancel'
+    'click [data-action="cancel"]': 'renderCancel',
+    'click .option': 'updateAuth'
   },
   render: function() {
     var data = this.model.toJSON();
@@ -103,6 +104,35 @@ var MemberItemTD = Backbone.View.extend({
     var $btnConfirm = $(e.currentTarget);
     $btnConfirm.addClass('btn-disabled').html('删除中');
     this.model.destroy();
+  },
+  updateAuth: function(e) {
+    var self = this;
+    var $liOption = $(e.currentTarget);
+    this.model.save({
+      auth: $liOption.data('name')
+    }, {
+      wait: true,
+      url: '/teams/' + this.model.get('team_id') + '/members/update',
+      success: function() {
+        alert('success', '修改成功');
+        var auth = self.model.get('auth');
+        if (auth == 'ADMIN') {
+          auth = '团队管理者';
+        } else if (auth == 'MEMBER') {
+          auth = '团队成员';
+        } else {
+          auth = '';
+        }
+        self.$el.find('.cur-auth').html(auth);
+      },
+      error: function(model, xhr, options) {
+        if (xhr.responseJSON.msg) {
+          alert('warning', xhr.responseJSON.msg);
+        } else {
+          alert('warning', '操作失败');
+        }
+      }
+    })
   }
 });
 
@@ -319,7 +349,7 @@ var TeamView = BaseView.extend({
 
     $btnConfirm.on('click', function() {
       Backbone.$.ajax({
-        url: 'teams/' + self.teamid + '/members/quit',
+        url: '/teams/' + self.teamid + '/members/quit',
         method: 'POST',
         success: function() {
           alert('success', '退出成功');

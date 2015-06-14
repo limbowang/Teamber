@@ -256,7 +256,12 @@ router.get('/:id/comments', function(req, res, next) {
   Task
     .find(id)
     .then(function(task) {
-    	return task.getComments();
+    	return task.getComments({
+        include: [{
+          model: User,
+          attributes: ['nickname']
+        }]
+      });
     })
     .then(function(comments) {
       for(var key in comments) {
@@ -265,6 +270,7 @@ router.get('/:id/comments', function(req, res, next) {
         } else {
           comments[key].dataValues.is_own = false;
         }
+        comments[key].dataValues.nickname = comments[key].dataValues.User.dataValues.nickname;
       }
       res.json(comments);
     })

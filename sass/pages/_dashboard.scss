@@ -278,6 +278,7 @@ $bg-grey: #f3f3f3;
         overflow-x: auto;
         margin-top: 5px;
         font-size: 0;
+
         
         >li {
           display: inline-block;
@@ -290,6 +291,7 @@ $bg-grey: #f3f3f3;
           vertical-align: top;
 
           >.header {
+            position: relative;
             padding: 0;
             
             .title {
@@ -303,6 +305,12 @@ $bg-grey: #f3f3f3;
               &:focus {
                 border-bottom-color: #48CFAD;
               }
+            }
+
+            .taskboard-delete {
+              position: absolute;
+              top: 0;
+              right: 0;
             }
           }
 
@@ -452,6 +460,10 @@ $bg-grey: #f3f3f3;
     .nickname {
       text-align: center;
     }
+  }
+
+  .assignments {
+    margin-top: 20px;
   }
 
   .invite {

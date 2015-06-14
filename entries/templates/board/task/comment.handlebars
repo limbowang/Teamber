@@ -1,6 +1,7 @@
 <div id="comment-{{ id }}" data-id="{{ id }}">
 	<div class="user"></div>
   <div class="content">
+    {{ nickname }}:
     {{ content }}
     {{#if is_own}}
     <a data-action="delete">删除</a>

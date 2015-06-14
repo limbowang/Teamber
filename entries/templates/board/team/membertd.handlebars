@@ -4,14 +4,15 @@
 <td>{{ auth }}</td>
 <td></td>
 {{^}}
-  <td class="dropdown">{{ auth }}
+  <td class="dropdown">
+    <span class="cur-auth">{{ auth }}</span>
     <button data-action="update" class="btn btn-sm btn-info" data-toggle="dropdown">修改</button>
     <ul class="options dropdown-menu">
-      <li>
-        <a data-name="admin">团队管理者</a>
+      <li class="option" data-name="ADMIN">
+        <a>团队管理者</a>
       </li>
-      <li>
-        <a data-name="member">团队成员</a>
+      <li class="option" data-name="MEMBER">
+        <a>团队成员</a>
       </li>
     </ul>
   </td>
